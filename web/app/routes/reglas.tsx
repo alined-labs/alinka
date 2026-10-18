@@ -83,10 +83,17 @@ export default function Reglas() {
   const qc = useQueryClient();
   const [impact, setImpact] = useState<string | null>(null);
   const redecided = useRedecided();
-  const before = () => qc.getQueryData<Board>(boardKey("sandbox"));
+  // The board before a change, fetched if the Tablero was never opened, so the impact sentence always has a base.
+  const before = () =>
+    qc
+      .ensureQueryData({
+        queryKey: boardKey("sandbox"),
+        queryFn: () => unwrap(api.GET("/api/board", { params: { query: { view: "sandbox" } } })) as Promise<Board>,
+      })
+      .catch(() => undefined);
 
   const reset = useMutation({
-    mutationFn: async () => ({ before: before(), board: await unwrap(api.POST("/api/sandbox/reset")) }),
+    mutationFn: async () => ({ before: await before(), board: await unwrap(api.POST("/api/sandbox/reset")) }),
     onSuccess: ({ before, board }) => {
       redecided(board);
       setImpact(before ? `Sandbox restablecido. ${impactSentence(diffBoards(before, board))}` : "Sandbox restablecido.");
@@ -150,7 +157,7 @@ function RulesForm({
 }: {
   data: RulesOut;
   readOnly: boolean;
-  before: () => Board | undefined;
+  before: () => Promise<Board | undefined>;
   onImpact: (s: string) => void;
 }) {
   const initial = () => Object.fromEntries(KEYS.map((k) => [k, String(data.rules[k])])) as Record<Key, string>;
@@ -171,7 +178,7 @@ function RulesForm({
   const save = useMutation({
     mutationFn: async () => {
       const body: RulesIn = Object.fromEntries(changed.map((k) => [k, num(k)]));
-      return { before: before(), saved: await unwrap(api.PUT("/api/rules", { body })) };
+      return { before: await before(), saved: await unwrap(api.PUT("/api/rules", { body })) };
     },
     onSuccess: ({ before, saved }) => {
       redecided(saved.board);
@@ -362,7 +369,7 @@ function AddBeneficiary({
   onImpact,
 }: {
   data: RulesOut;
-  before: () => Board | undefined;
+  before: () => Promise<Board | undefined>;
   onImpact: (s: string) => void;
 }) {
   const [draft, setDraft] = useState(() => emptyDraft(data));
@@ -428,7 +435,7 @@ function AddBeneficiary({
           cost_center: draft.cost_center,
         },
       };
-      return { before: before(), added: await unwrap(api.POST("/api/beneficiaries", { body })) };
+      return { before: await before(), added: await unwrap(api.POST("/api/beneficiaries", { body })) };
     },
     onSuccess: ({ before, added }) => {
       redecided(added.board);

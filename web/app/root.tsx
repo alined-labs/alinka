@@ -8,6 +8,7 @@ import { queryClient } from "./api/query";
 import { AlinkaLogo } from "./components/brand/AlinkaLogo";
 import { Segmented } from "./components/segmented";
 import { useMotionOK } from "./lib/motion";
+import { useNavScroll } from "./lib/nav-scroll";
 import { JSON_LD, seo } from "./lib/seo";
 import { useView } from "./lib/view";
 import "./app.css";
@@ -61,6 +62,7 @@ const NAV = [
 function Shell({ children }: { children: React.ReactNode }) {
   const [view, setView] = useView();
   const motion = useMotionOK();
+  const nav = useNavScroll<HTMLElement>();
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#contenido" className="ak-sr focus:not-sr-only focus:absolute focus:z-10 focus:bg-surface focus:p-2">
@@ -75,7 +77,7 @@ function Shell({ children }: { children: React.ReactNode }) {
         >
           <AlinkaLogo />
         </NavLink>
-        <nav aria-label="Principal" className="ak-nav">
+        <nav aria-label="Principal" className="ak-nav" ref={nav.ref} data-fade={nav.fade}>
           {NAV.map((item) => (
             <NavLink
               key={item.to}
