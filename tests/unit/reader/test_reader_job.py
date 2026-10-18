@@ -59,3 +59,38 @@ def test_staged_pipeline_reports_an_unreadable_file_and_a_failed_stage():
     staged.error = None
     staged.fail("read", RuntimeError("boom"))
     assert staged.facts().flags.extraction_error == "read: RuntimeError: boom"
+
+
+def test_every_probar_sample_reads_from_its_recordings_without_tesseract(monkeypatch):
+    from alinka.api.try_routes import ROOT, SAMPLES
+    from alinka.cache import ResponseCache
+    from alinka.ingest import image
+    from alinka.verify.facts import Staged
+
+    monkeypatch.setattr(image.shutil, "which", lambda _: None)  # as on the hub and Azure
+    for sample in SAMPLES:
+        label = sample.label
+        file = ROOT / label.path
+        staged = Staged(
+            file.read_bytes(), file.suffix, invoice_id=f"TRY-{sample.id}-1",
+            received_at=label.received_at, path=label.path, cache=ResponseCache("replay"),
+        )  # fmt: skip
+        staged.ingest()
+        staged.read()
+        facts = staged.facts()
+        assert facts.flags.extraction_error is None, (sample.id, facts.flags.extraction_error)
+        assert facts.source.pages >= 1, sample.id
+
+
+def test_an_unreadable_photo_still_counts_as_one_page():
+    from datetime import UTC, datetime
+
+    from alinka.cache import ResponseCache
+    from alinka.verify.facts import Staged
+
+    staged = Staged(
+        b"not a photo", ".jpg", invoice_id="UPL-X", received_at=datetime(2026, 10, 18, tzinfo=UTC),
+        cache=ResponseCache("replay"),
+    )  # fmt: skip
+    staged.ingest()
+    assert staged.facts().source.pages == 1
