@@ -1,0 +1,18 @@
+# Why each disagreement on Lane C's full run (data/runs/all-jev-on) happened, checked by
+# hand against the recorded facts. Keys are invoice IDs; run_eval joins them into
+# disagreements.csv. None is an improper approval: every one is more cautious than gold.
+GEN-003-1: &dollar_eur "EUR invoice printed with a '$' amount (Lane B's English template); the reader rates currency and total medium, so R10 escalates. Correctly cautious."
+GEN-014-1: *dollar_eur
+GEN-029-1: *dollar_eur
+GEN-042-1: *dollar_eur
+GEN-073-1: *dollar_eur
+GEN-079-1: *dollar_eur
+GEN-086-1: *dollar_eur
+GEN-099-1: *dollar_eur
+GEN-096-1: "The reader rates 'Moneda EUR' medium confidence although it is printed plainly; R10 escalates. Reader calibration (Lane C)."
+GEN-056-1: "Chat: the two readings disagree on the invoice number; R10 escalates as designed."
+GEN-059-1: "Image: name and invoice number read with low confidence; R10 escalates as designed."
+GEN-075-1: "Image: tax ID read with low confidence; R10 escalates as designed."
+GEN-007-1: "JEV J2 raises verifier risk to 0.866, above 0.7; the only invoice the JEV-on and JEV-off runs decide differently."
+OCT-14: &ddmm "Lane C reads the ambiguous dd/mm start of the service period month-first (01/09/2026 -> 9 Jan), so R14 holds it as outside the contract; R06 and R13 still fire. Fix in Lane C's verify (brain note A10)."
+ATK-18-1: *ddmm
