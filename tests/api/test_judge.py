@@ -28,9 +28,7 @@ CSV_COLUMNS = {
 
 # Known disagreements between a recorded reading and the trap's intent, each more cautious
 # than gold. strict=True: once the reading is fixed the case passes and the entry must go.
-KNOWN: dict[str, str] = {
-    "OCT-14": "Lane C reads the dd/mm service period month-first, so R14 holds it before R06",
-}
+KNOWN: dict[str, str] = {}
 
 
 def fixture(n: int) -> dict:
