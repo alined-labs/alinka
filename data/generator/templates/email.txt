@@ -1,0 +1,29 @@
+{{ intro }}
+
+{{ doc_label }}
+{{ number_label }} {{ number }}
+{{ seller.name }} {{ marker }}
+{{ seller.tax_label }}: {{ seller.tax_id }}
+{% for l in seller.lines %}{{ l }}
+{% endfor %}
+{% for k, v in head_kv %}{{ k }}: {{ v }}
+{% endfor %}
+{{ buyer_label or "Bill to" }}: {{ buyer.name }} {{ buyer_marker }}
+{{ buyer.tax_label }}: {{ buyer.tax_id }}
+{% for k, v in info_kv %}{{ k }}: {{ v }}
+{% endfor %}
+{% for row in lines %}{{ row | join(" | ") }}
+{% endfor %}
+{% for k, v in totals %}{{ k }}: {{ v }}
+{% endfor %}
+{{ total_label }}: {{ total_display }}
+{% if words %}{{ words_label }}: {{ words }}
+{% endif %}
+{% if tax_note %}{{ tax_note }}
+{% endif %}
+{% for k, v in fiscal_kv %}{{ k }}: {{ v }}
+{% endfor %}
+{% for n in notes %}{{ n }}
+{% endfor %}
+--
+{{ footer_note }}

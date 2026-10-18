@@ -148,6 +148,16 @@ def digits(seed: str, n: int) -> str:
     return str(int(_digest(f"digits:{seed}"), 16))[:n].rjust(n, "0")
 
 
+def chave(seed: str) -> str:
+    """44 digits, the shape of a Brazilian NFS-e chave de acesso."""
+    return (digits(f"chave:{seed}", 40) + digits(f"chave2:{seed}", 4))[:44]
+
+
+def cae(seed: str) -> str:
+    """14 digits, the shape of an Argentine CAE."""
+    return "7" + digits(f"cae:{seed}", 13)
+
+
 def sello(seed: str, n: int = 172) -> str:
     """A base64-looking digital seal block, made up from a hash."""
     import base64

@@ -8,7 +8,7 @@ Gold facts are the critical strings exactly as the form prints them.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from common import (
     FICTIONAL_EN,
@@ -16,7 +16,9 @@ from common import (
     VERIFY,
     amount_words_en,
     amount_words_es,
+    cae,
     cfdi_uuid,
+    chave,
     company,
     cufe,
     digits,
@@ -87,6 +89,8 @@ class Spec:
     notes: list[str] = field(default_factory=list)
     print_account: bool = True
     account: str | None = None  # an account printed instead of the one on file (R12)
+    message: str = ""  # email intro or first chat message
+    subject: str = ""  # email subject
 
 
 def _seller(s: Spec) -> dict:
@@ -451,9 +455,236 @@ def us_invoice(s: Spec) -> tuple[str, dict, dict]:
     return "invoice_us.html.j2", ctx, facts
 
 
+# --- Brazil -----------------------------------------------------------------------
+
+
+def br_nfse(s: Spec) -> tuple[str, dict, dict]:
+    """NFS-e for an exported service: CNPJ, 44-digit chave de acesso, ISS not levied."""
+    seller = _seller(s)
+    cur = s.currency or seller["currency"]
+    loc = "pt-BR"
+    total = sum(li.amount_minor for li in s.lines)
+    key = chave(s.fiscal_seed or f"{seller['tax_id']}:{s.number}")
+    ctx = _common(s, {**seller, "tax_label": "CNPJ"}, "en")
+    ctx.update(
+        title=f"NFS-e {s.number}",
+        accent="#2d6a2e",
+        seller={**ctx["seller"], "lines": [*seller["lines"], "Inscrição municipal DEMO-0441"]},
+        doc_label="NFS-e · Nota Fiscal de Serviço Eletrônica (fictícia)",
+        number_label="Número / Number",
+        number=s.number,
+        head_kv=[
+            ("Emissão / Issue date", fdate(s.issue, "dmy")),
+            ("Vencimento / Due date", fdate(s.due, "dmy")),
+            ("Moeda / Currency", cur),
+            ("Competência / Period", _period(s, "dmy", " a ")),
+        ],
+        buyer_label="Tomador do serviço / Customer (exterior)",
+        buyer=_buyer(s, "Tax ID (EIN)"),
+        info_label="Serviço / Service",
+        info_kv=[
+            ("Código do serviço", "DEMO 23.01 · Design e comunicação visual"),
+            ("País do resultado", "Estados Unidos"),
+        ],
+        line_heads=["#", "Discriminação / Description", "Qtd.", "Unid.", "Valor unit.", "Valor"],
+        lines=[
+            [
+                str(i),
+                li.desc,
+                li.qty,
+                li.unit,
+                money(round(li.amount_minor / float(li.qty)), loc),
+                money(li.amount_minor, loc),
+            ]
+            for i, li in enumerate(s.lines, 1)
+        ],
+        totals=[
+            ("Valor dos serviços / Services", money(total, loc)),
+            ("ISS / Service tax (0%)", money(0, loc)),
+        ],
+        total_label=f"Valor líquido / Net amount ({cur})",
+        total_display=f"R$ {money(total, loc)}",
+        words_label="Amount in words",
+        words=s.words or amount_words_en(total, cur),
+        tax_note="Não incidência de ISS: exportação de serviços. "
+        "ISS not levied: services exported to a customer abroad.",
+        qr=qr_svg(f"{VERIFY}/nfse?chave={key}"),
+        fiscal_kv=[
+            ("Chave de acesso", key),
+            ("Código de verificação", digits(f"verif:{key}", 8)),
+            ("Dados bancários / Bank", seller["account"] if s.print_account else "—"),
+        ],
+    )
+    facts = _facts(
+        s,
+        seller,
+        seller["tax_id"],
+        s.number,
+        cur,
+        money(total, loc),
+        fdate(s.due, "dmy"),
+        issue_date=fdate(s.issue, "dmy"),
+        subtotal=money(total, loc),
+        tax_total=money(0, loc),
+        fiscal_id=key,
+        amount_in_words=ctx["words"],
+        bank_account=seller["account"] if s.print_account else None,
+    )
+    return "factura.html.j2", ctx, facts
+
+
+# --- Argentina ----------------------------------------------------------------------
+
+
+def ar_fe(s: Spec) -> tuple[str, dict, dict]:
+    """Factura E (export of services): CUIT, punto de venta, 14-digit CAE and its expiry."""
+    seller = _seller(s)
+    cur = s.currency or seller["currency"]
+    loc = "es-AR"
+    total = sum(li.amount_minor for li in s.lines)
+    code = cae(s.fiscal_seed or f"{seller['tax_id']}:{s.number}")
+    ctx = _common(s, {**seller, "tax_label": "CUIT"}, "es")
+    ctx.update(
+        title=f"Factura E {s.number}",
+        accent="#2b4c7e",
+        seller={**ctx["seller"], "lines": [*seller["lines"], "Responsable Monotributo"]},
+        doc_label="Factura E · Cód. 19 (exportación de servicios)",
+        number_label="Comp. N.º",
+        number=s.number,
+        head_kv=[
+            ("Fecha de emisión", fdate(s.issue, "dmy")),
+            ("Vencimiento del pago", fdate(s.due, "dmy")),
+            ("Moneda", f"{cur} (dólar estadounidense)"),
+            ("Período facturado", _period(s, "dmy", " al ")),
+        ],
+        buyer_label="Cliente del exterior",
+        buyer=_buyer(s, "ID impositivo (EIN)"),
+        info_label="Operación",
+        info_kv=[
+            ("País de destino", "Estados Unidos"),
+            ("Condición de venta", "Transferencia bancaria"),
+            ("Concepto", "Servicios"),
+        ],
+        line_heads=["#", "Descripción", "Cant.", "Unidad", "Precio unit.", "Subtotal"],
+        lines=[
+            [
+                str(i),
+                li.desc,
+                li.qty,
+                li.unit,
+                money(round(li.amount_minor / float(li.qty)), loc),
+                money(li.amount_minor, loc),
+            ]
+            for i, li in enumerate(s.lines, 1)
+        ],
+        totals=[("Subtotal", money(total, loc)), ("IVA", "No gravado (exportación)")],
+        total_label=f"Importe total ({cur})",
+        total_display=f"U$S {money(total, loc)}",
+        words_label="Importe en letras",
+        words=s.words or amount_words_es(total, cur),
+        tax_note="Exportación de servicios: operación no gravada con IVA.",
+        qr=qr_svg(f"{VERIFY}/fe-ar?cae={code}"),
+        fiscal_kv=[
+            ("CAE N.º", code),
+            ("Fecha de vto. de CAE", fdate(s.issue + timedelta(days=10), "dmy")),
+            ("Cuenta para pago", seller["account"] if s.print_account else "—"),
+        ],
+    )
+    facts = _facts(
+        s,
+        seller,
+        seller["tax_id"],
+        s.number,
+        cur,
+        money(total, loc),
+        fdate(s.due, "dmy"),
+        issue_date=fdate(s.issue, "dmy"),
+        subtotal=money(total, loc),
+        fiscal_id=code,
+        amount_in_words=ctx["words"],
+        bank_account=seller["account"] if s.print_account else None,
+    )
+    return "factura.html.j2", ctx, facts
+
+
+# --- Spain --------------------------------------------------------------------------
+
+
+def es_factura(s: Spec) -> tuple[str, dict, dict]:
+    """Spanish factura to a US client: NIF, art. 69 LIVA wording, IBAN, VERI*FACTU-style QR."""
+    seller = _seller(s)
+    cur = s.currency or seller["currency"]
+    loc = "es-ES"
+    total = sum(li.amount_minor for li in s.lines)
+    ctx = _common(s, {**seller, "tax_label": "NIF"}, "es")
+    ctx.update(
+        title=f"Factura {s.number}",
+        accent="#5b3a8c",
+        doc_label="Factura",
+        number_label="N.º",
+        number=s.number,
+        head_kv=[
+            ("Fecha de expedición", fdate(s.issue, "dmy")),
+            ("Fecha de vencimiento", fdate(s.due, "dmy")),
+            ("Moneda", cur),
+            ("Forma de pago", "Transferencia a 30 días"),
+        ],
+        buyer_label="Destinatario",
+        buyer=_buyer(s, "Tax ID (EIN)"),
+        info_label="Servicio",
+        info_kv=[("Fecha de la operación", _period(s, "dmy", " al "))] if s.period else [],
+        line_heads=["#", "Concepto", "Cant.", "Unidad", "Precio", "Base imponible"],
+        lines=[
+            [
+                str(i),
+                li.desc,
+                li.qty,
+                li.unit,
+                money(round(li.amount_minor / float(li.qty)), loc),
+                money(li.amount_minor, loc),
+            ]
+            for i, li in enumerate(s.lines, 1)
+        ],
+        totals=[("Base imponible", money(total, loc)), ("IVA (no sujeto)", money(0, loc))],
+        total_label=f"Total factura ({cur})",
+        total_display=f"{money(total, loc)} {'€' if cur == 'EUR' else cur}",
+        words_label="Importe en letra",
+        words=s.words or amount_words_es(total, cur),
+        tax_note="Operación no sujeta a IVA (art. 69 LIVA): servicio prestado a un empresario "
+        "establecido en Estados Unidos.",
+        qr=qr_svg(
+            f"{VERIFY}/verifactu?nif={seller['tax_id']}&num={s.number}"
+            f"&fecha={fdate(s.issue, 'dmy')}&importe={total / 100:.2f}"
+        ),
+        fiscal_kv=[
+            ("QR tributario", "VERI*FACTU (ficticio): factura verificable en la sede demo"),
+            ("Huella del registro", sello(f"verifactu:{seller['tax_id']}:{s.number}", 64)),
+            ("Pago por transferencia", seller["account"] if s.print_account else "—"),
+        ],
+    )
+    facts = _facts(
+        s,
+        seller,
+        seller["tax_id"],
+        s.number,
+        cur,
+        money(total, loc),
+        fdate(s.due, "dmy"),
+        issue_date=fdate(s.issue, "dmy"),
+        subtotal=money(total, loc),
+        tax_total=money(0, loc),
+        amount_in_words=ctx["words"],
+        bank_account=seller["account"] if s.print_account else None,
+    )
+    return "factura.html.j2", ctx, facts
+
+
 FORMS = {
     "co_factura": co_factura,
     "co_cobro": co_cobro,
     "mx_cfdi": mx_cfdi,
     "us_invoice": us_invoice,
+    "br_nfse": br_nfse,
+    "ar_fe": ar_fe,
+    "es_factura": es_factura,
 }
