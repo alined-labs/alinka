@@ -43,6 +43,8 @@ const NAV = [
   { to: "/", label: "Tablero" },
   { to: "/reglas", label: "Reglas" },
   { to: "/registro", label: "Registro" },
+  { to: "/evaluacion", label: "Evaluación" },
+  { to: "/como-funciona", label: "Cómo funciona" },
 ];
 
 function Shell({ children }: { children: React.ReactNode }) {
