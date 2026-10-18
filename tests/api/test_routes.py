@@ -5,7 +5,6 @@ import time
 import pytest
 from pydantic import SecretStr
 
-from alinka.api import engine
 from alinka.settings import get_settings
 
 pytestmark = pytest.mark.db
@@ -81,15 +80,6 @@ def test_approval_rules(client):
     assert client.get("/api/log/verify").json()["ok"]
 
 
-def test_approvals_refused_without_the_engine(client, monkeypatch):
-    monkeypatch.setattr(engine, "_core", lambda: None)
-    run = client.post("/api/run").json()
-    assert counts(run["board"]) == [0, 0, 6]
-    assert all(c["technical_error"] for c in run["board"]["columns"][2]["cards"])
-    assert client.post("/api/invoices/OCT-03/approve", json=CFO).status_code == 409
-    assert client.post("/api/invoices/OCT-03/reject", json=CFO).json()["card"]["state"] == "HOLD"
-
-
 def test_detail_pages_and_beneficiaries(client):
     client.post("/api/run")
     detail = client.get("/api/invoices/OCT-05").json()
@@ -134,3 +124,15 @@ def test_edge_secret_guards_everything_but_health(client, monkeypatch):
     assert client.get("/api/board").status_code == 403
     assert client.get("/api/board", headers={"X-Edge-Secret": "wrong"}).status_code == 403
     assert client.get("/api/board", headers={"X-Edge-Secret": "s3cret"}).status_code == 200
+
+
+def test_load_run_replaces_the_canonical_only(client, pool, capsys):
+    from alinka.api import load_run
+
+    sandbox = client.post("/api/run").json()["board"]
+    assert load_run.main(["fixture", "--no-migrate"]) == 0
+    out = capsys.readouterr().out
+    head = out.split("head ")[1].strip()
+    assert client.get("/api/health").json()["canonical_head"] == head
+    assert client.get("/api/board").json() == sandbox
+    assert load_run.main(["no-such-run", "--no-migrate"]) == 2

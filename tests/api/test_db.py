@@ -6,6 +6,7 @@ from datetime import UTC, date, datetime
 import pytest
 
 from alinka import db
+from alinka.decide.ledger import LedgerEntry, Status
 from alinka.types import (
     RULE_IDS,
     Channel,
@@ -54,16 +55,21 @@ def record(invoice_id: str, number: str, sha: str) -> DecisionRecord:
     )
 
 
-def row(invoice_id: str, number: str, sha: str) -> db.LedgerRow:
-    return db.LedgerRow(
+def row(invoice_id: str, number: str, sha: str) -> LedgerEntry:
+    return LedgerEntry(
         invoice_id=invoice_id,
         beneficiary_id="BEN-10",
         invoice_number_norm=number,
+        fiscal_id_norm=None,
         doc_sha256=sha,
         amount_minor=50000,
         currency="USD",
         usd_minor=50000,
-        status="paid",
+        period="2026-10",
+        received=date(2026, 10, 1),
+        decided=date(2026, 10, 17),
+        cost_center="software",
+        status=Status.PAID,
     )
 
 
@@ -104,7 +110,7 @@ def test_unique_violation_becomes_r03(pool):
     for r in (dup, same_doc):
         assert r.decision == Decision.HOLD and r.determining_rule == "R03" and r.payment is None
         assert "OCT-01" in r.reason_es
-    assert [x.invoice_id for x in ledger] == ["OCT-01"]
+    assert [(x.invoice_id, x.status) for x in ledger] == [("OCT-01", Status.PAID)]
 
 
 def test_concurrent_duplicates_pay_once(pool):

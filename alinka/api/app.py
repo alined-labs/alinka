@@ -34,6 +34,7 @@ from alinka.api.models import (
     View,
 )
 from alinka.api.sessions import CANONICAL, Ctx
+from alinka.decide.core import mask_account
 from alinka.settings import get_settings
 from alinka.types import Beneficiary, Contract, HumanAction, InvoiceFacts
 
@@ -119,7 +120,7 @@ def build_board(conn: psycopg.Connection, ctx: Ctx) -> Board:
     done = sessions.latest(recs)
     cards = []
     for f in ctx.facts:
-        ben = views.beneficiary_for(f, ctx.world.beneficiaries)
+        ben = views.beneficiary_for(f, ctx.world)
         rec = done.get(f.source.invoice_id)
         cards.append(views.record_card(rec, ben, ctx.view) if rec else views.inbox_card(f, ben))
     head = recs[-1].hash if recs else None
@@ -135,7 +136,7 @@ def find_facts(ctx: Ctx, invoice_id: str) -> InvoiceFacts:
 
 def detail(conn: psycopg.Connection, ctx: Ctx, invoice_id: str) -> InvoiceDetail:
     facts = find_facts(ctx, invoice_id)
-    ben = views.beneficiary_for(facts, ctx.world.beneficiaries)
+    ben = views.beneficiary_for(facts, ctx.world)
     rec = sessions.latest(sessions.records(conn, ctx.session_id)).get(invoice_id)
     page_list = tuple(
         PageImage(
@@ -160,7 +161,7 @@ def beneficiary_view(b: Beneficiary, added: bool) -> BeneficiaryView:
         tax_id=b.tax_id,
         country=b.country,
         currency=b.currency,
-        account_masked=views.mask_account(b.account_on_file),
+        account_masked=mask_account(b.account_on_file),
         doc_types=b.doc_types,
         contract_id=b.contract.id,
         rate_minor=b.contract.rate_minor,
@@ -327,7 +328,7 @@ def verify_log(ctx: Viewed, conn: Conn) -> ChainCheck:
 def export_log(ctx: Viewed, conn: Conn) -> PlainTextResponse:
     names = {}
     for f in ctx.facts:
-        ben = views.beneficiary_for(f, ctx.world.beneficiaries)
+        ben = views.beneficiary_for(f, ctx.world)
         names[f.source.invoice_id] = ben.name if ben else None
     return PlainTextResponse(
         store.export_csv(sessions.records(conn, ctx.session_id), names),

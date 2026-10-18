@@ -14,8 +14,7 @@ import json
 import sys
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
-from dataclasses import asdict, dataclass
-from datetime import date, datetime
+from dataclasses import asdict
 from pathlib import Path
 
 import psycopg
@@ -24,6 +23,7 @@ from psycopg import errors
 from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
 
+from alinka.decide.ledger import LedgerEntry, Status
 from alinka.settings import get_settings
 from alinka.types import Decision, DecisionRecord, Outcome, RuleResult
 
@@ -114,37 +114,19 @@ def seal(record: DecisionRecord, session_id: str, seq: int, prev_hash: str) -> D
 # --- The ledger -------------------------------------------------------------------
 
 
-@dataclass(frozen=True)
-class LedgerRow:
-    invoice_id: str
-    beneficiary_id: str | None
-    invoice_number_norm: str | None
-    doc_sha256: str
-    amount_minor: int
-    currency: str
-    usd_minor: int
-    status: str  # paid, approved, pending, rejected
-    fiscal_id: str | None = None
-    cost_center: str | None = None
-    period_start: date | None = None
-    period_end: date | None = None
-    created_at: datetime | None = None
+LEDGER_COLUMNS = tuple(LedgerEntry.__dataclass_fields__)
 
 
-LEDGER_COLUMNS = tuple(f for f in LedgerRow.__dataclass_fields__ if f != "created_at")
-
-
-def read_ledger(conn: psycopg.Connection, session_id: str) -> list[LedgerRow]:
+def read_ledger(conn: psycopg.Connection, session_id: str) -> list[LedgerEntry]:
     rows = conn.execute(
-        f"SELECT {', '.join(LEDGER_COLUMNS)}, created_at FROM ledger"
-        " WHERE session_id = %s ORDER BY id",
+        f"SELECT {', '.join(LEDGER_COLUMNS)} FROM ledger WHERE session_id = %s ORDER BY id",
         (session_id,),
     ).fetchall()
-    return [LedgerRow(**r) for r in rows]
+    return [LedgerEntry(**(r | {"status": Status(r["status"])})) for r in rows]
 
 
-def insert_ledger(conn: psycopg.Connection, session_id: str, row: LedgerRow) -> None:
-    values = {k: v for k, v in asdict(row).items() if k != "created_at"}
+def insert_ledger(conn: psycopg.Connection, session_id: str, row: LedgerEntry) -> None:
+    values = {k: str(v) if k == "status" else v for k, v in asdict(row).items()}
     conn.execute(
         f"INSERT INTO ledger (session_id, {', '.join(values)})"
         f" VALUES (%s, {', '.join(['%s'] * len(values))})",
@@ -155,7 +137,7 @@ def insert_ledger(conn: psycopg.Connection, session_id: str, row: LedgerRow) -> 
 def set_ledger_status(conn: psycopg.Connection, session_id: str, invoice_id: str, status: str):
     conn.execute(
         "UPDATE ledger SET status = %s WHERE session_id = %s AND invoice_id = %s",
-        (status, session_id, invoice_id),
+        (str(status), session_id, invoice_id),
     )
 
 
@@ -222,7 +204,7 @@ def as_duplicate(record: DecisionRecord, earlier: dict | None) -> DecisionRecord
     )
 
 
-DecideFn = Callable[[list[LedgerRow]], tuple[DecisionRecord, list[LedgerRow]]]
+DecideFn = Callable[[list[LedgerEntry]], tuple[DecisionRecord, list[LedgerEntry]]]
 
 
 def record_decision(session_id: str, decide: DecideFn, conn: psycopg.Connection) -> DecisionRecord:
@@ -246,7 +228,7 @@ def record_decision(session_id: str, decide: DecideFn, conn: psycopg.Connection)
     return sealed
 
 
-def earliest_conflict(conn: psycopg.Connection, session_id: str, rows: list[LedgerRow]):
+def earliest_conflict(conn: psycopg.Connection, session_id: str, rows: list[LedgerEntry]):
     for row in rows:
         hit = conn.execute(
             "SELECT invoice_id, status FROM ledger WHERE session_id = %s AND (doc_sha256 = %s"

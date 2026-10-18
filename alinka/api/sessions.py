@@ -15,7 +15,7 @@ from psycopg.types.json import Jsonb
 from alinka import db
 from alinka.api import engine, runs
 from alinka.api.models import RunStep, View
-from alinka.types import Beneficiary, Decision, DecisionRecord, HumanAction, RulesConfig
+from alinka.types import Beneficiary, DecisionRecord, HumanAction, RulesConfig
 from alinka.world import World, load_rules, load_world, rules_hash
 
 CANONICAL = "canonical"
@@ -210,8 +210,6 @@ def redecide(conn: psycopg.Connection, sid: str) -> None:
 
 def act(conn: psycopg.Connection, ctx: Ctx, invoice_id: str, human: HumanAction) -> DecisionRecord:
     """Approve or reject one escalation in a single transaction under the session lock."""
-    from alinka.api.views import can_approve
-
     if ctx.view != "sandbox":
         raise Refused("Las aprobaciones solo existen en tu sandbox.")
     with conn.transaction():
@@ -221,18 +219,14 @@ def act(conn: psycopg.Connection, ctx: Ctx, invoice_id: str, human: HumanAction)
             if not any(f.source.invoice_id == invoice_id for f in ctx.facts):
                 raise NotFound(f"No existe la factura {invoice_id}.")
             raise Refused(f"La factura {invoice_id} aún no tiene decisión.")
-        if rec.decision != Decision.ESCALATE or rec.human is not None:
-            raise Refused(f"La factura {invoice_id} no está pendiente de aprobación.")
-        if human.action == "approve" and not can_approve(rec, "sandbox"):
-            raise Refused(f"La factura {invoice_id} no se puede aprobar (R01 o R12).")
         try:
-            new = engine.approve(
+            new, statuses = engine.act(
                 rec, human, ctx.world, ctx.rules, db.read_ledger(conn, ctx.session_id)
             )
-        except engine.EngineUnavailable as exc:
+        except engine.Refused as exc:
             raise Refused(str(exc)) from exc
-        status = "approved" if new.decision == Decision.PAY else "rejected"
-        db.set_ledger_status(conn, ctx.session_id, invoice_id, status)
+        for inv, status in statuses.items():
+            db.set_ledger_status(conn, ctx.session_id, inv, status)
         seq, prev = db.head(conn, ctx.session_id)
         sealed = db.seal(new, ctx.session_id, seq + 1, prev)
         db.insert_record(conn, sealed)
