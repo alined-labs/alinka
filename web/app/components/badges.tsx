@@ -61,7 +61,7 @@ export function SecurityTag({ rules }: { rules: readonly string[] }) {
  * React escapes it; ak-slip marks it as a quotation, never styled like the interface.
  */
 export function DocSlip({ children, caption = "Texto del documento", inline = false }: {
-  children: string;
+  children: React.ReactNode;
   caption?: string;
   inline?: boolean;
 }) {
@@ -92,9 +92,9 @@ export function splitQuotes(text: string): { kind: "text" | "quote"; value: stri
 }
 
 /** A reason sentence with any quoted document text moved into ak-slip. */
-export function ReasonText({ text, className }: { text: string; className: string }) {
+export function ReasonText({ text, className, as: Tag = "p" }: { text: string; className: string; as?: "p" | "span" }) {
   const parts = splitQuotes(text);
-  if (parts.every((p) => p.kind === "text")) return <p className={className}>{text}</p>;
+  if (parts.every((p) => p.kind === "text")) return <Tag className={className}>{text}</Tag>;
   return (
     <div className="grid gap-1.5">
       {parts.map((p, i) =>
@@ -103,11 +103,24 @@ export function ReasonText({ text, className }: { text: string; className: strin
             {p.value}
           </DocSlip>
         ) : (
-          <p key={i} className={className}>
+          <Tag key={i} className={className}>
             {p.value.trim()}
-          </p>
+          </Tag>
         ),
       )}
     </div>
+  );
+}
+
+/** A quote with the value it grounds marked, as the kit asks (<mark> inside ak-slip). */
+export function MarkedQuote({ quote, value }: { quote: string; value: string | null | undefined }) {
+  const at = value ? quote.indexOf(value) : -1;
+  if (!value || at < 0) return <>{quote}</>;
+  return (
+    <>
+      {quote.slice(0, at)}
+      <mark>{value}</mark>
+      {quote.slice(at + value.length)}
+    </>
   );
 }
