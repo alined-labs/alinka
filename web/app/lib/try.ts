@@ -74,6 +74,17 @@ export async function fetchSamples(): Promise<SamplesResponse> {
   return json(await fetch("/api/try/samples", { credentials: "same-origin" }));
 }
 
+/** Shared by Probar and Cómo funciona, so both read the same live_uploads. */
+export const samplesQuery = { queryKey: ["try-samples"], queryFn: fetchSamples, staleTime: 60_000 } as const;
+
+/** The uploads sentence for the limits, or null until the switch is known. */
+export function uploadsSentence(liveUploads: boolean | undefined): string | null {
+  if (liveUploads === undefined) return null;
+  return liveUploads
+    ? "En Probar también puedes subir una factura ficticia: esa se lee en vivo."
+    : "La carga de documentos nuevos está apagada.";
+}
+
 export async function startTry(input: RunInput): Promise<Job> {
   if (TRY_MOCK) return (await mock()).mockStart(input);
   let init: RequestInit;

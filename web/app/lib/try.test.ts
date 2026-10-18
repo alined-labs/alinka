@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import type { DoneEvent, TraceStep } from "./trace";
-import { HOLD_MS, paced, splitCodePoint } from "./try";
+import { HOLD_MS, paced, splitCodePoint, uploadsSentence } from "./try";
 import { mockSamples, mockStart, mockSubscribe } from "./try-mock";
 
 describe("paced", () => {
@@ -53,5 +53,13 @@ describe("the mock stream", () => {
     expect(steps.find((s) => s.step === "sanitize" && s.status !== "running")!.status).toBe("flagged");
     expect(steps.find((s) => s.step === "rules" && s.status !== "running")!.data.results).toHaveLength(16);
     expect(done).toMatchObject({ decision: "ESCALATE", label_es: "Pendiente de aprobación" });
+  });
+});
+
+describe("uploadsSentence", () => {
+  it("follows the live_uploads switch and says nothing until it is known", () => {
+    expect(uploadsSentence(false)).toBe("La carga de documentos nuevos está apagada.");
+    expect(uploadsSentence(true)).toMatch(/subir una factura ficticia/);
+    expect(uploadsSentence(undefined)).toBeNull();
   });
 });

@@ -1,9 +1,11 @@
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, FileText, ShieldCheck } from "lucide-react";
 import { Link } from "react-router";
 
 import { PipelineFlow } from "~/components/pipeline-flow";
 import { useMotionOK } from "~/lib/motion";
 import { seo } from "~/lib/seo";
+import { samplesQuery, uploadsSentence } from "~/lib/try";
 
 export function meta() {
   return seo({
@@ -85,7 +87,8 @@ const LIMITS = [
   },
   {
     title: "Lee con respuestas grabadas.",
-    text: "La demo y la evaluación reproducen lecturas ya grabadas. La carga de documentos nuevos está apagada.",
+    text: "La demo y la evaluación reproducen lecturas ya grabadas.",
+    uploads: true,
   },
 ];
 
@@ -100,6 +103,8 @@ function TryIt() {
 }
 
 export default function ComoFunciona() {
+  // The uploads sentence follows the live_uploads switch; it is left out until the switch is known.
+  const uploads = uploadsSentence(useQuery(samplesQuery).data?.live_uploads);
   return (
     <div className="max-w-5xl space-y-8 [&>section:not(.como-flow)]:max-w-3xl [&>header]:max-w-3xl">
       <header className="space-y-2">
@@ -180,7 +185,11 @@ export default function ComoFunciona() {
         <ul className="ak-stack list-disc pl-5">
           {LIMITS.map((l) => (
             <li key={l.title}>
-              <strong>{l.title}</strong> <span className="ak-muted">{l.text}</span>
+              <strong>{l.title}</strong>{" "}
+              <span className="ak-muted">
+                {l.text}
+                {"uploads" in l && uploads && ` ${uploads}`}
+              </span>
             </li>
           ))}
         </ul>
