@@ -5,4 +5,6 @@ export default [
   route("facturas/:invoiceId", "routes/factura.tsx"),
   route("reglas", "routes/reglas.tsx"),
   route("registro", "routes/registro.tsx"),
+  route("evaluacion", "routes/evaluacion.tsx"),
+  route("como-funciona", "routes/como-funciona.tsx"),
 ] satisfies RouteConfig;
