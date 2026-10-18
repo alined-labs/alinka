@@ -5,6 +5,7 @@ from __future__ import annotations
 import hmac
 from datetime import UTC, datetime
 from importlib.metadata import version
+from pathlib import PurePosixPath
 from typing import Annotated
 
 import psycopg
@@ -93,6 +94,19 @@ def find_facts(ctx: Ctx, invoice_id: str) -> InvoiceFacts:
     return f
 
 
+def uploaded(conn: psycopg.Connection, ctx: Ctx, facts: InvoiceFacts) -> pages.Upload | None:
+    """An uploaded document's bytes and suffix; None for the dataset's documents."""
+    if facts.source.path is not None:
+        return None
+    found = sessions.uploaded(conn, ctx.session_id, facts.source.invoice_id)
+    return (found[0], PurePosixPath(found[1]).suffix) if found else None
+
+
+def page_sizes(conn: psycopg.Connection, ctx: Ctx, facts: InvoiceFacts):
+    upload = uploaded(conn, ctx, facts)
+    return pages.upload_sizes(upload) if upload else pages.page_sizes(facts.source.path)
+
+
 def detail(conn: psycopg.Connection, ctx: Ctx, invoice_id: str) -> InvoiceDetail:
     facts = find_facts(ctx, invoice_id)
     ben = views.beneficiary_for(facts, ctx.world)
@@ -101,7 +115,7 @@ def detail(conn: psycopg.Connection, ctx: Ctx, invoice_id: str) -> InvoiceDetail
         PageImage(
             n=i, url=f"/api/invoices/{invoice_id}/pages/{i}?view={ctx.view}", width=w, height=h
         )
-        for i, (w, h) in enumerate(pages.page_sizes(facts.source.path), 1)
+        for i, (w, h) in enumerate(page_sizes(conn, ctx, facts), 1)
     )
     return InvoiceDetail(
         card=views.record_card(rec, ben, ctx.view) if rec else views.inbox_card(facts, ben),
@@ -188,9 +202,13 @@ def get_invoice(invoice_id: str, ctx: Viewed, conn: Conn) -> InvoiceDetail:
     response_class=Response,
     responses={200: {"content": {"image/png": {}}}, 404: {"model": ErrorOut}},
 )
-def get_page(invoice_id: str, n: int, ctx: Viewed, scale: ScaleQ = 1) -> Response:
+def get_page(invoice_id: str, n: int, ctx: Viewed, conn: Conn, scale: ScaleQ = 1) -> Response:
     facts = find_facts(ctx, invoice_id)
-    png = pages.render_page(facts.source.path, n, invoice_id, scale)
+    upload = uploaded(conn, ctx, facts)
+    if upload is not None:
+        png = pages.render_upload(upload, n, invoice_id, scale)
+    else:
+        png = pages.render_page(facts.source.path, n, invoice_id, scale)
     if png is None:
         raise HTTPException(404, f"La factura {invoice_id} no tiene página {n}.")
     return Response(png, media_type="image/png", headers={"Cache-Control": "max-age=3600"})

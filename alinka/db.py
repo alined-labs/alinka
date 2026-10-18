@@ -23,6 +23,7 @@ import psycopg
 import rfc8785
 from psycopg import errors
 from psycopg.rows import dict_row
+from psycopg.types.json import Jsonb
 from psycopg_pool import ConnectionPool
 
 from alinka.audit.reasons import reason_es
@@ -284,6 +285,14 @@ def setting(conn: psycopg.Connection, key: str, default: Any = None) -> Any:
     """A value from the settings table, read on every request so a switch needs no redeploy."""
     row = conn.execute("SELECT value FROM settings WHERE key = %s", (key,)).fetchone()
     return row["value"] if row else default
+
+
+def set_setting(conn: psycopg.Connection, key: str, value: Any) -> None:
+    conn.execute(
+        "INSERT INTO settings (key, value, updated_at) VALUES (%s, %s, now())"
+        " ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_at = now()",
+        (key, Jsonb(value)),
+    )
 
 
 def main(argv: list[str]) -> int:

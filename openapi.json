@@ -127,6 +127,65 @@
         }
       }
     },
+    "/api/admin/settings": {
+      "put": {
+        "summary": "Put Settings",
+        "description": "Switch live uploads on or off with \"Authorization: Bearer <ADMIN_TOKEN>\"; the route\ndoes not exist while ADMIN_TOKEN is empty.",
+        "operationId": "put_settings_api_admin_settings_put",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminSettings"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdminSettings"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/try/{job_id}/events": {
       "get": {
         "summary": "Try Events",
@@ -964,6 +1023,20 @@
   },
   "components": {
     "schemas": {
+      "AdminSettings": {
+        "properties": {
+          "live_uploads": {
+            "type": "boolean",
+            "title": "Live Uploads"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "live_uploads"
+        ],
+        "title": "AdminSettings"
+      },
       "ApprovalIn": {
         "properties": {
           "approver": {

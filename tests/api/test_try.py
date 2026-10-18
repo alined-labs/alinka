@@ -205,3 +205,112 @@ def test_page_images_scale_to_150_300_and_450_dpi(client):
     detail = client.get("/api/invoices/TRY-GEN-090-1-1").json()
     assert abs(detail["pages"][0]["width"] - widths[0]) <= 1
     assert client.get("/api/invoices/OCT-01/pages/1", params={"scale": 4}).status_code == 422
+
+
+# --- Uploads ----------------------------------------------------------------------
+
+
+@pytest.fixture
+def admin(client, monkeypatch, pool):
+    """ADMIN_TOKEN set, live uploads switched off again afterwards."""
+    from pydantic import SecretStr
+
+    from alinka.settings import get_settings
+
+    monkeypatch.setattr(get_settings(), "admin_token", SecretStr("adm1n"))
+    yield {"Authorization": "Bearer adm1n"}
+    with pool.connection() as conn:
+        conn.execute("UPDATE settings SET value = 'false' WHERE key = 'live_uploads'")
+        conn.execute("DELETE FROM upload_log")
+
+
+def uploads_on(client, admin):
+    r = client.put("/api/admin/settings", json={"live_uploads": True}, headers=admin)
+    assert r.status_code == 200 and r.json() == {"live_uploads": True}
+
+
+def pdf(pages: int) -> bytes:
+    import pymupdf
+
+    doc = pymupdf.open()
+    for i in range(pages):
+        doc.new_page().insert_text(
+            (72, 72), f"Factura de prueba (empresa ficticia), página {i + 1}"
+        )
+    return doc.tobytes()
+
+
+def test_the_admin_switch_needs_the_token_and_is_off_without_one(client, admin, monkeypatch):
+    from alinka.settings import get_settings
+
+    body = {"live_uploads": True}
+    assert client.put("/api/admin/settings", json=body).status_code == 401
+    bad = {"Authorization": "Bearer nope"}
+    assert client.put("/api/admin/settings", json=body, headers=bad).status_code == 401
+    uploads_on(client, admin)
+    assert client.get("/api/try/samples").json()["live_uploads"] is True
+    monkeypatch.setattr(get_settings(), "admin_token", None)
+    assert client.put("/api/admin/settings", json=body, headers=admin).status_code == 404
+
+
+def test_an_upload_runs_live_and_its_pages_come_from_the_stored_file(client, admin, monkeypatch):
+    from alinka.cache import ResponseCache
+
+    uploads_on(client, admin)
+    modes = []
+
+    def replayed(mode, directory=None):  # no model calls in tests: replay the recordings
+        modes.append(mode)
+        return ResponseCache("replay")
+
+    monkeypatch.setattr(try_routes, "ResponseCache", replayed)
+    data = (try_routes.ROOT / "data/generated/GEN-084-1.pdf").read_bytes()
+    started = client.post("/api/try", files={"file": ("mi factura.pdf", data, "application/pdf")})
+    assert started.status_code == 202, started.text
+    got = events(client, started.json()["events_url"])
+    done = got[-1][1]
+    sha8 = __import__("hashlib").sha256(data).hexdigest()[:8]
+    assert modes == ["live"] and done["invoice_id"] == f"UPL-{sha8}"
+    detail = client.get(f"/api/invoices/{done['invoice_id']}").json()
+    assert detail["record"]["facts"]["source"]["path"] is None
+    page = client.get(f"/api/invoices/{done['invoice_id']}/pages/1", params={"scale": 2})
+    assert page.status_code == 200 and page.headers["content-type"] == "image/png"
+    assert detail["pages"][0]["width"] == 1240
+    again = client.post("/api/try", files={"file": ("otra.pdf", data, "application/pdf")})
+    assert events(client, again.json()["events_url"])[-1][1]["invoice_id"] == f"UPL-{sha8}-2"
+
+
+def test_uploads_are_checked_for_size_type_and_pages(client, admin):
+    uploads_on(client, admin)
+    big = b"%PDF-1.7\n" + b"0" * (4 * 1024 * 1024)
+    r = client.post("/api/try", files={"file": ("big.pdf", big, "application/pdf")})
+    assert r.status_code == 413
+    r = client.post("/api/try", files={"file": ("x.pdf", b"hola", "application/pdf")})
+    assert r.status_code == 415
+    r = client.post("/api/try", files={"file": ("x.pdf", b"%PDF-1.7 roto", "application/pdf")})
+    assert r.status_code == 415
+    r = client.post("/api/try", files={"file": ("four.pdf", pdf(4), "application/pdf")})
+    assert r.status_code == 422 and "3 páginas" in r.json()["detail"]
+    r = client.post("/api/try", files={"other": ("x.pdf", pdf(1), "application/pdf")})
+    assert r.status_code == 422
+
+
+@pytest.mark.parametrize(
+    ("rows", "ago", "ip", "limit"),
+    [(5, "5 minutes", "198.51.100.1", "10 minutos"), (30, "2 hours", "198.51.100.1", "por día"),
+     (200, "3 hours", "198.51.100.77", "de hoy")],
+)  # fmt: skip
+def test_the_upload_quotas_hold(client, admin, pool, rows, ago, ip, limit):
+    uploads_on(client, admin)
+    with pool.connection() as conn:
+        conn.execute(
+            "INSERT INTO upload_log (client_ip, created_at)"
+            " SELECT %s, now() - %s::interval FROM generate_series(1, %s)",
+            (ip, ago, rows),
+        )
+    mine = {"X-Client-IP": "198.51.100.1"}
+    r = client.post("/api/try", files={"file": ("x.pdf", pdf(1), "application/pdf")}, headers=mine)
+    assert r.status_code == 429 and limit in r.json()["detail"]
+    assert int(r.headers["retry-after"]) > 0
+    with pool.connection() as conn:
+        assert conn.execute("SELECT count(*) AS n FROM upload_log").fetchone()["n"] == rows
