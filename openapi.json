@@ -1,0 +1,3178 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Alinka API",
+    "description": "La IA lee, las reglas deciden, el registro explica.",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/board": {
+      "get": {
+        "summary": "Get Board",
+        "operationId": "get_board_api_board_get",
+        "parameters": [
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Board"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/run": {
+      "post": {
+        "summary": "Run Agent",
+        "description": "Ejecutar agente: decide the sandbox's inbox in received order.",
+        "operationId": "run_agent_api_run_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RunResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/invoices/{invoice_id}": {
+      "get": {
+        "summary": "Get Invoice",
+        "operationId": "get_invoice_api_invoices__invoice_id__get",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/invoices/{invoice_id}/pages/{n}": {
+      "get": {
+        "summary": "Get Page",
+        "operationId": "get_page_api_invoices__invoice_id__pages__n__get",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "n",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "N"
+            }
+          },
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "image/png": {}
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rules": {
+      "get": {
+        "summary": "Get Rules",
+        "operationId": "get_rules_api_rules_get",
+        "parameters": [
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulesOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Put Rules",
+        "operationId": "put_rules_api_rules_put",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RulesIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RulesSaved"
+                }
+              }
+            }
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Unprocessable Entity"
+          }
+        }
+      }
+    },
+    "/api/beneficiaries": {
+      "post": {
+        "summary": "Add Beneficiary",
+        "operationId": "add_beneficiary_api_beneficiaries_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BeneficiaryIn"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BeneficiaryAdded"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/invoices/{invoice_id}/approve": {
+      "post": {
+        "summary": "Approve",
+        "operationId": "approve_api_invoices__invoice_id__approve_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/invoices/{invoice_id}/reject": {
+      "post": {
+        "summary": "Reject",
+        "operationId": "reject_api_invoices__invoice_id__reject_post",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvoiceDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sandbox/reset": {
+      "post": {
+        "summary": "Reset",
+        "operationId": "reset_api_sandbox_reset_post",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Board"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/log": {
+      "get": {
+        "summary": "Get Log",
+        "operationId": "get_log_api_log_get",
+        "parameters": [
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Log"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/log/verify": {
+      "get": {
+        "summary": "Verify Log",
+        "operationId": "verify_log_api_log_verify_get",
+        "parameters": [
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChainCheck"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/log/export.csv": {
+      "get": {
+        "summary": "Export Log",
+        "operationId": "export_log_api_log_export_csv_get",
+        "parameters": [
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/csv": {}
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/eval": {
+      "get": {
+        "summary": "Get Eval",
+        "operationId": "get_eval_api_eval_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ApprovalIn": {
+        "properties": {
+          "approver": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 1,
+            "title": "Approver"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "approver"
+        ],
+        "title": "ApprovalIn"
+      },
+      "BeneficiaryAdded": {
+        "properties": {
+          "beneficiary": {
+            "$ref": "#/components/schemas/BeneficiaryView"
+          },
+          "board": {
+            "$ref": "#/components/schemas/Board"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "beneficiary",
+          "board"
+        ],
+        "title": "BeneficiaryAdded"
+      },
+      "BeneficiaryIn": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 160,
+            "minLength": 2,
+            "title": "Name"
+          },
+          "tax_id": {
+            "type": "string",
+            "pattern": "^DEMO-[A-Za-z0-9.\\-]{1,40}$",
+            "title": "Tax Id"
+          },
+          "country": {
+            "type": "string",
+            "pattern": "^[A-Z]{2}$",
+            "title": "Country"
+          },
+          "currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$",
+            "title": "Currency"
+          },
+          "account_on_file": {
+            "type": "string",
+            "maxLength": 120,
+            "minLength": 4,
+            "title": "Account On File"
+          },
+          "doc_types": {
+            "items": {
+              "$ref": "#/components/schemas/DocType"
+            },
+            "type": "array",
+            "title": "Doc Types",
+            "default": [
+              "factura",
+              "cuenta_de_cobro"
+            ]
+          },
+          "contract": {
+            "$ref": "#/components/schemas/ContractIn"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "tax_id",
+          "country",
+          "currency",
+          "account_on_file",
+          "contract"
+        ],
+        "title": "BeneficiaryIn"
+      },
+      "BeneficiaryView": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "tax_id": {
+            "type": "string",
+            "title": "Tax Id"
+          },
+          "country": {
+            "type": "string",
+            "title": "Country"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "account_masked": {
+            "type": "string",
+            "title": "Account Masked"
+          },
+          "doc_types": {
+            "items": {
+              "$ref": "#/components/schemas/DocType"
+            },
+            "type": "array",
+            "title": "Doc Types"
+          },
+          "contract_id": {
+            "type": "string",
+            "title": "Contract Id"
+          },
+          "rate_minor": {
+            "type": "integer",
+            "title": "Rate Minor"
+          },
+          "frequency": {
+            "type": "string",
+            "title": "Frequency"
+          },
+          "cost_center": {
+            "type": "string",
+            "title": "Cost Center"
+          },
+          "added_in_sandbox": {
+            "type": "boolean",
+            "title": "Added In Sandbox",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "tax_id",
+          "country",
+          "currency",
+          "account_masked",
+          "doc_types",
+          "contract_id",
+          "rate_minor",
+          "frequency",
+          "cost_center"
+        ],
+        "title": "BeneficiaryView"
+      },
+      "Board": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "view": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "canonical"
+            ],
+            "title": "View"
+          },
+          "rules_version": {
+            "type": "string",
+            "title": "Rules Version"
+          },
+          "head_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Head Hash"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "inbox": {
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "type": "array",
+            "title": "Inbox"
+          },
+          "columns": {
+            "prefixItems": [
+              {
+                "$ref": "#/components/schemas/Column"
+              },
+              {
+                "$ref": "#/components/schemas/Column"
+              },
+              {
+                "$ref": "#/components/schemas/Column"
+              }
+            ],
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 3,
+            "title": "Columns"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "view",
+          "rules_version",
+          "total",
+          "inbox",
+          "columns"
+        ],
+        "title": "Board"
+      },
+      "Bound": {
+        "properties": {
+          "min": {
+            "type": "number",
+            "title": "Min"
+          },
+          "max": {
+            "type": "number",
+            "title": "Max"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "min",
+          "max"
+        ],
+        "title": "Bound"
+      },
+      "Box": {
+        "properties": {
+          "page": {
+            "type": "integer",
+            "title": "Page"
+          },
+          "x0": {
+            "type": "number",
+            "title": "X0"
+          },
+          "y0": {
+            "type": "number",
+            "title": "Y0"
+          },
+          "x1": {
+            "type": "number",
+            "title": "X1"
+          },
+          "y1": {
+            "type": "number",
+            "title": "Y1"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "page",
+          "x0",
+          "y0",
+          "x1",
+          "y1"
+        ],
+        "title": "Box"
+      },
+      "Card": {
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Received At"
+          },
+          "beneficiary_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Beneficiary Id"
+          },
+          "beneficiary_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Beneficiary Name"
+          },
+          "amount_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount Minor"
+          },
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency"
+          },
+          "usd_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usd Minor"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "inbox",
+              "PAY",
+              "HOLD",
+              "ESCALATE"
+            ],
+            "title": "State"
+          },
+          "state_es": {
+            "type": "string",
+            "title": "State Es"
+          },
+          "determining_rule": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "R01",
+                  "R02",
+                  "R03",
+                  "R04",
+                  "R05",
+                  "R06",
+                  "R07",
+                  "R08",
+                  "R09",
+                  "R10",
+                  "R11",
+                  "R12",
+                  "R13",
+                  "R14",
+                  "R15",
+                  "R16"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Determining Rule"
+          },
+          "determining_rule_es": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Determining Rule Es"
+          },
+          "alerts": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "R01",
+                "R02",
+                "R03",
+                "R04",
+                "R05",
+                "R06",
+                "R07",
+                "R08",
+                "R09",
+                "R10",
+                "R11",
+                "R12",
+                "R13",
+                "R14",
+                "R15",
+                "R16"
+              ]
+            },
+            "type": "array",
+            "title": "Alerts",
+            "default": []
+          },
+          "reason_es": {
+            "type": "string",
+            "title": "Reason Es",
+            "default": ""
+          },
+          "approvable": {
+            "type": "boolean",
+            "title": "Approvable",
+            "default": false
+          },
+          "approver": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approver"
+          },
+          "technical_error": {
+            "type": "boolean",
+            "title": "Technical Error",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "invoice_id",
+          "channel",
+          "received_at",
+          "state",
+          "state_es"
+        ],
+        "title": "Card"
+      },
+      "ChainCheck": {
+        "properties": {
+          "ok": {
+            "type": "boolean",
+            "title": "Ok"
+          },
+          "checked": {
+            "type": "integer",
+            "title": "Checked"
+          },
+          "head_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Head Hash"
+          },
+          "first_bad_seq": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Bad Seq"
+          },
+          "message_es": {
+            "type": "string",
+            "title": "Message Es"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "ok",
+          "checked",
+          "message_es"
+        ],
+        "title": "ChainCheck"
+      },
+      "Channel": {
+        "type": "string",
+        "enum": [
+          "pdf",
+          "image",
+          "email",
+          "chat"
+        ],
+        "title": "Channel"
+      },
+      "Column": {
+        "properties": {
+          "decision": {
+            "$ref": "#/components/schemas/Decision"
+          },
+          "label_es": {
+            "type": "string",
+            "title": "Label Es"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "cards": {
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "type": "array",
+            "title": "Cards"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "decision",
+          "label_es",
+          "count",
+          "cards"
+        ],
+        "title": "Column"
+      },
+      "Computed": {
+        "properties": {
+          "currency": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currency"
+          },
+          "total_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Minor"
+          },
+          "subtotal_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Subtotal Minor"
+          },
+          "tax_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Tax Minor"
+          },
+          "words_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Words Minor"
+          },
+          "words_unparseable": {
+            "type": "boolean",
+            "title": "Words Unparseable",
+            "default": false
+          },
+          "issue_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Issue Date"
+          },
+          "due_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due Date"
+          },
+          "period_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Start"
+          },
+          "period_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period End"
+          },
+          "invoice_number_norm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Invoice Number Norm"
+          },
+          "beneficiary_tax_id_norm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Beneficiary Tax Id Norm"
+          },
+          "buyer_tax_id_norm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Buyer Tax Id Norm"
+          },
+          "bank_account_norm": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bank Account Norm"
+          },
+          "usd_minor": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Usd Minor"
+          },
+          "fx": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/FxUsed"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Computed",
+        "description": "Values derived in code from Printed. None means missing or unparseable."
+      },
+      "Confidence": {
+        "type": "string",
+        "enum": [
+          "high",
+          "medium",
+          "low"
+        ],
+        "title": "Confidence"
+      },
+      "ContractIn": {
+        "properties": {
+          "scope_es": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Scope Es"
+          },
+          "scope_en": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scope En",
+            "default": []
+          },
+          "rate_minor": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Rate Minor"
+          },
+          "tolerance_pct": {
+            "type": "number",
+            "maximum": 50.0,
+            "minimum": 0.0,
+            "title": "Tolerance Pct",
+            "default": 5
+          },
+          "frequency": {
+            "type": "string",
+            "enum": [
+              "monthly",
+              "biweekly",
+              "weekly",
+              "per_delivery"
+            ],
+            "title": "Frequency",
+            "default": "monthly"
+          },
+          "valid_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Valid From"
+          },
+          "valid_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Valid To"
+          },
+          "cost_center": {
+            "type": "string",
+            "title": "Cost Center"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scope_es",
+          "rate_minor",
+          "valid_from",
+          "valid_to",
+          "cost_center"
+        ],
+        "title": "ContractIn"
+      },
+      "Decision": {
+        "type": "string",
+        "enum": [
+          "PAY",
+          "HOLD",
+          "ESCALATE"
+        ],
+        "title": "Decision"
+      },
+      "DecisionRecord": {
+        "properties": {
+          "record_id": {
+            "type": "string",
+            "title": "Record Id"
+          },
+          "session": {
+            "type": "string",
+            "title": "Session"
+          },
+          "seq": {
+            "type": "integer",
+            "title": "Seq"
+          },
+          "prev_hash": {
+            "type": "string",
+            "title": "Prev Hash"
+          },
+          "hash": {
+            "type": "string",
+            "title": "Hash"
+          },
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/Decision"
+          },
+          "determining_rule": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "R01",
+                  "R02",
+                  "R03",
+                  "R04",
+                  "R05",
+                  "R06",
+                  "R07",
+                  "R08",
+                  "R09",
+                  "R10",
+                  "R11",
+                  "R12",
+                  "R13",
+                  "R14",
+                  "R15",
+                  "R16"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Determining Rule"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/RuleResult"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "alerts": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "R01",
+                "R02",
+                "R03",
+                "R04",
+                "R05",
+                "R06",
+                "R07",
+                "R08",
+                "R09",
+                "R10",
+                "R11",
+                "R12",
+                "R13",
+                "R14",
+                "R15",
+                "R16"
+              ]
+            },
+            "type": "array",
+            "title": "Alerts",
+            "default": []
+          },
+          "reason_es": {
+            "type": "string",
+            "title": "Reason Es"
+          },
+          "facts": {
+            "$ref": "#/components/schemas/InvoiceFacts"
+          },
+          "rules_version": {
+            "type": "string",
+            "title": "Rules Version"
+          },
+          "rules_hash": {
+            "type": "string",
+            "title": "Rules Hash"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "code_version": {
+            "type": "string",
+            "title": "Code Version"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "payment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaymentPreview"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "human": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HumanAction"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "record_id",
+          "session",
+          "seq",
+          "prev_hash",
+          "hash",
+          "invoice_id",
+          "decision",
+          "results",
+          "reason_es",
+          "facts",
+          "rules_version",
+          "rules_hash",
+          "as_of",
+          "code_version",
+          "created_at"
+        ],
+        "title": "DecisionRecord"
+      },
+      "DocType": {
+        "type": "string",
+        "enum": [
+          "factura",
+          "cuenta_de_cobro",
+          "invoice",
+          "proforma",
+          "cotizacion",
+          "nota_credito",
+          "other"
+        ],
+        "title": "DocType"
+      },
+      "ErrorOut": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorOut"
+      },
+      "EvalOut": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available"
+          },
+          "report": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Report"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "available"
+        ],
+        "title": "EvalOut"
+      },
+      "Field": {
+        "properties": {
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote"
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/Confidence",
+            "default": "low"
+          },
+          "grounded": {
+            "type": "boolean",
+            "title": "Grounded",
+            "default": false
+          },
+          "agreed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agreed"
+          },
+          "boxes": {
+            "items": {
+              "$ref": "#/components/schemas/Box"
+            },
+            "type": "array",
+            "title": "Boxes",
+            "default": []
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Field",
+        "description": "One value exactly as printed, with its evidence."
+      },
+      "FieldView": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "label_es": {
+            "type": "string",
+            "title": "Label Es"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote"
+          },
+          "confidence": {
+            "$ref": "#/components/schemas/Confidence",
+            "default": "low"
+          },
+          "grounded": {
+            "type": "boolean",
+            "title": "Grounded",
+            "default": false
+          },
+          "agreed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Agreed"
+          },
+          "critical": {
+            "type": "boolean",
+            "title": "Critical",
+            "default": false
+          },
+          "boxes": {
+            "items": {
+              "$ref": "#/components/schemas/Box"
+            },
+            "type": "array",
+            "title": "Boxes",
+            "default": []
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "label_es"
+        ],
+        "title": "FieldView"
+      },
+      "Flags": {
+        "properties": {
+          "hidden_content": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Hidden Content",
+            "default": []
+          },
+          "unicode_controls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unicode Controls",
+            "default": []
+          },
+          "html_text_mismatch": {
+            "type": "boolean",
+            "title": "Html Text Mismatch",
+            "default": false
+          },
+          "instructions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Instructions",
+            "default": []
+          },
+          "reader_instructions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reader Instructions",
+            "default": []
+          },
+          "extraction_error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Extraction Error"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Flags"
+      },
+      "FxUsed": {
+        "properties": {
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "rate": {
+            "type": "string",
+            "title": "Rate"
+          },
+          "quote": {
+            "type": "string",
+            "enum": [
+              "per_usd",
+              "usd_per_unit"
+            ],
+            "title": "Quote"
+          },
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "currency",
+          "rate",
+          "quote",
+          "date",
+          "source",
+          "url"
+        ],
+        "title": "FxUsed"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Health": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "degraded"
+            ],
+            "title": "Status"
+          },
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "canonical_head": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Canonical Head"
+          },
+          "database": {
+            "type": "boolean",
+            "title": "Database",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "version"
+        ],
+        "title": "Health"
+      },
+      "HumanAction": {
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "approve",
+              "reject"
+            ],
+            "title": "Action"
+          },
+          "approver": {
+            "type": "string",
+            "title": "Approver"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "action",
+          "approver",
+          "at"
+        ],
+        "title": "HumanAction"
+      },
+      "InvoiceDetail": {
+        "properties": {
+          "card": {
+            "$ref": "#/components/schemas/Card"
+          },
+          "record": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DecisionRecord"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "pages": {
+            "items": {
+              "$ref": "#/components/schemas/PageImage"
+            },
+            "type": "array",
+            "title": "Pages",
+            "default": []
+          },
+          "fields": {
+            "items": {
+              "$ref": "#/components/schemas/FieldView"
+            },
+            "type": "array",
+            "title": "Fields",
+            "default": []
+          },
+          "rules": {
+            "items": {
+              "$ref": "#/components/schemas/RuleView"
+            },
+            "type": "array",
+            "title": "Rules",
+            "default": []
+          },
+          "payment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PaymentPreview"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "card"
+        ],
+        "title": "InvoiceDetail"
+      },
+      "InvoiceFacts": {
+        "properties": {
+          "schema_version": {
+            "type": "string",
+            "title": "Schema Version",
+            "default": "1"
+          },
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "printed": {
+            "$ref": "#/components/schemas/Printed"
+          },
+          "computed": {
+            "$ref": "#/components/schemas/Computed"
+          },
+          "flags": {
+            "$ref": "#/components/schemas/Flags"
+          },
+          "verification": {
+            "$ref": "#/components/schemas/Verification"
+          },
+          "calls": {
+            "items": {
+              "$ref": "#/components/schemas/ModelCall"
+            },
+            "type": "array",
+            "title": "Calls",
+            "default": []
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source",
+          "as_of"
+        ],
+        "title": "InvoiceFacts",
+        "description": "Everything that crosses the trust boundary into the rules."
+      },
+      "JevAnswer": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer"
+          },
+          "probability": {
+            "type": "number",
+            "title": "Probability"
+          },
+          "confidence": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confidence"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "question",
+          "answer",
+          "probability"
+        ],
+        "title": "JevAnswer"
+      },
+      "Language": {
+        "type": "string",
+        "enum": [
+          "es",
+          "en"
+        ],
+        "title": "Language"
+      },
+      "Log": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "view": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "canonical"
+            ],
+            "title": "View"
+          },
+          "head_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Head Hash"
+          },
+          "entries": {
+            "items": {
+              "$ref": "#/components/schemas/LogEntry"
+            },
+            "type": "array",
+            "title": "Entries"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "view",
+          "entries"
+        ],
+        "title": "Log"
+      },
+      "LogEntry": {
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "title": "Seq"
+          },
+          "record_id": {
+            "type": "string",
+            "title": "Record Id"
+          },
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/Decision"
+          },
+          "decision_es": {
+            "type": "string",
+            "title": "Decision Es"
+          },
+          "determining_rule": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "R01",
+                  "R02",
+                  "R03",
+                  "R04",
+                  "R05",
+                  "R06",
+                  "R07",
+                  "R08",
+                  "R09",
+                  "R10",
+                  "R11",
+                  "R12",
+                  "R13",
+                  "R14",
+                  "R15",
+                  "R16"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Determining Rule"
+          },
+          "reason_es": {
+            "type": "string",
+            "title": "Reason Es"
+          },
+          "approver": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approver"
+          },
+          "prev_hash": {
+            "type": "string",
+            "title": "Prev Hash"
+          },
+          "hash": {
+            "type": "string",
+            "title": "Hash"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "seq",
+          "record_id",
+          "invoice_id",
+          "decision",
+          "decision_es",
+          "reason_es",
+          "prev_hash",
+          "hash",
+          "created_at"
+        ],
+        "title": "LogEntry"
+      },
+      "ModelCall": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "reader",
+              "checker",
+              "jev"
+            ],
+            "title": "Role"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "prompt_hash": {
+            "type": "string",
+            "title": "Prompt Hash"
+          },
+          "cache_key": {
+            "type": "string",
+            "title": "Cache Key"
+          },
+          "cached": {
+            "type": "boolean",
+            "title": "Cached"
+          },
+          "input_tokens": {
+            "type": "integer",
+            "title": "Input Tokens",
+            "default": 0
+          },
+          "output_tokens": {
+            "type": "integer",
+            "title": "Output Tokens",
+            "default": 0
+          },
+          "cost_usd": {
+            "type": "number",
+            "title": "Cost Usd",
+            "default": 0.0
+          },
+          "latency_ms": {
+            "type": "integer",
+            "title": "Latency Ms",
+            "default": 0
+          },
+          "stop_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Stop Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role",
+          "model",
+          "prompt_hash",
+          "cache_key",
+          "cached"
+        ],
+        "title": "ModelCall"
+      },
+      "Outcome": {
+        "type": "string",
+        "enum": [
+          "pass",
+          "hold",
+          "escalate"
+        ],
+        "title": "Outcome"
+      },
+      "PageImage": {
+        "properties": {
+          "n": {
+            "type": "integer",
+            "title": "N"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "width": {
+            "type": "integer",
+            "title": "Width"
+          },
+          "height": {
+            "type": "integer",
+            "title": "Height"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "n",
+          "url",
+          "width",
+          "height"
+        ],
+        "title": "PageImage"
+      },
+      "PaymentPreview": {
+        "properties": {
+          "beneficiary_id": {
+            "type": "string",
+            "title": "Beneficiary Id"
+          },
+          "beneficiary_name": {
+            "type": "string",
+            "title": "Beneficiary Name"
+          },
+          "account_masked": {
+            "type": "string",
+            "title": "Account Masked"
+          },
+          "amount_minor": {
+            "type": "integer",
+            "title": "Amount Minor"
+          },
+          "currency": {
+            "type": "string",
+            "title": "Currency"
+          },
+          "usd_minor": {
+            "type": "integer",
+            "title": "Usd Minor"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "beneficiary_id",
+          "beneficiary_name",
+          "account_masked",
+          "amount_minor",
+          "currency",
+          "usd_minor"
+        ],
+        "title": "PaymentPreview"
+      },
+      "Printed": {
+        "properties": {
+          "doc_type": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "stamps": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Stamps",
+            "default": []
+          },
+          "buyer_name": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "buyer_tax_id": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "beneficiary_name": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "beneficiary_tax_id": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "invoice_number": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "fiscal_id": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "issue_date": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "due_date": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "service_period": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "currency": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "subtotal": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "tax_total": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "total": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "amount_in_words": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "bank_account": {
+            "$ref": "#/components/schemas/Field"
+          },
+          "service_text": {
+            "$ref": "#/components/schemas/Field"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Printed",
+        "description": "Strings exactly as printed. EN 16931 business terms in brackets where one applies."
+      },
+      "RuleResult": {
+        "properties": {
+          "rule": {
+            "type": "string",
+            "enum": [
+              "R01",
+              "R02",
+              "R03",
+              "R04",
+              "R05",
+              "R06",
+              "R07",
+              "R08",
+              "R09",
+              "R10",
+              "R11",
+              "R12",
+              "R13",
+              "R14",
+              "R15",
+              "R16"
+            ],
+            "title": "Rule"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/Outcome"
+          },
+          "security": {
+            "type": "boolean",
+            "title": "Security",
+            "default": false
+          },
+          "approvable": {
+            "type": "boolean",
+            "title": "Approvable",
+            "default": true
+          },
+          "values": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Values"
+          },
+          "message_key": {
+            "type": "string",
+            "title": "Message Key"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rule",
+          "outcome",
+          "message_key"
+        ],
+        "title": "RuleResult"
+      },
+      "RuleView": {
+        "properties": {
+          "rule": {
+            "type": "string",
+            "enum": [
+              "R01",
+              "R02",
+              "R03",
+              "R04",
+              "R05",
+              "R06",
+              "R07",
+              "R08",
+              "R09",
+              "R10",
+              "R11",
+              "R12",
+              "R13",
+              "R14",
+              "R15",
+              "R16"
+            ],
+            "title": "Rule"
+          },
+          "name_es": {
+            "type": "string",
+            "title": "Name Es"
+          },
+          "outcome": {
+            "$ref": "#/components/schemas/Outcome"
+          },
+          "security": {
+            "type": "boolean",
+            "title": "Security",
+            "default": false
+          },
+          "approvable": {
+            "type": "boolean",
+            "title": "Approvable",
+            "default": true
+          },
+          "values": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Values"
+          },
+          "reason_es": {
+            "type": "string",
+            "title": "Reason Es",
+            "default": ""
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rule",
+          "name_es",
+          "outcome"
+        ],
+        "title": "RuleView"
+      },
+      "RulesConfig": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "title": "Version"
+          },
+          "as_of": {
+            "type": "string",
+            "format": "date",
+            "title": "As Of"
+          },
+          "fx_max_age_days": {
+            "type": "integer",
+            "title": "Fx Max Age Days"
+          },
+          "per_payment_cap_usd": {
+            "type": "integer",
+            "title": "Per Payment Cap Usd"
+          },
+          "approval_threshold_usd": {
+            "type": "integer",
+            "title": "Approval Threshold Usd"
+          },
+          "approval_band_pct": {
+            "type": "number",
+            "title": "Approval Band Pct"
+          },
+          "monthly_cap_usd": {
+            "type": "integer",
+            "title": "Monthly Cap Usd"
+          },
+          "due_grace_days": {
+            "type": "integer",
+            "title": "Due Grace Days"
+          },
+          "verifier_risk_max": {
+            "type": "number",
+            "title": "Verifier Risk Max"
+          },
+          "split_window_days": {
+            "type": "integer",
+            "title": "Split Window Days"
+          },
+          "split_threshold_usd": {
+            "type": "integer",
+            "title": "Split Threshold Usd"
+          },
+          "name_similarity_min": {
+            "type": "number",
+            "title": "Name Similarity Min"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "version",
+          "as_of",
+          "fx_max_age_days",
+          "per_payment_cap_usd",
+          "approval_threshold_usd",
+          "approval_band_pct",
+          "monthly_cap_usd",
+          "due_grace_days",
+          "verifier_risk_max",
+          "split_window_days",
+          "split_threshold_usd",
+          "name_similarity_min"
+        ],
+        "title": "RulesConfig",
+        "description": "data/rules.yaml. Whole USD unless the name says otherwise."
+      },
+      "RulesIn": {
+        "properties": {
+          "per_payment_cap_usd": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Per Payment Cap Usd"
+          },
+          "approval_threshold_usd": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approval Threshold Usd"
+          },
+          "approval_band_pct": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Approval Band Pct"
+          },
+          "monthly_cap_usd": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Monthly Cap Usd"
+          },
+          "due_grace_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Due Grace Days"
+          },
+          "verifier_risk_max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Verifier Risk Max"
+          },
+          "split_window_days": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Split Window Days"
+          },
+          "split_threshold_usd": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Split Threshold Usd"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RulesIn",
+        "description": "Editable parameters; omitted keys keep their current value."
+      },
+      "RulesOut": {
+        "properties": {
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "view": {
+            "type": "string",
+            "enum": [
+              "sandbox",
+              "canonical"
+            ],
+            "title": "View"
+          },
+          "rules": {
+            "$ref": "#/components/schemas/RulesConfig"
+          },
+          "rules_hash": {
+            "type": "string",
+            "title": "Rules Hash"
+          },
+          "bounds": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/Bound"
+            },
+            "type": "object",
+            "title": "Bounds"
+          },
+          "beneficiaries": {
+            "items": {
+              "$ref": "#/components/schemas/BeneficiaryView"
+            },
+            "type": "array",
+            "title": "Beneficiaries"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "session_id",
+          "view",
+          "rules",
+          "rules_hash",
+          "bounds",
+          "beneficiaries"
+        ],
+        "title": "RulesOut"
+      },
+      "RulesSaved": {
+        "properties": {
+          "rules": {
+            "$ref": "#/components/schemas/RulesOut"
+          },
+          "board": {
+            "$ref": "#/components/schemas/Board"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "rules",
+          "board"
+        ],
+        "title": "RulesSaved"
+      },
+      "RunResult": {
+        "properties": {
+          "decided": {
+            "type": "integer",
+            "title": "Decided"
+          },
+          "steps": {
+            "items": {
+              "$ref": "#/components/schemas/RunStep"
+            },
+            "type": "array",
+            "title": "Steps"
+          },
+          "board": {
+            "$ref": "#/components/schemas/Board"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "decided",
+          "steps",
+          "board"
+        ],
+        "title": "RunResult"
+      },
+      "RunStep": {
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/Decision"
+          },
+          "determining_rule": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "R01",
+                  "R02",
+                  "R03",
+                  "R04",
+                  "R05",
+                  "R06",
+                  "R07",
+                  "R08",
+                  "R09",
+                  "R10",
+                  "R11",
+                  "R12",
+                  "R13",
+                  "R14",
+                  "R15",
+                  "R16"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Determining Rule"
+          },
+          "elapsed_ms": {
+            "type": "integer",
+            "title": "Elapsed Ms"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "invoice_id",
+          "decision",
+          "elapsed_ms"
+        ],
+        "title": "RunStep"
+      },
+      "Source": {
+        "properties": {
+          "invoice_id": {
+            "type": "string",
+            "title": "Invoice Id"
+          },
+          "doc_sha256": {
+            "type": "string",
+            "title": "Doc Sha256"
+          },
+          "path": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Path"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "language": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Language"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "received_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Received At"
+          },
+          "pages": {
+            "type": "integer",
+            "title": "Pages",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "invoice_id",
+          "doc_sha256",
+          "channel",
+          "received_at"
+        ],
+        "title": "Source"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "Verification": {
+        "properties": {
+          "disagreements": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Disagreements",
+            "default": []
+          },
+          "ungrounded": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Ungrounded",
+            "default": []
+          },
+          "amount_in_regex": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Amount In Regex"
+          },
+          "totals_reconcile": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Totals Reconcile"
+          },
+          "jev": {
+            "items": {
+              "$ref": "#/components/schemas/JevAnswer"
+            },
+            "type": "array",
+            "title": "Jev",
+            "default": []
+          },
+          "risk": {
+            "type": "number",
+            "title": "Risk",
+            "default": 1.0
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes",
+            "default": []
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "Verification"
+      }
+    }
+  }
+}
