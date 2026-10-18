@@ -399,16 +399,13 @@ function Timeline({ detail, view }: { detail: Detail; view: View }) {
     queryFn: () => fetchTrace(card.invoice_id, view),
     enabled: record != null,
   });
-  const steps = trace.data?.steps;
+  const steps = trace.data ?? undefined;
   const label = (name: string) => detail.fields.find((f) => f.name === name)?.label_es ?? name;
   return (
     <section aria-labelledby="historia" className="ak-stack">
       <h2 id="historia" className="ak-h2">
         Cómo se decidió
       </h2>
-      {trace.data?.example && (
-        <p className="ak-note">Ejemplo con el recorrido de OCT-14: la API aún no sirve el de cada factura.</p>
-      )}
       {trace.isError && <p className="ak-note">No se pudo cargar el recorrido paso a paso: {trace.error.message}</p>}
       <ol className="ak-timeline">
         {steps && <TraceItems steps={steps} label={label} />}
