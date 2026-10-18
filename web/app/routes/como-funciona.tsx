@@ -1,5 +1,8 @@
-import { FileText, ShieldCheck } from "lucide-react";
+import { ArrowRight, FileText, ShieldCheck } from "lucide-react";
+import { Link } from "react-router";
 
+import { PipelineFlow } from "~/components/pipeline-flow";
+import { useMotionOK } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 
 export function meta() {
@@ -86,9 +89,19 @@ const LIMITS = [
   },
 ];
 
+function TryIt() {
+  const motion = useMotionOK();
+  return (
+    <Link to="/probar" className="ak-btn ak-btn--primary justify-self-start" viewTransition={motion}>
+      Pruébalo tú mismo
+      <ArrowRight aria-hidden className="ak-icon" />
+    </Link>
+  );
+}
+
 export default function ComoFunciona() {
   return (
-    <div className="max-w-3xl space-y-8">
+    <div className="max-w-5xl space-y-8 [&>section:not(.como-flow)]:max-w-3xl [&>header]:max-w-3xl">
       <header className="space-y-2">
         <h1 className="ak-h1">Cómo funciona</h1>
         <h2 className="ak-h2">La IA lee, las reglas deciden, el registro explica</h2>
@@ -99,15 +112,22 @@ export default function ComoFunciona() {
         </p>
       </header>
 
+      <section aria-labelledby="flujo" className="ak-stack como-flow">
+        <h2 id="flujo" className="ak-h2">
+          Una factura con texto oculto, de principio a fin
+        </h2>
+        <p className="ak-muted m-0 max-w-3xl">
+          Un ejemplo grabado: la factura trae una línea en texto blanco que pide pagar a otra cuenta. El código la descarta antes
+          de que la IA lea, la regla de contenido oculto la deja Pendiente de aprobación y el registro suma un eslabón.
+        </p>
+        <PipelineFlow mode="demo" />
+        <TryIt />
+      </section>
+
       <section aria-labelledby="pasos" className="ak-stack">
         <h2 id="pasos" className="ak-h2">
           El recorrido de una factura, en cuatro pasos
         </h2>
-        <ol className="ak-steps flex-wrap" aria-label="Pasos">
-          {STEPS.map((s) => (
-            <li key={s.name}>{s.name}</li>
-          ))}
-        </ol>
         <ol className="ak-stack list-none p-0">
           {STEPS.map((s, i) => (
             <li key={s.name} className="grid gap-1">
@@ -164,6 +184,17 @@ export default function ComoFunciona() {
             </li>
           ))}
         </ul>
+      </section>
+
+      <section aria-labelledby="probar" className="ak-stack">
+        <h2 id="probar" className="ak-h2">
+          Míralo con tus propios ojos
+        </h2>
+        <p className="ak-muted m-0">
+          En Probar eliges una factura ficticia, una de rutina, una trampa o un ataque, y ves cada paso con los datos reales de la
+          ejecución.
+        </p>
+        <TryIt />
       </section>
     </div>
   );
