@@ -7,6 +7,7 @@ import re
 from alinka.extract.schema import FIELD_ORDER
 from alinka.ingest.base import Ingested
 from alinka.types import CRITICAL_FIELDS, Computed, Confidence, Printed
+from alinka.verify.dateorder import Order
 from alinka.verify.ground import norm
 from alinka.verify.normalize import amount, parse_date
 
@@ -16,6 +17,7 @@ _MONEY = re.compile(
 AMOUNT_FIELDS = ("subtotal", "tax_total", "total")
 DATE_FIELDS = ("issue_date", "due_date")
 OCR_CONFIDENCE_MIN = 60.0
+AMBIGUOUS_DATE_RISK = 0.7
 
 
 def money_spans(doc: Ingested, currency: str | None) -> set[int]:
@@ -43,7 +45,7 @@ def totals_reconcile(computed: Computed) -> bool | None:
 
 
 def same_value(
-    name: str, a: str | None, b: str | None, currency: str | None, month_first: bool
+    name: str, a: str | None, b: str | None, currency: str | None, order: Order | None
 ) -> bool:
     if a is None or b is None:
         return a is None and b is None
@@ -52,19 +54,19 @@ def same_value(
         if x is not None and y is not None:
             return x == y
     if name in DATE_FIELDS:
-        x, y = parse_date(a, month_first), parse_date(b, month_first)
+        x, y = parse_date(a, order), parse_date(b, order)
         if x is not None and y is not None:
             return x == y
     return norm(a) == norm(b) or norm(a).replace(" ", "") == norm(b).replace(" ", "")
 
 
 def compare(
-    reader: Printed, checker: Printed, currency: str | None, month_first: bool
+    reader: Printed, checker: Printed, currency: str | None, order: Order | None
 ) -> dict[str, bool]:
     """Field by field: does the second reading return the same value?"""
     return {
         name: same_value(
-            name, getattr(reader, name).value, getattr(checker, name).value, currency, month_first
+            name, getattr(reader, name).value, getattr(checker, name).value, currency, order
         )
         for name in FIELD_ORDER
     }
@@ -79,6 +81,7 @@ def risk(
     reconcile: bool | None,
     checker_failed: bool,
     ocr_confidence: float | None,
+    ambiguous_dates: list[str] | None = None,
 ) -> tuple[float, list[str]]:
     """Combine independent doubts as 1 - prod(1 - p); any single strong doubt dominates."""
     parts: list[tuple[float, str]] = []
@@ -96,6 +99,10 @@ def risk(
         parts.append((0.4, "subtotal plus tax differs from total"))
     if checker_failed:
         parts.append((1.0, "second reading failed"))
+    if ambiguous_dates:  # enough on its own for R10: a missing date can hide R09 or R16
+        parts.append(
+            (AMBIGUOUS_DATE_RISK, "ambiguous numeric dates: " + ", ".join(ambiguous_dates))
+        )
     if ocr_confidence is not None and ocr_confidence < OCR_CONFIDENCE_MIN:
         parts.append((0.3, f"OCR confidence {ocr_confidence:.0f}"))
     keep = 1.0
