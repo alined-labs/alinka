@@ -192,7 +192,14 @@ class Session:
 def record_decision(
     session: Session, facts: InvoiceFacts, at: datetime | None = None
 ) -> DecisionRecord:
-    """Decide one invoice and write the record; PAY and ESCALATE write the ledger."""
+    """Decide one invoice and write the record; PAY and ESCALATE write the ledger.
+
+    Invoice IDs are unique within a session: the ledger, approvals and re-checks key on them.
+    """
+    if session.latest(facts.source.invoice_id) is not None or any(
+        e.invoice_id == facts.source.invoice_id for e in session.ledger.entries()
+    ):
+        raise ValueError(f"{facts.source.invoice_id} was already decided in session {session.id}")
     v = decide(facts, session.world, session.ledger, session.cfg)
     if v.decision == Decision.PAY:
         session.ledger.add(ledger_entry(facts, session.world, session.cfg, Status.PAID))
