@@ -24,6 +24,9 @@ class PageData:
     png: bytes | None = None
     spans: list[TextSpan] = field(default_factory=list)
     text: str = ""  # visible text in reading order, built by code
+    source_pdf: bytes | None = None  # a PDF to search for quote boxes (original or code-rendered)
+    source_page: int = 0  # 0-based page of `source_pdf`
+    ocr_confidence: float | None = None  # mean Tesseract word confidence, 0..100, images only
 
 
 @dataclass
