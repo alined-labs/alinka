@@ -1,7 +1,7 @@
 import { Progress } from "@base-ui/react/progress";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Columns3, Play, Table2 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
 import { api, type Board, type Card, unwrap, type View } from "~/api/client";
@@ -52,7 +52,11 @@ function useRun(onDone: (board: Board) => void) {
     }
   }, [progress, onDone]);
 
-  const shownBoard = progress ? projectRun(progress.before, progress.result, progress.shown) : undefined;
+  // One object per step: a new board on every render would make each render a new value to show.
+  const shownBoard = useMemo(
+    () => (progress ? projectRun(progress.before, progress.result, progress.shown) : undefined),
+    [progress],
+  );
   return { mutation, progress, shownBoard };
 }
 
