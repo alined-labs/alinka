@@ -3,17 +3,16 @@
 from __future__ import annotations
 
 import hmac
-from collections.abc import Iterator
 from datetime import UTC, datetime
 from importlib.metadata import version
-from typing import Annotated
 
 import psycopg
-from fastapi import Depends, FastAPI, HTTPException, Query, Request, Response
+from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from alinka import db
-from alinka.api import pages, sessions, store, views
+from alinka.api import pages, sessions, store, try_routes, views
+from alinka.api.deps import Conn, Sandbox, Viewed
 from alinka.api.models import (
     ApprovalIn,
     BeneficiaryAdded,
@@ -31,14 +30,12 @@ from alinka.api.models import (
     RulesOut,
     RulesSaved,
     RunResult,
-    View,
 )
 from alinka.api.sessions import CANONICAL, Ctx
 from alinka.decide.core import mask_account
 from alinka.settings import get_settings
 from alinka.types import Beneficiary, Contract, HumanAction, InvoiceFacts
 
-SANDBOX_COOKIE = "alinka_sandbox"
 ERRORS = {404: {"model": ErrorOut}, 409: {"model": ErrorOut}}
 
 app = FastAPI(
@@ -47,6 +44,7 @@ app = FastAPI(
     description="La IA lee, las reglas deciden, el registro explica.",
     separate_input_output_schemas=False,
 )
+app.include_router(try_routes.router)
 
 
 @app.middleware("http")
@@ -68,48 +66,6 @@ async def refused(_: Request, exc: sessions.Refused) -> JSONResponse:
 @app.exception_handler(sessions.NotFound)
 async def not_found(_: Request, exc: sessions.NotFound) -> JSONResponse:
     return JSONResponse({"detail": str(exc)}, status_code=404)
-
-
-# --- Dependencies -----------------------------------------------------------------
-
-
-def connection() -> Iterator[psycopg.Connection]:
-    with db.connection() as conn:
-        yield conn
-
-
-Conn = Annotated[psycopg.Connection, Depends(connection)]
-ViewQ = Annotated[View, Query(description="sandbox (default) or the read-only canonical run")]
-
-
-def sandbox(request: Request, response: Response, conn: Conn) -> Ctx:
-    """The visitor's sandbox from the HttpOnly cookie, created with a full inbox on first visit."""
-    sid = request.cookies.get(SANDBOX_COOKIE)
-    ctx = sessions.context(conn, sid) if sid and sid != CANONICAL else None
-    if ctx is None:
-        ctx = sessions.create_sandbox(conn)
-        response.set_cookie(
-            SANDBOX_COOKIE,
-            ctx.session_id,
-            max_age=int(sessions.SANDBOX_TTL.total_seconds()),
-            httponly=True,
-            samesite="lax",
-            secure=request.headers.get("x-forwarded-proto", request.url.scheme) == "https",
-        )
-    return ctx
-
-
-Sandbox = Annotated[Ctx, Depends(sandbox)]
-
-
-def viewed(request: Request, response: Response, conn: Conn, view: ViewQ = "sandbox") -> Ctx:
-    """The canonical run with ?view=canonical, otherwise the visitor's sandbox."""
-    if view == "canonical":
-        return sessions.ensure_canonical(conn)
-    return sandbox(request, response, conn)
-
-
-Viewed = Annotated[Ctx, Depends(viewed)]
 
 
 # --- Building responses -----------------------------------------------------------

@@ -251,3 +251,51 @@ class ChainCheck(Model):
 class EvalOut(Model):
     available: bool
     report: dict[str, Any] | None = None  # evals/report.json as Lane A writes it
+
+
+# --- Probar -----------------------------------------------------------------------
+
+
+class UploadLimits(Model):
+    types: tuple[str, ...] = ("pdf", "png", "jpg")
+    max_mb: int = 4
+    max_pages: int = 3
+    per_10_min: int = 5
+    per_day: int = 30
+    keep_hours: int = 24
+
+
+class Sample(Model):
+    id: str
+    title_es: str
+    channel: Channel
+    kind: Literal["routine", "trap", "attack"]
+    hint_es: str  # what to watch for, in one sentence
+    pages: int
+    preview_url: str | None = None
+
+
+class Samples(Model):
+    live_uploads: bool
+    upload_limits: UploadLimits
+    samples: tuple[Sample, ...]
+
+
+class TryIn(Model):
+    sample_id: str
+
+
+class TryStarted(Model):
+    job_id: str
+    events_url: str
+
+
+class TryDone(Model):
+    invoice_id: str
+    decision: Decision
+    label_es: str
+    href: str  # the Detalle path the Tablero cards link to
+
+
+class TryError(Model):
+    message_es: str

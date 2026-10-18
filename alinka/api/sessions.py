@@ -15,7 +15,7 @@ from psycopg.types.json import Jsonb
 from alinka import db
 from alinka.api import engine, runs
 from alinka.api.models import RunStep, View
-from alinka.types import Beneficiary, DecisionRecord, HumanAction, RulesConfig
+from alinka.types import Beneficiary, DecisionRecord, HumanAction, InvoiceFacts, RulesConfig
 from alinka.world import World, load_rules, load_world, rules_hash
 
 CANONICAL = "canonical"
@@ -43,10 +43,16 @@ class Ctx:
     rules: RulesConfig
     world: World
     added: tuple[str, ...] = ()  # beneficiary IDs added in this sandbox
+    tried: tuple[InvoiceFacts, ...] = ()  # invoices run from Probar in this sandbox
 
     @property
-    def facts(self):
-        return runs.load_facts(self.run_name)
+    def facts(self) -> tuple[InvoiceFacts, ...]:
+        base = runs.load_facts(self.run_name)
+        if not self.tried:
+            return base
+        return tuple(
+            sorted((*base, *self.tried), key=lambda f: (f.source.received_at, f.source.invoice_id))
+        )
 
 
 # --- Creating sessions ------------------------------------------------------------
@@ -119,6 +125,13 @@ def context(conn: psycopg.Connection, sid: str) -> Ctx | None:
             (sid,),
         )
     ]
+    tried = tuple(
+        InvoiceFacts.model_validate(r["facts"])
+        for r in conn.execute(
+            "SELECT facts FROM try_invoices WHERE session_id = %s ORDER BY created_at, invoice_id",
+            (sid,),
+        )
+    )
     world = base_world()
     for ben in added:
         world = world.with_beneficiary(ben)
@@ -129,6 +142,7 @@ def context(conn: psycopg.Connection, sid: str) -> Ctx | None:
         rules=RulesConfig.model_validate(yaml.safe_load(rules["rules_yaml"])),
         world=world,
         added=tuple(b.id for b in added),
+        tried=tried,
     )
 
 
@@ -148,6 +162,21 @@ def add_beneficiary(conn: psycopg.Connection, sid: str, ben: Beneficiary) -> Non
         " VALUES (%s, %s, %s)",
         (sid, ben.id, Jsonb(ben.model_dump(mode="json"))),
     )
+
+
+def add_tried(conn: psycopg.Connection, sid: str, facts: InvoiceFacts, sample_id: str | None):
+    conn.execute(
+        "INSERT INTO try_invoices (session_id, invoice_id, sample_id, facts) VALUES (%s, %s, %s, %s)",
+        (sid, facts.source.invoice_id, sample_id, Jsonb(facts.model_dump(mode="json"))),
+    )
+
+
+def tried_count(conn: psycopg.Connection, sid: str, prefix: str) -> int:
+    row = conn.execute(
+        "SELECT count(*) AS n FROM try_invoices WHERE session_id = %s AND invoice_id LIKE %s",
+        (sid, prefix + "%"),
+    ).fetchone()
+    return row["n"]
 
 
 # --- Deciding -----------------------------------------------------------------------
