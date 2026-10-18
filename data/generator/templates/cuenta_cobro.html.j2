@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<meta name="author" content="{{ seller.name }}">
+<meta name="generator" content="Alinka dataset (fictional)">
+<meta name="dcterms.created" content="{{ created }}">
+<meta name="dcterms.modified" content="{{ created }}">
+<style>
+{% include "style.css" %}
+:root { --accent: {{ accent }}; }
+@page { margin: 22mm 22mm 20mm 22mm; @bottom-center { content: "{{ footer }}"; } }
+body { font-family: "Liberation Serif", "DejaVu Serif", serif; font-size: 10.5pt; line-height: 1.5; }
+.center { text-align: center; }
+.big { font-size: 15pt; font-weight: bold; letter-spacing: .12em; }
+.sum { border: 1px solid #333; padding: 3mm 4mm; margin: 4mm 0; }
+.firma { margin-top: 14mm; width: 70mm; border-top: 1px solid #333; padding-top: 1mm; }
+table.lines th { background: #eee; color: #111; }
+</style>
+</head>
+<body>
+{% for s in stamps %}<div class="stamp">{{ s }}</div>{% endfor %}
+<p class="right" style="text-align:right">{{ city_date }}</p>
+<p class="center big">CUENTA DE COBRO N.º {{ number }}</p>
+<p class="center"><b>{{ buyer.name }}</b><br><span class="ficticia small">{{ buyer_marker }}</span><br>{{ buyer.tax_label }}: {{ buyer.tax_id }}<br>{% for l in buyer.lines %}{{ l }}<br>{% endfor %}</p>
+<p class="center"><b>DEBE A:</b></p>
+<p class="center"><b>{{ seller.name }}</b><br><span class="ficticia small">{{ marker }}</span><br>{{ seller.tax_label }}: {{ seller.tax_id }}<br>{% for l in seller.lines %}{{ l }}<br>{% endfor %}</p>
+<div class="sum">
+  <div>LA SUMA DE: <b>{{ total_display }}</b></div>
+  {% if words %}<div>{{ words }}</div>{% endif %}
+</div>
+<p><b>Por concepto de:</b> {{ concept }}</p>
+<table class="lines">
+  <tr>{% for h in line_heads %}<th{% if loop.index > 2 %} class="r"{% endif %}>{{ h }}</th>{% endfor %}</tr>
+  {% for row in lines %}<tr>{% for c in row %}<td{% if loop.index > 2 %} class="r"{% endif %}>{{ c }}</td>{% endfor %}</tr>{% endfor %}
+</table>
+<table class="kv" style="margin-top:4mm">{% for k, v in head_kv %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}</table>
+<div class="notes">{% for n in notes %}<p>{{ n }}</p>{% endfor %}</div>
+<div class="firma">{{ seller.name }}<br><span class="small">{{ seller.tax_label }} {{ seller.tax_id }}</span></div>
+<div class="footer-note">{{ footer_note }}</div>
+</body>
+</html>

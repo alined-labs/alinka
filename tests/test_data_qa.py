@@ -1,11 +1,12 @@
 """The dataset's quality gate: the fictional world loads and stays fictional (Lane B)."""
 
+import json
 from collections import Counter
 from pathlib import Path
 
 import yaml
 
-from alinka.types import RULE_IDS, SECURITY_RULES, Beneficiary, Company, Decision, Split
+from alinka.types import RULE_IDS, SECURITY_RULES, Beneficiary, Company, Decision, Label, Split
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -88,3 +89,22 @@ def test_traps_follow_the_rule_table():
             assert Decision(t["decision"]) == want, key
         else:
             assert rules == ["R15"] and t["decision"] in {"HOLD", "ESCALATE"}, key
+
+
+def labels() -> list[Label]:
+    rows = []
+    for f in sorted((DATA / "labels").glob("*.jsonl")):
+        rows += [Label.model_validate(json.loads(line)) for line in f.read_text().splitlines()]
+    return rows
+
+
+def test_labels_validate_and_point_at_documents():
+    rows = labels()
+    assert rows, "no labels yet"
+    assert len({r.invoice_id for r in rows}) == len(rows)
+    doc = traps()
+    for r in rows:
+        assert (ROOT / r.path).is_file(), r.path
+        t = doc["traps"][r.trap] if r.trap else doc["routine"]
+        assert r.gold_decision == Decision(t["decision"]), r.invoice_id
+        assert list(r.gold_rules) == t["rules"] and r.gold_security == t["security"], r.invoice_id

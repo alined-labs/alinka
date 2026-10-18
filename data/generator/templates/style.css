@@ -1,0 +1,37 @@
+@page { size: A4; margin: 14mm 14mm 16mm 14mm;
+  @bottom-center { content: var(--footer, ""); font-size: 7pt; color: #777; } }
+* { box-sizing: border-box; }
+body { font-family: "DejaVu Sans", "Liberation Sans", sans-serif; font-size: 8.6pt; color: #1d1d1f; line-height: 1.32; }
+h1 { font-size: 12.5pt; margin: 0 0 2mm; letter-spacing: .02em; }
+.accent { color: var(--accent); }
+.head { display: flex; justify-content: space-between; align-items: flex-start; gap: 6mm; border-bottom: 2px solid var(--accent); padding-bottom: 3mm; }
+.seller .name { font-size: 12pt; font-weight: bold; }
+.seller .ficticia, .party .ficticia { font-size: 7pt; color: #8a5a00; font-style: italic; }
+.small { font-size: 7.4pt; color: #444; }
+.docbox { border: 1.2px solid var(--accent); border-radius: 2mm; padding: 2.5mm 3.5mm; min-width: 62mm; text-align: right; }
+.docbox .kind { font-weight: bold; color: var(--accent); font-size: 9.5pt; text-transform: uppercase; }
+.docbox .num { font-size: 11pt; font-weight: bold; }
+.parties { display: flex; gap: 4mm; margin: 4mm 0 3mm; }
+.party { flex: 1; border: 1px solid #ccd; border-radius: 1.5mm; padding: 2mm 3mm; }
+.party .lbl { font-size: 7pt; text-transform: uppercase; color: #667; letter-spacing: .05em; }
+table.kv { border-collapse: collapse; }
+table.kv td { padding: .4mm 2mm .4mm 0; vertical-align: top; }
+table.kv td:first-child { color: #555; white-space: nowrap; }
+table.lines { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+table.lines th { background: var(--accent); color: white; font-weight: bold; text-align: left; padding: 1.6mm 2mm; font-size: 7.8pt; }
+table.lines td { border-bottom: 1px solid #dde; padding: 1.6mm 2mm; vertical-align: top; }
+table.lines .r, table.totals .r { text-align: right; white-space: nowrap; }
+.below { display: flex; justify-content: space-between; gap: 6mm; margin-top: 3mm; }
+.words { flex: 1; font-size: 8pt; }
+.words b { display: block; margin-top: 1mm; }
+table.totals { border-collapse: collapse; min-width: 70mm; }
+table.totals td { padding: 1.1mm 2mm; border-bottom: 1px solid #e3e3ea; }
+table.totals tr.grand td { font-weight: bold; font-size: 10pt; border-top: 2px solid var(--accent); border-bottom: none; }
+.fiscal { display: flex; gap: 4mm; margin-top: 5mm; border-top: 1px dashed #99a; padding-top: 3mm; }
+.fiscal .qr svg { width: 28mm; height: 28mm; }
+.mono { font-family: "DejaVu Sans Mono", monospace; font-size: 6.6pt; word-break: break-all; }
+.notes { margin-top: 3mm; font-size: 7.6pt; color: #333; }
+.notes p { margin: .8mm 0; }
+.stamp { position: absolute; top: 85mm; left: 30mm; transform: rotate(-18deg); font-size: 46pt; font-weight: bold;
+  color: rgba(200, 20, 20, .55); border: 5px solid rgba(200, 20, 20, .55); padding: 2mm 8mm; letter-spacing: .1em; }
+.footer-note { margin-top: 5mm; font-size: 6.8pt; color: #777; text-align: center; }
