@@ -1,5 +1,8 @@
+import { Link } from "react-router";
+
 import type { Card } from "~/api/client";
 import { amountParts, formatDay, formatUsd } from "~/lib/format";
+import { useView } from "~/lib/view";
 
 import { CHANNEL, ChannelIcon, DecisionChip, DocSlip, ReasonText, RuleChip, SecurityTag } from "./badges";
 
@@ -28,8 +31,14 @@ export function Amount({ minor, currency }: { minor: number | null | undefined; 
 
 export function InvoiceCard({ card, moved = false }: { card: Card; moved?: boolean }) {
   const decided = card.state !== "inbox";
+  const [view] = useView();
   return (
-    <li className={`ak-card ${moved ? "ak-moved" : ""}`} aria-label={`Factura ${card.invoice_id}`}>
+    <li className="grid">
+      <Link
+        to={{ pathname: `/facturas/${encodeURIComponent(card.invoice_id)}`, search: view === "canonical" ? "?vista=canonica" : "" }}
+        className={`ak-card ${moved ? "ak-moved" : ""}`}
+        aria-label={`Factura ${card.invoice_id}: ${card.beneficiary_name ?? "beneficiario no identificado"}`}
+      >
       <div className="ak-card__top">
         <span className="ak-card__who min-w-0">
           <BeneficiaryName card={card} />
@@ -63,6 +72,7 @@ export function InvoiceCard({ card, moved = false }: { card: Card; moved?: boole
         </div>
       )}
       {card.approver && <p className="ak-note">Decidida por {card.approver}</p>}
+      </Link>
     </li>
   );
 }

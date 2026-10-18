@@ -45,3 +45,17 @@ const day = new Intl.DateTimeFormat("es", { day: "numeric", month: "short", year
 export function formatDay(iso: string): string {
   return day.format(new Date(iso));
 }
+
+const dayTime = new Intl.DateTimeFormat("es", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "UTC",
+});
+
+/** "2026-10-06T13:45:00Z" -> "6 oct 2026, 13:45 UTC" */
+export function formatDateTime(iso: string): string {
+  return `${dayTime.format(new Date(iso))} UTC`;
+}

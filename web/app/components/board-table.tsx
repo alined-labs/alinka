@@ -15,9 +15,11 @@ import {
 } from "@tanstack/react-table";
 import { ArrowDown, ArrowUp } from "lucide-react";
 import { useMemo, useState } from "react";
+import { Link } from "react-router";
 
 import type { Card } from "~/api/client";
 import { STATE_LABEL } from "~/lib/board";
+import { useView } from "~/lib/view";
 
 import { CHANNEL, ChannelIcon, DecisionChip, ReasonText, RuleChip, SecurityTag } from "./badges";
 import { Amount, BeneficiaryName } from "./invoice-card";
@@ -32,13 +34,25 @@ const features = tableFeatures({
 });
 
 const col = createColumnHelper<typeof features, Card>();
+
+function InvoiceLink({ id }: { id: string }) {
+  const [view] = useView();
+  return (
+    <Link
+      to={{ pathname: `/facturas/${encodeURIComponent(id)}`, search: view === "canonical" ? "?vista=canonica" : "" }}
+      className="font-mono whitespace-nowrap underline underline-offset-2"
+    >
+      {id}
+    </Link>
+  );
+}
 const NO_BENEFICIARY = "__none__";
 const NO_RULE = "__none__";
 
 const columns = col.columns([
   col.accessor("invoice_id", {
     header: "Factura",
-    cell: (info) => <span className="font-mono whitespace-nowrap">{info.getValue()}</span>,
+    cell: (info) => <InvoiceLink id={info.getValue()} />,
   }),
   col.accessor("channel", {
     header: "Canal",
