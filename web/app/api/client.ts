@@ -4,9 +4,12 @@ import { createFixtureFetch, loadSamples } from "./fixtures";
 import type { components, paths } from "./schema";
 
 export type Schemas = components["schemas"];
-export type Board = Schemas["Board"];
 export type Card = Schemas["Card"];
 export type Column = Schemas["Column"];
+// openapi.json types the columns as a 3-tuple (PAY, HOLD, ESCALATE); openapi-fetch's inferred
+// responses widen it to an array, so the app uses the array form everywhere.
+export type Board = Omit<Schemas["Board"], "columns"> & { columns: Column[] };
+export type RunResult = Omit<Schemas["RunResult"], "board"> & { board: Board };
 export type View = Board["view"];
 
 export const FIXTURES = import.meta.env.VITE_FIXTURES === "1";
