@@ -374,6 +374,20 @@
             }
           },
           {
+            "name": "scale",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 3,
+              "minimum": 1,
+              "description": "1, 2 or 3: 150, 300 or 450 dpi",
+              "default": 1,
+              "title": "Scale"
+            },
+            "description": "1, 2 or 3: 150, 300 or 450 dpi"
+          },
+          {
             "name": "view",
             "in": "query",
             "required": false,
@@ -406,6 +420,86 @@
               }
             },
             "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/invoices/{invoice_id}/trace": {
+      "get": {
+        "summary": "Get Trace",
+        "description": "Cómo se decidió: the seven Probar steps rebuilt from the stored record.",
+        "operationId": "get_trace_api_invoices__invoice_id__trace_get",
+        "parameters": [
+          {
+            "name": "invoice_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Invoice Id"
+            }
+          },
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "enum": [
+                "sandbox",
+                "canonical"
+              ],
+              "type": "string",
+              "description": "sandbox (default) or the read-only canonical run",
+              "default": "sandbox",
+              "title": "View"
+            },
+            "description": "sandbox (default) or the read-only canonical run"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TraceStep"
+                  },
+                  "title": "Response Get Trace Api Invoices  Invoice Id  Trace Get"
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Conflict"
           },
           "422": {
             "description": "Validation Error",
@@ -3336,6 +3430,67 @@
           "received_at"
         ],
         "title": "Source"
+      },
+      "TraceStep": {
+        "properties": {
+          "step": {
+            "type": "string",
+            "enum": [
+              "received",
+              "sanitize",
+              "read",
+              "verify",
+              "rules",
+              "decide",
+              "record"
+            ],
+            "title": "Step"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "running",
+              "done",
+              "flagged",
+              "error"
+            ],
+            "title": "Status"
+          },
+          "title_es": {
+            "type": "string",
+            "title": "Title Es"
+          },
+          "summary_es": {
+            "type": "string",
+            "title": "Summary Es"
+          },
+          "ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Ms"
+          },
+          "data": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Data",
+            "default": {}
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "step",
+          "status",
+          "title_es",
+          "summary_es"
+        ],
+        "title": "TraceStep"
       },
       "TryStarted": {
         "properties": {
