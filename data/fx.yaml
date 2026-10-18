@@ -1,0 +1,16 @@
+# Official exchange rates on or before as_of (2026-10-17), fetched 2026-10-18 (Lane A, A1).
+# rate is the decimal string exactly as published. quote: per_usd = units per 1 USD;
+# usd_per_unit = USD per 1 unit (the ECB publishes USD per EUR).
+# COP: Banco de la República TRM, vigencia dates (the TRM for Sat 17 is valid 17-19 Oct).
+# MXN: Banxico FIX as published in the DOF on that date (determined the previous business day).
+# BRL: Banco Central do Brasil PTAX, selling (cotacaoVenda), closing bulletin.
+# EUR: ECB euro foreign exchange reference rate, USD per EUR.
+rates:
+  - {currency: COP, rate: "3170.46", quote: per_usd, date: 2026-10-16, source: "Banco de la República TRM", url: "https://www.datos.gov.co/resource/32sa-8pi3.json?$order=vigenciadesde%20DESC&$limit=5"}
+  - {currency: COP, rate: "3174.67", quote: per_usd, date: 2026-10-17, source: "Banco de la República TRM", url: "https://www.datos.gov.co/resource/32sa-8pi3.json?$order=vigenciadesde%20DESC&$limit=5"}
+  - {currency: MXN, rate: "18.488800", quote: per_usd, date: 2026-10-15, source: "Banxico FIX (DOF)", url: "https://dof.gob.mx/indicadores_detalle.php?cod_tipo_indicador=158&dfecha=12%2F10%2F2026&hfecha=17%2F10%2F2026"}
+  - {currency: MXN, rate: "18.425000", quote: per_usd, date: 2026-10-16, source: "Banxico FIX (DOF)", url: "https://dof.gob.mx/indicadores_detalle.php?cod_tipo_indicador=158&dfecha=12%2F10%2F2026&hfecha=17%2F10%2F2026"}
+  - {currency: BRL, rate: "5.05210", quote: per_usd, date: 2026-10-15, source: "BCB PTAX venda", url: "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@dataInicial='10-12-2026'&@dataFinalCotacao='10-17-2026'&$format=json"}
+  - {currency: BRL, rate: "5.08260", quote: per_usd, date: 2026-10-16, source: "BCB PTAX venda", url: "https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@dataInicial='10-12-2026'&@dataFinalCotacao='10-17-2026'&$format=json"}
+  - {currency: EUR, rate: "1.1208", quote: usd_per_unit, date: 2026-10-15, source: "ECB reference rate", url: "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml"}
+  - {currency: EUR, rate: "1.1253", quote: usd_per_unit, date: 2026-10-16, source: "ECB reference rate", url: "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml"}
