@@ -46,9 +46,21 @@ export async function counts(page: Page) {
   return { inbox: await read("inbox"), PAY: await read("PAY"), HOLD: await read("HOLD"), ESCALATE: await read("ESCALATE") };
 }
 
+/**
+ * Opens a page and waits for React to hydrate it. The public routes arrive prerendered, so their
+ * buttons are on screen before they work: wait until <main> carries React's props.
+ */
+export async function open(page: Page, path: string) {
+  await page.goto(path);
+  await page.waitForFunction(() => {
+    const main = document.querySelector("main");
+    return main !== null && Object.keys(main).some((key) => key.startsWith("__reactProps$"));
+  });
+}
+
 /** The sandbox board, decided: press "Ejecutar agente" and wait for the inbox to empty. */
 export async function runAgent(page: Page) {
-  await page.goto("/");
+  await open(page, "/");
   const run = page.getByRole("button", { name: "Ejecutar agente" });
   await expect(run).toBeEnabled();
   await run.click();
