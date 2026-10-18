@@ -235,7 +235,12 @@ export function TrySteps({ steps, onActiveField }: { steps: readonly TraceStep[]
             {name === "sanitize" && <Hidden data={d} />}
             {name === "read" && (
               <>
-                {d.error && <p className="ak-banner ak-banner--error m-0">{d.error}</p>}
+                {d.error && (
+                  <div className="ak-banner ak-banner--error m-0 grid gap-1">
+                    <span>La IA no pudo leer el documento. La factura pasa a una persona (R10).</span>
+                    <span className="ak-note [overflow-wrap:anywhere]">Detalle técnico: {d.error}</span>
+                  </div>
+                )}
                 {(d.instructions_seen ?? []).length > 0 && (
                   <DocSlip caption="La IA vio estas instrucciones y no las siguió">{(d.instructions_seen as string[]).join("\n")}</DocSlip>
                 )}
