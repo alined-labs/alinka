@@ -11,7 +11,7 @@ from alinka.types import InvoiceFacts
 ROOT = Path(__file__).resolve().parents[2]
 RUNS = ROOT / "data" / "runs"
 FIXTURE_RUN = "fixture"
-FIXTURE_RECORDS = Path(__file__).resolve().parent / "fixtures" / "records.jsonl"
+FIXTURE_FACTS = Path(__file__).resolve().parent / "fixtures" / "facts.jsonl"
 
 
 def _parse(line: str) -> InvoiceFacts | None:
@@ -25,9 +25,7 @@ def _parse(line: str) -> InvoiceFacts | None:
 def load_facts(name: str) -> tuple[InvoiceFacts, ...]:
     """Every invoice of a run in received order; the last line wins for a repeated invoice."""
     if name == FIXTURE_RUN:
-        lines = [
-            json.dumps(json.loads(x)["facts"]) for x in FIXTURE_RECORDS.read_text().split("\n") if x
-        ]
+        lines = FIXTURE_FACTS.read_text().splitlines()
     else:
         run = (RUNS / name).resolve()
         if run.parent != RUNS.resolve() or not run.is_dir():
