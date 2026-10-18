@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001146,
+ "input_hash": "04f243cc98f7a4ed0cf8c55d717fd07e11fb720b180aa11fd0bb0807ca719f69",
+ "input_tokens": 6272,
+ "key": "548fbdd0afed116fe8db76dc1f066f9cea605fa1d34b5b5cdbf82f34de1bcb1b",
+ "latency_ms": 3730,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 1038,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:40:54Z",
+ "request": {
+  "doc_sha256": "9016d2c120793e992dbdd3759b8c643919e1d42daf008aa015dbc3e9f2c4aa3c",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1319,
+  "visible_text_sha256": "d7ff78ab944fc6dfd1e615f814bb82dc87e9eba9437f8bdb68a45b5914e8046a"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: MIL NOVECIENTOS CINCUENTA DÓLARES ESTADOUNIDENSES",
+    "value": "SON: MIL NOVECIENTOS CINCUENTA DÓLARES ESTADOUNIDENSES"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio Rioplatense · CBU DEMO 0000 0000 0000 0009",
+    "value": "Banco Ficticio Rioplatense · CBU DEMO 0000 0000 0000 0009"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Tomás Ferreyra",
+    "value": "Tomás Ferreyra"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "CUIT: DEMO-20-31456789-4",
+    "value": "DEMO-20-31456789-4"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "ID impositivo (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda USD (dólar estadounidense)",
+    "value": "USD (dólar estadounidense)"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "FACTURA E · CÓD. 19 (EXPORTACIÓN DE SERVICIOS)",
+    "value": "FACTURA E · CÓD. 19 (EXPORTACIÓN DE SERVICIOS)"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Vencimiento del pago 15/10/2026",
+    "value": "15/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": "CAE N.º 71514557938951",
+    "value": "71514557938951"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Comp. N.º 00003-00000141",
+    "value": "00003-00000141"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión 30/09/2026",
+    "value": "30/09/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período facturado 01/09/2026 al 30/09/2026",
+    "value": "01/09/2026 al 30/09/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Desarrollo móvil: aplicación iOS y Android en Flutter, septiembre de 2026",
+    "value": "Desarrollo móvil: aplicación iOS y Android en Flutter, septiembre de 2026"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 1.950,00",
+    "value": "1.950,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "U$S 1.950,00",
+    "value": "1.950,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

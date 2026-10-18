@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001166,
+ "input_hash": "45d9c4debc747111c39b0a97cc97830bf5704f4d85c152478c3c3c349e93531a",
+ "input_tokens": 6328,
+ "key": "98a6655cb91a3e7e663ec2b3e6a137211707d97ddcbb86952488be1e2e3889c7",
+ "latency_ms": 3862,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 1066,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:37:43Z",
+ "request": {
+  "doc_sha256": "c6393f4c22c7654f9fdeed7abf0aee6a0b01124ed8e693219aae8ef155ed2d61",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1504,
+  "visible_text_sha256": "cfd2936c0c98216fca7920920836557920358fca0a48f36615b55bb6d253edc0"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Thirteen thousand five hundred and 00/100 Brazilian Reais",
+    "value": "Thirteen thousand five hundred and 00/100 Brazilian Reais"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Dados bancários / Bank Banco Fictício Paulista · Ag. DEMO-0001 · CC DEMO-44321-8",
+    "value": "Banco Fictício Paulista · Ag. DEMO-0001 · CC DEMO-44321-8"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Agência Ipê Criativa Ltda.",
+    "value": "Agência Ipê Criativa Ltda."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "CNPJ: DEMO.123.456/0001-08",
+    "value": "DEMO.123.456/0001-08"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Tax ID (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moeda / Currency BRL",
+    "value": "BRL"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "NFS-E · NOTA FISCAL DE SERVIÇO ELETRÔNICA · SERVICE INVOICE (FICTÍCIA)",
+    "value": "NFS-E · NOTA FISCAL DE SERVIÇO ELETRÔNICA · SERVICE INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Vencimento / Due date 30/10/2026",
+    "value": "30/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": "Chave de acesso 26000761915106507328505510385409978537417665",
+    "value": "26000761915106507328505510385409978537417665"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Número / Number 000230",
+    "value": "000230"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Emissão / Issue date 30/09/2026",
+    "value": "30/09/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Competência / Period 01/09/2026 a 30/09/2026",
+    "value": "01/09/2026 a 30/09/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Identidade visual e motion graphics / Brand identity and motion graphics",
+    "value": "Identidade visual e motion graphics / Brand identity and motion graphics"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Valor dos serviços / Services 13.500,00",
+    "value": "13.500,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "ISS / Service tax (0%) 0,00",
+    "value": "0,00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "R$ 13.500,00",
+    "value": "13.500,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

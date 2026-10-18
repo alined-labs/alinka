@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001619,
+ "input_hash": "d60b4fb28631029b6db5ee2bffd8cc697baaf03fb5903e0d92900e0a51578e49",
+ "input_tokens": 6150,
+ "key": "55fc2adca21cccd79e0e1cc3983cc37cee2bcc4395b02fe223aac63b5bdf8a77",
+ "latency_ms": 7106,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 2008,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:40:05Z",
+ "request": {
+  "doc_sha256": "372f19464afd3511a49325de849e7645f5c3f6dd33599179f8fd8df101ef4dad",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1248,
+  "visible_text_sha256": "2e980843fef6af532ca48ea466a7dc37d8cc42282bf7ddfe83b13e5a3817ae55"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Amount in words: Four hundred twenty and 00/100 US Dollars",
+    "value": "Four hundred twenty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Account: Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-7730-0011",
+    "value": "Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-7730-0011"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Quillstack Software, Inc. (fictitious company)",
+    "value": "Quillstack Software, Inc."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-27-1098345",
+    "value": "DEMO-27-1098345"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Bill to: Ceiba Demo Labs, Inc. (fictitious company)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency: USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Invoice",
+    "value": "Invoice"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date: October 30, 2026",
+    "value": "October 30, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # QS-11010",
+    "value": "QS-11010"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date: September 30, 2026",
+    "value": "September 30, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period: September 1, 2026 – September 30, 2026",
+    "value": "September 1, 2026 – September 30, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "1 | Documentation wiki subscription, Team plan, user seats | 20 | seat | 21.00 | 420.00",
+    "value": "Documentation wiki subscription, Team plan, user seats"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal: 420.00",
+    "value": "420.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax: 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD): $420.00",
+    "value": "420.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

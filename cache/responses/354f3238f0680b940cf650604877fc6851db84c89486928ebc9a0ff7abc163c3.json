@@ -1,0 +1,95 @@
+{
+ "cost_usd": 0.000112056,
+ "input_hash": "02aad9f90c6a55f333ca0381e8f547213be00d6201884961ea316f32ac9070a6",
+ "input_tokens": 2668,
+ "key": "354f3238f0680b940cf650604877fc6851db84c89486928ebc9a0ff7abc163c3",
+ "latency_ms": 644,
+ "model": "typesafe/jev-1.13",
+ "output_tokens": 588,
+ "prompt_hash": "34b3dbf1dd80c9f2200402ed773dcbdef8bc4ba6820806d791d6222eb73cc924",
+ "recorded_at": "2026-10-18T08:39:05Z",
+ "request": {
+  "model": "typesafe/jev-1.13",
+  "questions": [
+   "J1a",
+   "J1b",
+   "J2.beneficiary_name",
+   "J2.beneficiary_tax_id",
+   "J2.currency",
+   "J2.due_date",
+   "J2.invoice_number",
+   "J2.total"
+  ],
+  "role": "jev"
+ },
+ "response": {
+  "answers": {
+   "J1a": {
+    "choice": "26.000.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "12.512.187,00": 0,
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "2.027,00": 0,
+     "21.848.739,00": 0,
+     "26.000.000,00": 1,
+     "4.151.261,00": 0,
+     "4.417.302,00": 0,
+     "4.471,00": 0,
+     "5.000,00": 0,
+     "514,00": 0,
+     "901.234.567,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J1b": {
+    "choice": "26.000.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "12.512.187,00": 0,
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "2.027,00": 0,
+     "21.848.739,00": 0,
+     "26.000.000,00": 1,
+     "4.151.261,00": 0,
+     "4.417.302,00": 0,
+     "4.471,00": 0,
+     "5.000,00": 0,
+     "514,00": 0,
+     "901.234.567,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J2.beneficiary_name": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.beneficiary_tax_id": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.currency": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.due_date": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.invoice_number": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.total": {
+    "noul": 0.04,
+    "type": "noul"
+   }
+  },
+  "model": "typesafe/jev-1.13-20260917"
+ },
+ "stop_reason": "end_turn"
+}

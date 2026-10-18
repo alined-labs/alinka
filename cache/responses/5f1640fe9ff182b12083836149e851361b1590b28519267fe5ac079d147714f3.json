@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.022172,
+ "input_hash": "9a529025585d4b3e034a3b13c27ec43b48898f237dd84337afe9b6ee77a7049f",
+ "input_tokens": 6181,
+ "key": "5f1640fe9ff182b12083836149e851361b1590b28519267fe5ac079d147714f3",
+ "latency_ms": 5826,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 981,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:37:24Z",
+ "request": {
+  "doc_sha256": "1b89fc8dda441f907ba1988b8d1f7159d6ab12f25116a5e3d93353aedb48082f",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1185,
+  "visible_text_sha256": "782f6dd4b3c02dd9bb6cd6d057fb1d1f0bfa50bc2ec93c09402fc184ea075ae9"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: SEISCIENTOS CINCUENTA DÓLARES ESTADOUNIDENSES",
+    "value": "SON: SEISCIENTOS CINCUENTA DÓLARES ESTADOUNIDENSES"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Consignar a: Banco Ficticio Andino · Ahorros DEMO-0012-5561-05",
+    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "DEBE A: Julián Herrera Mejía (empresa ficticia)",
+    "value": "Julián Herrera Mejía"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C. DEMO-CC-1152034567",
+    "value": "DEMO-CC-1152034567"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc. (empresa ficticia)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda: USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º CC-2026-44",
+    "value": "CUENTA DE COBRO"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago: 02/10/2026",
+    "value": "02/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º CC-2026-44",
+    "value": "CC-2026-44"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión: 22/09/2026",
+    "value": "22/09/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período: 16/09/2026 al 21/09/2026",
+    "value": "16/09/2026 al 21/09/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Por concepto de: Ilustración: piezas gráficas para el módulo de notificaciones, septiembre de 2026.",
+    "value": "Ilustración: piezas gráficas para el módulo de notificaciones, septiembre de 2026."
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "LA SUMA DE: USD $ 650,00 USD",
+    "value": "650,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

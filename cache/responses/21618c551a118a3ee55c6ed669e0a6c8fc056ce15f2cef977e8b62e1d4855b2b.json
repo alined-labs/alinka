@@ -1,0 +1,95 @@
+{
+ "cost_usd": 0.000119406,
+ "input_hash": "9c1b617c1c876ac3f9f960fe4652201418a82f5d240f8b65d76e1f35c756f4cd",
+ "input_tokens": 2843,
+ "key": "21618c551a118a3ee55c6ed669e0a6c8fc056ce15f2cef977e8b62e1d4855b2b",
+ "latency_ms": 579,
+ "model": "typesafe/jev-1.13",
+ "output_tokens": 514,
+ "prompt_hash": "34b3dbf1dd80c9f2200402ed773dcbdef8bc4ba6820806d791d6222eb73cc924",
+ "recorded_at": "2026-10-18T08:41:13Z",
+ "request": {
+  "model": "typesafe/jev-1.13",
+  "questions": [
+   "J1a",
+   "J1b",
+   "J2.beneficiary_name",
+   "J2.beneficiary_tax_id",
+   "J2.currency",
+   "J2.due_date",
+   "J2.invoice_number",
+   "J2.total"
+  ],
+  "role": "jev"
+ },
+ "response": {
+  "answers": {
+   "J1a": {
+    "choice": "11.500,00",
+    "confidence": 1,
+    "probabilities": {
+     "100,00": 0,
+     "11.500,00": 1,
+     "2.026,00": 0,
+     "300,00": 0,
+     "4.417.302,00": 0,
+     "500,00": 0,
+     "511,00": 0,
+     "601,00": 0,
+     "64.000,00": 0,
+     "77,00": 0,
+     "81.111.500,00": 0,
+     "88,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J1b": {
+    "choice": "11.500,00",
+    "confidence": 1,
+    "probabilities": {
+     "100,00": 0,
+     "11.500,00": 1,
+     "2.026,00": 0,
+     "300,00": 0,
+     "4.417.302,00": 0,
+     "500,00": 0,
+     "511,00": 0,
+     "601,00": 0,
+     "64.000,00": 0,
+     "77,00": 0,
+     "81.111.500,00": 0,
+     "88,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J2.beneficiary_name": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.beneficiary_tax_id": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.currency": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.due_date": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.invoice_number": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.total": {
+    "noul": 0.04,
+    "type": "noul"
+   }
+  },
+  "model": "typesafe/jev-1.13-20260917"
+ },
+ "stop_reason": "end_turn"
+}

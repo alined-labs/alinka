@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.020924,
+ "input_hash": "a35c181c8b9732961a02e69b242d359c370a47dabbb4a563fbddc6148b490699",
+ "input_tokens": 6132,
+ "key": "92d80223643729a99018787ff936b34824a33b83c7658f164077137ddf6fc311",
+ "latency_ms": 4934,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 866,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:40:19Z",
+ "request": {
+  "doc_sha256": "e30afb0028af41b1338cf549c85d963e00fdb00e0547da77f5b6419597810e26",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1178,
+  "visible_text_sha256": "e121e6c8037160cb4412ea59fcbbcd58e17f3be0a5c605e21da5fcfeaf8df9fc"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "One thousand nine hundred fifty and 00/100 US Dollars",
+    "value": "One thousand nine hundred fifty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio Rioplatense · CBU DEMO 0000 0000 0000 0009",
+    "value": "Banco Ficticio Rioplatense · CBU DEMO 0000 0000 0000 0009"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Tomás Ferreyra",
+    "value": "Tomás Ferreyra"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "CUIT: DEMO-20-31456789-4",
+    "value": "DEMO-20-31456789-4"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "INVOICE",
+    "value": "INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "October 16, 2026",
+    "value": "October 16, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # 00003-00000140",
+    "value": "00003-00000140"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "October 1, 2026",
+    "value": "October 1, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period September 1, 2026 – September 30, 2026",
+    "value": "September 1, 2026 – September 30, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Mobile development: iOS and Android app in Flutter, September 2026",
+    "value": "Mobile development: iOS and Android app in Flutter, September 2026"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 1,950.00",
+    "value": "1,950.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "$1,950.00",
+    "value": "1,950.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

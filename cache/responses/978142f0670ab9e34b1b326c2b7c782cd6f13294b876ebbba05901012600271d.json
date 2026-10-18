@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001184,
+ "input_hash": "ee972dc8e80fe7ee3e6c5de7243697137645268ca8fc561eb55e4d52b3b840b3",
+ "input_tokens": 6323,
+ "key": "978142f0670ab9e34b1b326c2b7c782cd6f13294b876ebbba05901012600271d",
+ "latency_ms": 4000,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 1103,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:36:48Z",
+ "request": {
+  "doc_sha256": "6870ceaba771a72dae661210dfe28b6826b919cb33e646b3cda45db0089dedbd",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1355,
+  "visible_text_sha256": "500379a8823fc8c7d484ea66199615b574d79f9492bbaf94e6074a25e0eb8884"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: TRES MILLONES SEISCIENTOS MIL PESOS M/CTE",
+    "value": "SON: TRES MILLONES SEISCIENTOS MIL PESOS M/CTE"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio del Caribe · Corriente DEMO-0450-2210-04",
+    "value": "Banco Ficticio del Caribe · Corriente DEMO-0450-2210-04"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Caribe Soporte Técnico S.A.S.",
+    "value": "Caribe Soporte Técnico S.A.S."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIT: DEMO-900765432-6",
+    "value": "DEMO-900765432-6"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Tax ID (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda COP",
+    "value": "COP"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "FACTURA ELECTRÓNICA DE VENTA",
+    "value": "FACTURA ELECTRÓNICA DE VENTA"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha de vencimiento 30/10/2026",
+    "value": "30/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "medium",
+    "quote": "CUFE 5b335d6d90523ff175c4c9022e2cb771cad3bf13bf49b98412c67ee7a29d4f088be9c9d4219e53ac7 b3c3e4d8be8f666",
+    "value": "5b335d6d90523ff175c4c9022e2cb771cad3bf13bf49b98412c67ee7a29d4f088be9c9d4219e53acb3c3e4d8be8f666"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "N.º CST-0618",
+    "value": "CST-0618"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión 30/09/2026",
+    "value": "30/09/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período 01/09/2026 al 30/09/2026",
+    "value": "01/09/2026 al 30/09/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Soporte técnico y mesa de ayuda, septiembre de 2026",
+    "value": "Soporte técnico y mesa de ayuda, septiembre de 2026"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 3.025.210,00",
+    "value": "3.025.210,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA 19% 574.790,00",
+    "value": "574.790,00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Total a pagar (COP) $ 3.600.000,00",
+    "value": "3.600.000,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

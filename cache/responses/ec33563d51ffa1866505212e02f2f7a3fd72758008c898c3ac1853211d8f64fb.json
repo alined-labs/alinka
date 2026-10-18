@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001136,
+ "input_hash": "fe30f3200969566e4e7afa036c67ebe776fb8fcaeca1741d7dceb457f6218a7b",
+ "input_tokens": 6264,
+ "key": "ec33563d51ffa1866505212e02f2f7a3fd72758008c898c3ac1853211d8f64fb",
+ "latency_ms": 3790,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 1020,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:41:34Z",
+ "request": {
+  "doc_sha256": "422be2d635a141ef2963cdd6352777d87f1000281c94ecdba275fe0633fd8508",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1295,
+  "visible_text_sha256": "85330c78af4420fd30d354ced6a28bd7cacf13712fe14550404960d266bf5e10"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: MIL DOSCIENTOS CINCO EUROS",
+    "value": "SON: MIL DOSCIENTOS CINCO EUROS"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "IBAN ES00 DEMO 0000 0000 0000 0013",
+    "value": "IBAN ES00 DEMO 0000 0000 0000 0013"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L.",
+    "value": "Estudio Albahaca S.L."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIF: DEMO-B12345678",
+    "value": "DEMO-B12345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Tax ID (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda EUR",
+    "value": "EUR"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "FACTURA",
+    "value": "FACTURA"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha de vencimiento 01/11/2026",
+    "value": "01/11/2026"
+   },
+   "fiscal_id": {
+    "confidence": "medium",
+    "quote": "Huella del registro umJI5b6XkG2CpB6IMTGpgkB1lXkHq5aCG/GJtvV8xHn1NlmbC+Tp52Q/mIVifHti",
+    "value": "umJI5b6XkG2CpB6IMTGpgkB1lXkHq5aCG/GJtvV8xHn1NlmbC+Tp52Q/mIVifHti"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "N.º A-2026-311",
+    "value": "A-2026-311"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de expedición 02/10/2026",
+    "value": "02/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Fecha de la operación 28/09/2026 al 02/10/2026",
+    "value": "28/09/2026 al 02/10/2026"
+   },
+   "service_text": {
+    "confidence": "medium",
+    "quote": "Sprint de diseño con el equipo de producto",
+    "value": "Sprint de diseño con el equipo de producto; Pruebas de usabilidad con usuarios"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Base imponible 1.205,00",
+    "value": "1.205,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA (no sujeto) 0,00",
+    "value": "0,00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Total factura (EUR) 1.205,00 €",
+    "value": "1.205,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

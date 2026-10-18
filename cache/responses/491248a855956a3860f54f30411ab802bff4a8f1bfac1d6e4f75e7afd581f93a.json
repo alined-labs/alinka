@@ -1,0 +1,117 @@
+{
+ "cost_usd": 0.001073,
+ "input_hash": "95379fdc5ebab8cf3961b3e44549812817c88f1f8586161f96ef9b70130acf10",
+ "input_tokens": 6188,
+ "key": "491248a855956a3860f54f30411ab802bff4a8f1bfac1d6e4f75e7afd581f93a",
+ "latency_ms": 4092,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 909,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:38:00Z",
+ "request": {
+  "doc_sha256": "2d4fba47b8909eb8553d4452939a058057b3edd0359611cd032680065f2c908e",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1301,
+  "visible_text_sha256": "eb4cc73faa24a3df99a6126e31bfe460a7e7983a3c352e971e9887b59b1b4d50"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Amount in words: One thousand one hundred ninety and 00/100 Euros",
+    "value": "One thousand one hundred ninety and 00/100 Euros"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Account: IBAN ES00 DEMO 0000 0000 0000 0013",
+    "value": "IBAN ES00 DEMO 0000 0000 0000 0013"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L. (fictitious company)",
+    "value": "Estudio Albahaca S.L."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIF: DEMO-B12345678",
+    "value": "DEMO-B12345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Bill to: Ceiba Demo Labs, Inc. (fictitious company)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency: EUR",
+    "value": "EUR"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Invoice",
+    "value": "Invoice"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date: November 1, 2026",
+    "value": "November 1, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [
+    "Please reference invoice A-2026-306 with your payment."
+   ],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # A-2026-306",
+    "value": "A-2026-306"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date: October 2, 2026",
+    "value": "October 2, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period: September 24, 2026 – October 1, 2026",
+    "value": "September 24, 2026 – October 1, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "1 | Design sprint with the product team | 1 | service | 714.00 | 714.00",
+    "value": "Design sprint with the product team; Usability testing sessions"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal: 1,190.00",
+    "value": "1,190.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax: 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (EUR): $1,190.00",
+    "value": "1,190.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

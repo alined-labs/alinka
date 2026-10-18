@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001035,
+ "input_hash": "a4c8362401bcb1674327a060541ec224ec4eda3f4cbfaf5b97075031196e4055",
+ "input_tokens": 6106,
+ "key": "f830b05081d97afed164a39ac7762a450c9542f69cf1bf786753e8e0671c8bbd",
+ "latency_ms": 3119,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 848,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:40:14Z",
+ "request": {
+  "doc_sha256": "969a8a86ac075881dccba840327985b0a98f51554f21f586816d870c459545ad",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1136,
+  "visible_text_sha256": "ae8bd45c5fffa4056af4c90afc1b1db93a95dc72ad375e7f162c00cdf140a653"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Six hundred fifty and 00/100 US Dollars",
+    "value": "Six hundred fifty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05",
+    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Julián Herrera Mejía",
+    "value": "Julián Herrera Mejía"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C.: DEMO-CC-1152034567",
+    "value": "DEMO-CC-1152034567"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Balance due (USD)",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "INVOICE",
+    "value": "INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date October 21, 2026",
+    "value": "October 21, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # CC-2026-47",
+    "value": "CC-2026-47"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date October 11, 2026",
+    "value": "October 11, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period October 6, 2026 – October 11, 2026",
+    "value": "October 6, 2026 – October 11, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Illustration: graphic assets for the billing screens",
+    "value": "Illustration: graphic assets for the billing screens"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 650.00",
+    "value": "650.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD) $650.00",
+    "value": "650.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001805,
+ "input_hash": "841e0a8684c7f0399f3e5482148d5fd5931a131184f0a5f710de22c3ee5bf48b",
+ "input_tokens": 6722,
+ "key": "ef10c65db52ab4a5e4de11421a81fed77d126e82f2a0d0a45a7e21ca2f06200a",
+ "latency_ms": 7676,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 2265,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:36:53Z",
+ "request": {
+  "doc_sha256": "20ee81e0258d71c5084c49212215d4b0a23993e26f89e81863cc13cc7ecab36c",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1994,
+  "visible_text_sha256": "9c5bfefa7bd7686f7dd8aeb5bdd94e53918e15c516b1708d7ec0dc59a95b9f53"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Importe con letra: (NUEVE MIL OCHOCIENTOS PESOS 00/100 M.N.)",
+    "value": "(NUEVE MIL OCHOCIENTOS PESOS 00/100 M.N.)"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Cuenta para pago: Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 07",
+    "value": "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 07"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Bajío Traducciones S.C. (empresa ficticia)",
+    "value": "Bajío Traducciones S.C."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "RFC: DEMO020202CD2",
+    "value": "DEMO020202CD2"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Receptor: Ceiba Demo Labs, Inc. (empresa ficticia)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "medium",
+    "quote": "Núm. reg. id. trib.: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda: MXN",
+    "value": "MXN"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Factura · CFDI 4.0 (representación impresa)",
+    "value": "Factura"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago: 12/10/2026",
+    "value": "12/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": "Folio fiscal (UUID): 268ECF2D-B81A-5C32-8A10-2A1334ED7638",
+    "value": "268ECF2D-B81A-5C32-8A10-2A1334ED7638"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Serie y folio T-0906",
+    "value": "T-0906"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión: 2026-09-27T09:56:12",
+    "value": "2026-09-27T09:56:12"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Periodo: 19/09/2026 al 26/09/2026",
+    "value": "19/09/2026 al 26/09/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "81111500 | Traducción y localización al inglés del módulo de onboarding | 1 | servicio | 9,800.00 | 9,800.00",
+    "value": "Traducción y localización al inglés del módulo de onboarding"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal: 9,800.00",
+    "value": "9,800.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA trasladado 0% (exportación): 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Total (MXN): $ 9,800.00",
+    "value": "9,800.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

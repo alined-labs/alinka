@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001192,
+ "input_hash": "fcf4ee53976816e3bec9a2e8a627074171fd9adf4fc32f2b255bb672fde5ed2a",
+ "input_tokens": 6700,
+ "key": "e2c13fc3934f1c17277e975dca7a552dd50c99ddda764d99098620b93c2cf3ba",
+ "latency_ms": 4504,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 1045,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:37:55Z",
+ "request": {
+  "doc_sha256": "b3fa0121002bd178c5878381d0be4bb6129a82bde4e599494500489a9c7cfd3f",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1879,
+  "visible_text_sha256": "7bd5f149800aaf4efbec49dc15a28daf449615d04b6b3dece754f09483023f98"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "(VEINTISÉIS MIL PESOS 00/100 M.N.)",
+    "value": "(VEINTISÉIS MIL PESOS 00/100 M.N.)"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 06",
+    "value": "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 06"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Talleres Digitales Aztlán S.A. de C.V.",
+    "value": "Talleres Digitales Aztlán S.A. de C.V."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "RFC: DEMO010101AB1",
+    "value": "DEMO010101AB1"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "RFC receptor XEXX010101000 (residente en el extranjero)",
+    "value": "XEXX010101000"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda MXN",
+    "value": "MXN"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "FACTURA · CFDI 4.0 (REPRESENTACIÓN IMPRESA)",
+    "value": "FACTURA"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago 20/10/2026",
+    "value": "20/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": "Folio fiscal (UUID) 207DB127-28FC-54F4-B0AB-B4B88F7D0D56",
+    "value": "207DB127-28FC-54F4-B0AB-B4B88F7D0D56"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Serie y folio A-1501",
+    "value": "A-1501"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión 2026-09-30T10:02:12",
+    "value": "2026-09-30T10:02:12"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Periodo 01/09/2026 al 30/09/2026",
+    "value": "01/09/2026 al 30/09/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Pruebas de software y aseguramiento de calidad, septiembre de 2026",
+    "value": "Pruebas de software y aseguramiento de calidad, septiembre de 2026"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 26,000.00",
+    "value": "26,000.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA trasladado 0% (exportación) 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Total (MXN) $ 26,000.00",
+    "value": "26,000.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}
