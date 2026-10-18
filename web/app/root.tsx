@@ -39,7 +39,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-const NAV = [{ to: "/", label: "Tablero" }];
+const NAV = [
+  { to: "/", label: "Tablero" },
+  { to: "/reglas", label: "Reglas" },
+];
 
 function Shell({ children }: { children: React.ReactNode }) {
   const [view, setView] = useView();
