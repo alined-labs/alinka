@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
-import { card, COLUMN_DECISION, count, counts, fixture, runAgent, uv } from "./helpers";
+import { card, COLUMN_DECISION, count, counts, fixture, open, runAgent, uv } from "./helpers";
 
 /*
  * PLAN section 9, the judge tests at the Playwright layer. Every expectation comes from the
@@ -13,7 +13,7 @@ import { card, COLUMN_DECISION, count, counts, fixture, runAgent, uv } from "./h
 
 test("1 · la Bandeja muestra las 30 facturas y Ejecutar agente las reparte en tres columnas", async ({ page }) => {
   const f = fixture("01");
-  await page.goto("/");
+  await open(page, "/");
   await expect(count(page, "inbox")).toHaveText(String(f.expected.inbox_before_run));
   await runAgent(page);
   const c = await counts(page);
@@ -50,13 +50,13 @@ test("4 · un beneficiario fuera de la lista queda Pendiente (R01) sin aprobar; 
   const body = f.expected.action["POST /api/beneficiaries"];
   await runAgent(page);
 
-  await page.goto(`/facturas/${before.invoice_id}`);
+  await open(page, `/facturas/${before.invoice_id}`);
   const head = page.locator(".ak-detail__head");
   await expect(head.locator(".ak-chip")).toHaveText(before.state_es);
   for (const r of before.rules) await expect(head.locator(".ak-rule").first()).toContainText(r);
   await expect(page.getByRole("button", { name: "Aprobar" })).toHaveCount(before.approve_button ? 1 : 0);
 
-  await page.goto("/reglas");
+  await open(page, "/reglas");
   const form = page.locator("form", { has: page.getByRole("button", { name: "Añadir y volver a decidir" }) });
   await form.getByLabel("Partir de una factura pendiente").selectOption(before.invoice_id);
   await expect(form.getByLabel("Nombre", { exact: true })).toHaveValue(body.name);
@@ -82,7 +82,7 @@ test("4 · un beneficiario fuera de la lista queda Pendiente (R01) sin aprobar; 
   await form.getByRole("button", { name: "Añadir y volver a decidir" }).click();
   await expect(page.getByRole("status")).toContainText(`${body.name} quedó en la lista`);
 
-  await page.goto(`/facturas/${f.expected.after.invoice_id}`);
+  await open(page, `/facturas/${f.expected.after.invoice_id}`);
   await expect(page.locator(".ak-detail__head .ak-chip")).toHaveText(f.expected.after.state_es);
 });
 
@@ -92,7 +92,7 @@ test("5 · un monto sobre el umbral queda Pendiente (R06); aprobarlo con nombre 
   const approver = f.expected.action[`POST /api/invoices/${before.invoice_id}/approve`].approver;
   await runAgent(page);
 
-  await page.goto(`/facturas/${before.invoice_id}`);
+  await open(page, `/facturas/${before.invoice_id}`);
   await expect(page.locator(".ak-detail__head .ak-chip")).toHaveText(before.state_es);
   await expect(page.locator(".ak-detail__head .ak-rule").first()).toContainText(before.rules[0]);
   await page.getByRole("button", { name: "Aprobar" }).click();
@@ -103,7 +103,7 @@ test("5 · un monto sobre el umbral queda Pendiente (R06); aprobarlo con nombre 
   await expect(page.locator(".ak-detail__head .ak-chip")).toHaveText(f.expected.after.state_es);
   await expect(page.locator(".ak-timeline")).toContainText(`Aprobada por ${approver}`);
 
-  await page.goto("/registro");
+  await open(page, "/registro");
   const last = page.locator(".ak-log tbody tr").last();
   await expect(last).toContainText(before.invoice_id);
   await expect(last).toContainText(approver);
@@ -119,7 +119,7 @@ test("11 · una cuenta distinta a la de la lista levanta alerta (R12), sin aprob
   test.skip(!loaded.ok(), `${e.invoice_id} no está en la ejecución canónica: carga el run de ataques (load_run attack)`);
   await runAgent(page);
 
-  await page.goto(`/facturas/${e.invoice_id}`);
+  await open(page, `/facturas/${e.invoice_id}`);
   await expect.soft(page.locator(".ak-detail__head .ak-chip")).toHaveText(e.state_es);
   for (const r of e.rules) await expect(page.locator(".ak-sec-box", { hasText: r })).toHaveCount(1);
   await expect(page.locator(".ak-detail__head .ak-sec")).toHaveCount(e.security_alert ? 1 : 0);
@@ -138,17 +138,19 @@ test("17 · bajar el umbral mueve facturas a Pendientes; restablecer las restaur
   const canonicalBefore = await canonical();
   await runAgent(page);
 
-  await page.goto("/reglas");
+  await open(page, "/reglas");
+  // The impact sentence compares with the sandbox board, which loads beside the rules.
+  await page.waitForLoadState("networkidle");
   await page.getByLabel("Umbral de aprobación en USD").fill(String(f.setup["PUT /api/rules"].approval_threshold_usd));
   await page.getByRole("button", { name: "Guardar y volver a decidir" }).click();
   await expect(page.getByRole("status")).toContainText("Con este cambio");
 
-  await page.goto("/");
+  await open(page, "/");
   for (const id of f.expected.moves_to_pending as string[]) {
     await expect.soft(card(page, "ESCALATE", id), id).toHaveCount(1);
   }
 
-  await page.goto("/reglas");
+  await open(page, "/reglas");
   await page.getByRole("button", { name: "Restablecer sandbox" }).click();
   await expect(page.getByRole("status")).toContainText("Sandbox restablecido");
   await expect(page.getByLabel("Umbral de aprobación en USD")).toHaveValue("2000");
@@ -162,7 +164,9 @@ test("17 · bajar el umbral mueve facturas a Pendientes; restablecer las restaur
 
 test("18 · Verificar cadena dice OK; cambiar un byte almacenado hace fallar alinka verify", async ({ page }) => {
   await runAgent(page);
-  await page.goto("/registro");
+  await open(page, "/registro");
+  // As a reader would: a check started before the log loads is reset when it arrives.
+  await expect(page.getByText(/^\d+ registros/)).toBeVisible();
   await page.getByRole("button", { name: "Verificar cadena" }).click();
   await expect(page.locator(".ak-verify--ok")).toContainText("Cadena verificada");
 
@@ -189,7 +193,7 @@ test("20 · Evaluación muestra 0 de K aprobaciones indebidas con su cota y la a
   page,
 }) => {
   const f = fixture("20");
-  await page.goto("/evaluacion");
+  await open(page, "/evaluacion");
   await expect(page.getByTestId("improper")).toHaveText(`${f.expected.improper_approvals} de ${f.expected.K}`);
   await expect(page.getByText(/cota superior del 95%: \d+(,\d+)?%/)).toBeVisible();
   await expect(page.getByTestId("autonomy")).toHaveText(/^\d+(,\d+)?% de un máximo posible de \d+(,\d+)?%$/);
