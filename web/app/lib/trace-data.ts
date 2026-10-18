@@ -60,15 +60,11 @@ export type Trace = { steps: TraceStep[]; example: boolean };
 const sample = () => import("~/api/fixtures/trace.sample.json").then((m) => m.default as unknown as TraceStep[]);
 
 /**
- * Lane C's GET /api/invoices/{id}/trace is not on the API yet (C11): until it merges, development
- * and fixture mode show the sample built by build_trace from OCT-14's record, marked as an example,
- * and a build shows nothing. Calling the missing route would only log a 404. Flip when C11 merges.
+ * The stored trace from GET /api/invoices/{id}/trace (Lane C, #79), or null when the invoice has
+ * none yet. Fixture mode reads the OCT-14 sample.
  */
-const TRACE_ENDPOINT = false;
-
-/** The stored trace of an invoice, or null when there is none to show. */
 export async function fetchTrace(id: string, view: View): Promise<Trace | null> {
-  if (FIXTURES || !TRACE_ENDPOINT) return import.meta.env.DEV || FIXTURES ? { steps: await sample(), example: true } : null;
+  if (FIXTURES) return { steps: await sample(), example: true };
   const res = await fetch(`/api/invoices/${encodeURIComponent(id)}/trace?view=${view}`);
   if (res.status === 404) return null;
   if (!res.ok) {
