@@ -143,7 +143,7 @@ function Report({ v }: { v: EvalView }) {
         </section>
       )}
       <p className="ak-footer">
-        {v.source && `Fuente: ${v.source}. `}
+        {v.source && "Fuente: ejecución grabada de todas las facturas, con y sin JEV. "}
         {v.generatedAt && `Generado el ${formatDateTime(v.generatedAt)}.`} Todos los números salen de evals/report.json.
       </p>
     </>
@@ -254,7 +254,7 @@ function RiskCoverage({ on, off, inUse }: { on: Point[]; off: Point[]; inUse: nu
           </p>
         ))}
       <details>
-        <summary className="cursor-pointer text-small text-ink-muted">Ver los datos de la curva</summary>
+        <summary className="cursor-pointer py-1 text-small text-ink-muted">Ver los datos de la curva</summary>
         <div className="mt-2 overflow-x-auto rounded-xl border border-line bg-surface">
           <table className="ak-log">
             <thead>
