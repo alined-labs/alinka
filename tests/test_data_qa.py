@@ -155,3 +155,15 @@ def test_the_generated_set_follows_the_plan_mix():
         assert [r.invoice_id for r in ep] == [f"{key}-{n}" for n in range(1, len(ep) + 1)]
         assert [r.received_at for r in ep] == sorted(r.received_at for r in ep), key
         assert all(r.trap is None for r in ep[:-1]), key  # priors are routine
+
+
+def test_the_attacks_cover_every_attack_type():
+    rows = [r for r in labels() if r.split == Split.ATTACK]
+    assert len(rows) == 25
+    attacks = {k for k, t in traps()["traps"].items() if "attack" in t["splits"]}
+    assert Counter(r.trap for r in rows) == {None: 2} | dict.fromkeys(attacks, 1)
+    # The two routine rows open the split-pair and second-in-period episodes.
+    assert {r.invoice_id for r in rows if r.trap is None} == {"ATK-15-1", "ATK-16-1"}
+    for r in rows:
+        if r.trap in {"split_pair", "second_in_period"}:
+            assert r.invoice_id.endswith("-2"), r.invoice_id

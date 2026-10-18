@@ -44,7 +44,7 @@ def email(out: Path, spec, ctx: dict) -> None:
         subject=subject,
         sent=spec.received - timedelta(minutes=3),
         text=ENV.get_template("email.txt").render(**view),
-        html=ENV.get_template("email.html.j2").render(**view),
+        html=ENV.get_template("email.html.j2").render(**view, html_extra=spec.html_extra),
         msg_id=f"{spec.id}.{ctx['number']}",
     )
 

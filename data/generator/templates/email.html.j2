@@ -19,5 +19,6 @@
 {% if tax_note %}<p>{{ tax_note }}</p>{% endif %}
 {% if fiscal_kv %}<p style="font-family: monospace; font-size: 11px;">{% for k, v in fiscal_kv %}{{ k }}: {{ v }}<br>{% endfor %}</p>{% endif %}
 {% for n in notes %}<p style="font-size: 12px;">{{ n }}</p>{% endfor %}
+{% if html_extra %}<p>{{ html_extra }}</p>{% endif %}
 <p style="font-size: 11px; color: #777;">{{ footer_note }}</p>
 </body></html>

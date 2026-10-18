@@ -94,6 +94,7 @@ class Spec:
     message: str = ""  # email intro or first chat message
     kind: str | None = None  # document title override, e.g. a proforma (R16)
     scan: str = "normal"  # image channel: "normal" phone scan or "low" quality (R10)
+    html_extra: str = ""  # email: a paragraph only the HTML part shows (R11 mismatch)
     subject: str = ""  # email subject
 
 
