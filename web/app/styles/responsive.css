@@ -1,0 +1,63 @@
+/*
+ * Small screens and touch, on top of the kit's own breakpoints (Detalle and the board stack at
+ * 1024 px there). Imported from root.tsx after app.css.
+ */
+
+/* Below 768 px: brand and run switch share the first row, the nav is one row that scrolls. */
+@media (max-width: 767.98px) {
+  .ak-header {
+    flex-wrap: wrap;
+    row-gap: var(--space-2);
+  }
+  .ak-nav {
+    order: 3;
+    flex: 1 0 100%;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    padding: 2px;
+  }
+  .ak-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .ak-nav a {
+    flex: none;
+  }
+}
+
+/* Every control at least 40 px where a finger aims, or on a narrow screen. */
+@media (pointer: coarse), (max-width: 767.98px) {
+  .ak-nav a,
+  .ak-seg button,
+  .ak-btn--sm,
+  .ak-header__brand {
+    min-height: 40px;
+  }
+  .ak-btn--sm,
+  .ak-header__brand {
+    min-width: 40px;
+  }
+  .ak-input {
+    min-height: 40px;
+  }
+  /* Sort headers and invoice links in tables, disclosures, and labels around a checkbox. */
+  .ak-log th button,
+  .ak-log td a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    min-width: 40px;
+  }
+  summary {
+    padding-block: 11px;
+  }
+  label:has(> input[type="checkbox"]) {
+    min-height: 40px;
+  }
+  input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+}
