@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { api, FIXTURES, type Schemas, unwrap } from "~/api/client";
 import { DecisionChip, ReasonText, RuleChip } from "~/components/badges";
 import { formatDateTime } from "~/lib/format";
+import { useMotionOK } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
@@ -46,6 +47,7 @@ function Verdict({ check }: { check: ChainCheck }) {
 
 export default function Registro() {
   const [view] = useView();
+  const motion = useMotionOK();
   const log = useQuery({
     queryKey: ["log", view],
     queryFn: () => unwrap(api.GET("/api/log", { params: { query: { view } } })),
@@ -140,6 +142,7 @@ export default function Registro() {
                       <Link
                         to={{ pathname: `/facturas/${encodeURIComponent(e.invoice_id)}`, search }}
                         className="font-mono whitespace-nowrap underline underline-offset-2"
+                        viewTransition={motion}
                       >
                         {e.invoice_id}
                       </Link>

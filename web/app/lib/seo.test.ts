@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 import routes from "~/routes";
 
-import { OG_IMAGE, PUBLIC_PATHS, SITE, seo } from "./seo";
+import { JSON_LD, OG_IMAGE, PUBLIC_PATHS, SITE, seo } from "./seo";
 
 const read = (path: string) => readFileSync(new URL(`../../public/${path}`, import.meta.url), "utf8");
 
@@ -23,7 +23,7 @@ describe("seo", () => {
     expect(OG_IMAGE.url).toMatch(/^https:\/\//);
     expect(by("property", "og:image:alt")).toBeDefined();
     expect(by("name", "twitter:card")).toMatchObject({ content: "summary_large_image" });
-    expect(tags.find((t) => "script:ld+json" in t)).toMatchObject({ "script:ld+json": { "@type": "SoftwareApplication" } });
+    expect(JSON.parse(JSON_LD)).toMatchObject({ "@type": "SoftwareApplication", url: `${SITE}/` });
   });
 
   it("lists every prerendered route in the sitemap, and nothing else", () => {

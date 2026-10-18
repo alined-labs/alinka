@@ -8,7 +8,7 @@ import { queryClient } from "./api/query";
 import { AlinkaLogo } from "./components/brand/AlinkaLogo";
 import { Segmented } from "./components/segmented";
 import { useMotionOK } from "./lib/motion";
-import { seo } from "./lib/seo";
+import { JSON_LD, seo } from "./lib/seo";
 import { useView } from "./lib/view";
 import "./app.css";
 import "./styles/motion.css";
@@ -37,6 +37,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F7F7F4" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131B2B" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON_LD }} />
         <Meta />
         <Links />
       </head>
@@ -66,7 +67,12 @@ function Shell({ children }: { children: React.ReactNode }) {
         Saltar al contenido
       </a>
       <header className="ak-header">
-        <NavLink to="/" className="ak-header__brand" aria-label="Alinka, ir al tablero" viewTransition={motion}>
+        <NavLink
+          to={{ pathname: "/", search: view === "canonical" ? "?vista=canonica" : "" }}
+          className="ak-header__brand"
+          aria-label="Alinka, ir al tablero"
+          viewTransition={motion}
+        >
           <AlinkaLogo />
         </NavLink>
         <nav aria-label="Principal" className="ak-nav">
