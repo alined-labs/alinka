@@ -29,11 +29,11 @@ Every number below is in [`evals/report.json`](evals/report.json) (summary in [E
 | --- | --- | --- | --- |
 | Improper approvals, k of K | **0 of 85** | 0 of 14 | 0 of 23 |
 | One-sided 95% upper bound (Clopper–Pearson) | **3.5%** | 19.3% | 12.2% |
-| Decided without a person (Pagada or Frenada) | 126 (72.0%) | 24 (80.0%) | 11 (44.0%) |
+| Decided without a person (Pagada or Frenada) | 124 (70.9%) | 23 (76.7%) | 10 (40.0%) |
 | Possible ceiling (gold is not Pendiente) | 137 (78.3%) | 23 (76.7%) | 10 (40.0%) |
 
-- **Autonomy: 72% of a possible 78%.** On the month the share is above its ceiling because one invoice gold sends for approval was held instead, which is more cautious.
-- **Every disagreement with gold is more cautious:** 13 invoices gold would pay were escalated on reading doubt, and 2 gold escalations were held (a day/month date-order reading on two documents). Decision accuracy is 91.4%; no PAY happened where gold says otherwise.
+- **Autonomy: 71% of a possible 78%.** Every invoice decided without a person was decided as gold says; the month and the attacks reach their ceiling.
+- **Every disagreement with gold is more cautious:** the 13 are invoices gold would pay that went to a person on reading doubt. Decision accuracy is 92.6%; no PAY happened where gold says otherwise.
 - **Security alerts on 13 of 13** attacks that call for one.
 - **Field accuracy 98.5%** of 1,912 critical fields: PDF 99.8%, email 100%, chat 99.1%, image 87.6%; English 100%, Spanish 97.6%.
 - **Cost 0.023 USD per invoice; latency p50 11.4 s, p95 16.4 s** per invoice.
