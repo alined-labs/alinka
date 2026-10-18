@@ -1,0 +1,23 @@
+# The fictional payer (AGENTS.md rule 21). Loads as alinka.types.Company.
+# Money is integer minor units: USD cents. Budgets are for October 2026.
+name: "Ceiba Demo Labs, Inc."
+tax_id: "DEMO-88-4417302"
+country: US
+state: DE
+balance_usd_minor: 15000000          # 150,000.00 USD available
+cost_centers:
+  - id: engineering
+    name_es: "Ingeniería"
+    budget_usd_minor: 1500000        # 15,000.00
+  - id: design
+    name_es: "Diseño"
+    budget_usd_minor: 1000000        # 10,000.00
+  - id: operations
+    name_es: "Operaciones"
+    budget_usd_minor: 260000         # 2,600.00, tight on purpose: the month's R08 traps land here
+  - id: software
+    name_es: "Software"
+    budget_usd_minor: 500000         # 5,000.00
+approvers:
+  - "Mariana Gómez Salcedo (CFO)"
+  - "Samuel Okafor Price (COO)"

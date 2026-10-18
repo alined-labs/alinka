@@ -1,0 +1,247 @@
+# The 13 authorized beneficiaries, all fictional (AGENTS.md rule 21). Each loads as
+# alinka.types.Beneficiary. rate_minor is the agreed amount per billing period in the
+# contract currency's minor units (COP, MXN, BRL, USD and EUR all use 2 decimals).
+# Payouts always use account_on_file, never an account printed on a document (rule 17).
+# Contracts above 2,000 USD (BEN-08, BEN-12) and just under it (BEN-09) exist so the
+# month can show R06 without breaking R04.
+beneficiaries:
+  # --- Colombia: 5 contractors ---------------------------------------------------
+  - id: BEN-01
+    name: "Andes Diseño S.A.S."
+    tax_id: "DEMO-901234567-7"            # NIT with DIAN check digit
+    country: CO
+    currency: COP
+    account_on_file: "Banco Ficticio Andino · Corriente DEMO-0012-4471-01"
+    doc_types: [factura]
+    contract:
+      id: CTR-01
+      scope_es: [diseño de interfaz, diseño UI, prototipos, sistema de diseño, pantallas]
+      scope_en: [interface design, UI design, prototypes, design system, screens]
+      rate_minor: 520000000              # 5,200,000.00 COP per month
+      currency: COP
+      tolerance_pct: 5
+      frequency: monthly
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: design
+  - id: BEN-02
+    name: "Mateo Quintero Ríos"
+    tax_id: "DEMO-CC-1020345678"          # cédula, persona natural
+    country: CO
+    currency: COP
+    account_on_file: "Banco Ficticio Andino · Ahorros DEMO-0012-8830-02"
+    doc_types: [cuenta_de_cobro]
+    contract:
+      id: CTR-02
+      scope_es: [desarrollo backend, API, base de datos, integraciones, servicios]
+      scope_en: [backend development, API, database, integrations, services]
+      rate_minor: 310000000              # 3,100,000.00 COP per fortnight
+      currency: COP
+      tolerance_pct: 5
+      frequency: biweekly
+      valid_from: 2026-02-01
+      valid_to: 2027-01-31
+      cost_center: engineering
+  - id: BEN-03
+    name: "Valentina Ospina Duarte"
+    tax_id: "DEMO-CC-1036789012"
+    country: CO
+    currency: USD
+    account_on_file: "Cooperativa Ficticia del Café · Ahorros DEMO-7710-0003"
+    doc_types: [cuenta_de_cobro]
+    contract:
+      id: CTR-03
+      scope_es: [desarrollo frontend, interfaz web, componentes, React, accesibilidad]
+      scope_en: [frontend development, web interface, components, React, accessibility]
+      rate_minor: 72000                  # 720.00 USD per fortnight
+      currency: USD
+      tolerance_pct: 5
+      frequency: biweekly
+      valid_from: 2026-03-01
+      valid_to: 2026-12-31
+      cost_center: engineering
+  - id: BEN-04
+    name: "Caribe Soporte Técnico S.A.S."
+    tax_id: "DEMO-900765432-6"
+    country: CO
+    currency: COP
+    account_on_file: "Banco Ficticio del Caribe · Corriente DEMO-0450-2210-04"
+    doc_types: [factura]
+    contract:
+      id: CTR-04
+      scope_es: [soporte técnico, mesa de ayuda, equipos, mantenimiento, redes]
+      scope_en: [technical support, help desk, devices, maintenance, networking]
+      rate_minor: 360000000              # 3,600,000.00 COP per month
+      currency: COP
+      tolerance_pct: 10
+      frequency: monthly
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: operations
+  - id: BEN-05
+    name: "Julián Herrera Mejía"
+    tax_id: "DEMO-CC-1152034567"
+    country: CO
+    currency: USD
+    account_on_file: "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05"
+    doc_types: [cuenta_de_cobro]
+    contract:
+      id: CTR-05
+      scope_es: [ilustración, iconografía, piezas gráficas, animación]
+      scope_en: [illustration, iconography, graphic assets, animation]
+      rate_minor: 65000                  # 650.00 USD per delivery
+      currency: USD
+      tolerance_pct: 5
+      frequency: per_delivery
+      valid_from: 2026-04-01
+      valid_to: 2026-12-31
+      cost_center: design
+  # --- Mexico: 2 suppliers ---------------------------------------------------------
+  - id: BEN-06
+    name: "Talleres Digitales Aztlán S.A. de C.V."
+    tax_id: "DEMO010101AB1"               # RFC-shaped
+    country: MX
+    currency: MXN
+    account_on_file: "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 06"
+    doc_types: [factura]
+    contract:
+      id: CTR-06
+      scope_es: [pruebas de software, aseguramiento de calidad, QA, pruebas automatizadas]
+      scope_en: [software testing, quality assurance, QA, automated tests]
+      rate_minor: 2600000                # 26,000.00 MXN per month
+      currency: MXN
+      tolerance_pct: 5
+      frequency: monthly
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: engineering
+  - id: BEN-07
+    name: "Bajío Traducciones S.C."
+    tax_id: "DEMO020202CD2"
+    country: MX
+    currency: MXN
+    account_on_file: "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 07"
+    doc_types: [factura]
+    contract:
+      id: CTR-07
+      scope_es: [traducción, localización, revisión de textos, subtitulado]
+      scope_en: [translation, localization, copy review, subtitling]
+      rate_minor: 980000                 # 9,800.00 MXN per delivery
+      currency: MXN
+      tolerance_pct: 10
+      frequency: per_delivery
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: operations
+  # --- Brazil: 1 agency ------------------------------------------------------------
+  - id: BEN-08
+    name: "Agência Ipê Criativa Ltda."
+    tax_id: "DEMO.123.456/0001-08"        # CNPJ-shaped
+    country: BR
+    currency: BRL
+    account_on_file: "Banco Fictício Paulista · Ag. DEMO-0001 · CC DEMO-44321-8"
+    doc_types: [factura]
+    contract:
+      id: CTR-08
+      scope_es: [identidad de marca, branding, motion graphics, campaña visual]
+      scope_en: [brand identity, branding, motion graphics, visual campaign]
+      rate_minor: 1350000                # 13,500.00 BRL per month (above 2,000 USD)
+      currency: BRL
+      tolerance_pct: 5
+      frequency: monthly
+      valid_from: 2026-06-01
+      valid_to: 2027-05-31
+      cost_center: design
+  # --- Argentina: 1 freelancer -----------------------------------------------------
+  - id: BEN-09
+    name: "Tomás Ferreyra"
+    tax_id: "DEMO-20-31456789-4"          # CUIT-shaped
+    country: AR
+    currency: USD
+    account_on_file: "Banco Ficticio Rioplatense · CBU DEMO 0000 0000 0000 0009"
+    doc_types: [factura]
+    contract:
+      id: CTR-09
+      scope_es: [desarrollo móvil, aplicación iOS, aplicación Android, Flutter]
+      scope_en: [mobile development, iOS app, Android app, Flutter]
+      rate_minor: 195000                 # 1,950.00 USD per month (inside R06's 5% band)
+      currency: USD
+      tolerance_pct: 2
+      frequency: monthly
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: engineering
+  # --- United States: 3 software vendors -------------------------------------------
+  - id: BEN-10
+    name: "Cobalt Ridge Hosting, Inc."
+    tax_id: "DEMO-12-3456789"             # EIN-shaped
+    country: US
+    currency: USD
+    account_on_file: "Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-4421-0010"
+    doc_types: [invoice]
+    contract:
+      id: CTR-10
+      scope_es: [alojamiento en la nube, servidores, almacenamiento, transferencia de datos]
+      scope_en: [cloud hosting, servers, storage, bandwidth, compute]
+      rate_minor: 118000                 # 1,180.00 USD per month, usage-based
+      currency: USD
+      tolerance_pct: 10
+      frequency: monthly
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: software
+  - id: BEN-11
+    name: "Quillstack Software, Inc."
+    tax_id: "DEMO-27-1098345"
+    country: US
+    currency: USD
+    account_on_file: "Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-7730-0011"
+    doc_types: [invoice]
+    contract:
+      id: CTR-11
+      scope_es: [licencias, wiki de documentación, suscripción, puestos de usuario]
+      scope_en: [licenses, documentation wiki, subscription, user seats]
+      rate_minor: 42000                  # 420.00 USD per month
+      currency: USD
+      tolerance_pct: 2
+      frequency: monthly
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: software
+  - id: BEN-12
+    name: "Harborlight Security, Inc."
+    tax_id: "DEMO-46-2219870"
+    country: US
+    currency: USD
+    account_on_file: "Demo Pacific Bank · ABA DEMO-1220 · Acct DEMO-9012-0012"
+    doc_types: [invoice]
+    contract:
+      id: CTR-12
+      scope_es: [monitoreo de seguridad, centro de operaciones de seguridad, alertas, cumplimiento]
+      scope_en: [security monitoring, security operations center, alerting, compliance]
+      rate_minor: 240000                 # 2,400.00 USD per month (above 2,000 USD)
+      currency: USD
+      tolerance_pct: 5
+      frequency: monthly
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: software
+  # --- Spain: 1 studio ("otras regiones") -----------------------------------------
+  - id: BEN-13
+    name: "Estudio Albahaca S.L."
+    tax_id: "DEMO-B12345678"              # NIF-shaped
+    country: ES
+    currency: EUR
+    account_on_file: "IBAN ES00 DEMO 0000 0000 0000 0013"
+    doc_types: [factura]
+    contract:
+      id: CTR-13
+      scope_es: [investigación de usuarios, entrevistas, pruebas de usabilidad, sprint de diseño]
+      scope_en: [user research, interviews, usability testing, design sprint]
+      rate_minor: 120000                 # 1,200.00 EUR per delivery
+      currency: EUR
+      tolerance_pct: 5
+      frequency: per_delivery
+      valid_from: 2026-01-01
+      valid_to: 2026-12-31
+      cost_center: design
