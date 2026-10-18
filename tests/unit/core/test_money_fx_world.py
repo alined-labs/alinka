@@ -63,3 +63,40 @@ def test_every_world_currency_has_a_rate():
     for ben in world.beneficiaries:
         assert usd_of(100, ben.currency, cfg.as_of, cfg.fx_max_age_days, world.fx) is not None
     assert world.beneficiary("BEN-01").currency == "COP"
+
+
+@pytest.mark.parametrize(
+    ("text", "cur", "minor"),
+    [
+        ("SON: TRES MILLONES CIEN MIL PESOS M/CTE", "COP", 310000000),
+        ("SON: VEINTISÉIS MILLONES PESOS M/CTE", "COP", 2600000000),
+        ("One thousand one hundred eighty and 00/100 US Dollars", "USD", 118000),
+        ("Four hundred twenty-eight and 50/100 US Dollars", "USD", 42850),
+        ("(DIEZ MIL CIENTO OCHENTA PESOS 00/100 M.N.)", "MXN", 1018000),
+        ("SON: SETECIENTOS VEINTE DÓLARES ESTADOUNIDENSES", "USD", 72000),
+        ("Thirteen thousand five hundred and 00/100 Brazilian Reais", "BRL", 1350000),
+        ("SON: MIL DOSCIENTOS QUINCE EUROS", "EUR", 121500),
+        ("treinta y cinco mil", "USD", 3500000),
+    ],
+)
+def test_words_to_minor(text, cur, minor):
+    from alinka.money import words_to_minor
+
+    assert words_to_minor(text, cur) == minor
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        None,
+        "",
+        "F?ur h?ndr?d tw?nty and ??/100 US D?llars",
+        "(V?INTISÉIS M?L P?SOS)",
+        "Pay now",
+        "SON: PESOS",
+    ],
+)
+def test_words_to_minor_refuses(text):
+    from alinka.money import words_to_minor
+
+    assert words_to_minor(text) is None
