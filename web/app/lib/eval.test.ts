@@ -3,7 +3,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { cents, pct, readReport, seconds } from "./eval";
+import { cents, pct, readReport, seconds, threshold } from "./eval";
 
 const root = join(import.meta.dirname, "../../..");
 const sample = JSON.parse(readFileSync(join(root, "alinka/api/fixtures/samples/eval.json"), "utf8"));
@@ -27,6 +27,7 @@ describe("readReport", () => {
     expect(v).not.toBeNull();
     expect(v!.K).toBeGreaterThan(0);
     expect(v!.ceiling).toBeGreaterThanOrEqual(0);
+    expect(v!.inUse).toBe(0.7); // data/rules.yaml keeps verifier_risk_max at 0.7
     expect(v!.jevOn.every((p, i, a) => i === 0 || a[i - 1]!.coverage <= p.coverage)).toBe(true);
   });
 
@@ -42,5 +43,6 @@ describe("formatting", () => {
     expect(pct(0.72)).toBe("72%");
     expect(cents(0.02348)).toBe("2,3 centavos de dólar");
     expect(seconds(16379)).toBe("16,4 s");
+    expect(threshold(0.7)).toBe("0,70");
   });
 });
