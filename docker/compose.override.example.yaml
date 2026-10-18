@@ -1,0 +1,17 @@
+# Runs the API next to the local database. compose.yaml stays frozen, so:
+#   cp docker/compose.override.example.yaml compose.override.yaml
+#   docker compose up --build -d --wait
+#   curl localhost:8000/api/health
+# compose.override.yaml is merged automatically; paths resolve from the repository root.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.api
+    environment:
+      DATABASE_URL: postgresql://alinka:alinka@db:5432/alinka
+      CACHE_MODE: replay
+    ports: ["127.0.0.1:8000:8000"]
+    depends_on:
+      db:
+        condition: service_healthy

@@ -1,0 +1,22 @@
+# Only what the API serves goes into the image: code, migrations, data, the eval report.
+**/__pycache__
+**/*.py[cod]
+.git
+.github
+.claude
+.venv
+.env
+.env.*
+.pytest_cache
+.ruff_cache
+.hypothesis
+node_modules
+web
+edge
+deploy
+tests
+cache
+runs
+docs
+scripts
+data/generator
