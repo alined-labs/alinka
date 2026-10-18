@@ -164,11 +164,32 @@ def add_beneficiary(conn: psycopg.Connection, sid: str, ben: Beneficiary) -> Non
     )
 
 
-def add_tried(conn: psycopg.Connection, sid: str, facts: InvoiceFacts, sample_id: str | None):
+def add_tried(
+    conn: psycopg.Connection,
+    sid: str,
+    facts: InvoiceFacts,
+    sample_id: str | None,
+    document: bytes | None = None,
+    filename: str | None = None,
+) -> None:
     conn.execute(
-        "INSERT INTO try_invoices (session_id, invoice_id, sample_id, facts) VALUES (%s, %s, %s, %s)",
-        (sid, facts.source.invoice_id, sample_id, Jsonb(facts.model_dump(mode="json"))),
-    )
+        "INSERT INTO try_invoices (session_id, invoice_id, sample_id, facts, document, filename)"
+        " VALUES (%s, %s, %s, %s, %s, %s)",
+        (
+            sid, facts.source.invoice_id, sample_id, Jsonb(facts.model_dump(mode="json")),
+            document, filename,
+        ),
+    )  # fmt: skip
+
+
+def uploaded(conn: psycopg.Connection, sid: str, invoice_id: str) -> tuple[bytes, str] | None:
+    """An uploaded document's bytes and file name, for its page images."""
+    row = conn.execute(
+        "SELECT document, filename FROM try_invoices"
+        " WHERE session_id = %s AND invoice_id = %s AND document IS NOT NULL",
+        (sid, invoice_id),
+    ).fetchone()
+    return (bytes(row["document"]), row["filename"] or "") if row else None
 
 
 def tried_count(conn: psycopg.Connection, sid: str, prefix: str) -> int:

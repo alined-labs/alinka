@@ -299,3 +299,7 @@ class TryDone(Model):
 
 class TryError(Model):
     message_es: str
+
+
+class AdminSettings(Model):
+    live_uploads: bool

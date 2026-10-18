@@ -10,27 +10,33 @@ once, 1 per visitor, and each keeps its events for 10 minutes for late subscribe
 from __future__ import annotations
 
 import asyncio
+import hashlib
+import hmac
 import logging
 import secrets
+import tempfile
 import threading
 import time
 from collections import deque
 from collections.abc import AsyncIterable, Callable
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import UTC, datetime
 from functools import lru_cache
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Annotated, Literal
 
+import pymupdf
 from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.sse import EventSourceResponse, ServerSentEvent
 from pydantic import ValidationError
+from starlette.datastructures import UploadFile
 
 from alinka import db, trace
 from alinka.api import engine, runs, sessions
 from alinka.api.deps import SANDBOX_COOKIE, Conn, Sandbox
 from alinka.api.models import (
+    AdminSettings,
     ErrorOut,
     Sample,
     Samples,
@@ -42,6 +48,7 @@ from alinka.api.models import (
 )
 from alinka.cache import ResponseCache
 from alinka.jobs.extract import load_labels
+from alinka.settings import get_settings
 from alinka.types import DECISION_ES, Label
 from alinka.verify.facts import Staged
 
@@ -55,6 +62,7 @@ KEEP_S = 600  # how long a job's events stay available
 PING_S = 10.0
 SAMPLES_PER_HOUR = 60  # sample runs per client IP
 LIMITS = UploadLimits()
+BUSY_ES = "Ya tienes una prueba en curso; espera a que termine."
 ERROR_ES = "Error técnico: no se pudo procesar la factura y no quedó nada registrado."
 
 Kind = Literal["routine", "trap", "attack"]
@@ -203,6 +211,10 @@ class Jobs:
         self.pool = ThreadPoolExecutor(max_workers=WORKERS, thread_name_prefix="try")
         self.samples = Window(SAMPLES_PER_HOUR, 3600)
 
+    def running(self, session_id: str) -> bool:
+        with self.lock:
+            return session_id in self.busy
+
     def get(self, job_id: str) -> Job | None:
         with self.lock:
             job = self.jobs.get(job_id)
@@ -214,7 +226,7 @@ class Jobs:
             for jid in [j for j, job in self.jobs.items() if now - job.created >= KEEP_S]:
                 del self.jobs[jid]
             if session_id in self.busy:
-                raise too_many("Ya tienes una prueba en curso; espera a que termine.", 5)
+                raise too_many(BUSY_ES, 5)
             if self.waiting >= QUEUE_MAX:
                 raise too_many("Hay muchas pruebas en curso; intenta en unos segundos.", 10)
             job = Job(id=secrets.token_urlsafe(12), session_id=session_id)
@@ -269,20 +281,24 @@ def run_document(
     data: bytes,
     suffix: str,
     prefix: str,
+    name: Callable[[int], str],
     sample_id: str | None,
     path: str | None,
     received_at: datetime,
-    mode: Literal["replay", "live"],
+    cache: ResponseCache,
+    upload: tuple[bytes, str] | None = None,
 ) -> None:
-    """The seven steps for one document in the job's sandbox, ending in a done event."""
+    """The seven steps for one document in the job's sandbox, ending in a done event.
+
+    The invoice ID is `name(n)`, n being how many the sandbox has that start with `prefix`."""
+    mode: Literal["replay", "live"] = "replay" if cache.mode == "replay" else "live"
     with db.connection() as conn:
         ctx = sessions.context(conn, job.session_id)
         if ctx is None:
             raise RuntimeError("the sandbox expired")
-        invoice_id = f"{prefix}-{sessions.tried_count(conn, job.session_id, prefix + '-') + 1}"
         staged = Staged(
-            data, suffix, invoice_id=invoice_id, received_at=received_at, path=path,
-            cache=ResponseCache(mode), cfg=ctx.rules,
+            data, suffix, invoice_id=name(sessions.tried_count(conn, job.session_id, prefix)),
+            received_at=received_at, path=path, cache=cache, cfg=ctx.rules,
         )  # fmt: skip
         risk_max = ctx.rules.verifier_risk_max
         _stage(job, staged, "received", staged.ingest,
@@ -297,7 +313,7 @@ def run_document(
         t0 = time.perf_counter()
         marks: list[float] = []
         with conn.transaction():
-            sessions.add_tried(conn, job.session_id, facts, sample_id)
+            sessions.add_tried(conn, job.session_id, facts, sample_id, *(upload or (None, None)))
             record = db.record_decision(
                 job.session_id,
                 lambda ledger: engine.decide(facts, ctx.world, ctx.rules, ledger),
@@ -331,9 +347,23 @@ def run_sample(job: Job, sample: SampleDef) -> None:
     file = ROOT / label.path
     run_document(
         job, data=file.read_bytes(), suffix=file.suffix,
-        prefix=f"TRY-{sample.id}", sample_id=sample.id, path=label.path,
-        received_at=label.received_at, mode="replay",
+        prefix=f"TRY-{sample.id}-", name=lambda n: f"TRY-{sample.id}-{n + 1}",
+        sample_id=sample.id, path=label.path, received_at=label.received_at,
+        cache=ResponseCache("replay"),
     )  # fmt: skip
+
+
+def run_upload(job: Job, data: bytes, suffix: str, filename: str) -> None:
+    """An upload is read live, whatever CACHE_MODE says. Its recordings go to a throwaway
+    directory, so nothing of the visitor's document outlives the sandbox."""
+    prefix = f"UPL-{hashlib.sha256(data).hexdigest()[:8]}"
+    with tempfile.TemporaryDirectory(prefix="alinka-upload-") as tmp:
+        run_document(
+            job, data=data, suffix=suffix,
+            prefix=prefix, name=lambda n: f"{prefix}-{n + 1}" if n else prefix,
+            sample_id=None, path=None, received_at=datetime.now(UTC),
+            cache=ResponseCache("live", Path(tmp)), upload=(data, filename),
+        )  # fmt: skip
 
 
 # --- Routes -----------------------------------------------------------------------
@@ -377,7 +407,7 @@ async def start_try(request: Request, ctx: Sandbox, conn: Conn) -> TryStarted:
     """Run a sample (JSON {"sample_id"}) or, while live uploads are on, an uploaded file."""
     kind = request.headers.get("content-type", "")
     if kind.startswith("multipart/form-data"):
-        raise HTTPException(403, "Las subidas en vivo están desactivadas.")
+        return await start_upload(request, ctx, conn)
     try:
         body = TryIn.model_validate_json(await request.body())
     except ValidationError as exc:
@@ -390,6 +420,101 @@ async def start_try(request: Request, ctx: Sandbox, conn: Conn) -> TryStarted:
     conn.commit()  # a sandbox made by this request must be visible to the job's thread
     job = JOBS.start(ctx.session_id, lambda j: run_sample(j, sample))
     return TryStarted(job_id=job.id, events_url=f"/api/try/{job.id}/events")
+
+
+# --- Uploads ----------------------------------------------------------------------
+
+MAX_BYTES = LIMITS.max_mb * 1024 * 1024
+FORM_OVERHEAD = 16 * 1024  # multipart boundaries and headers around the one file
+PER_DAY_TOTAL = 200
+QUOTAS = (  # (window, scope, limit, Spanish message)
+    ("10 minutes", "ip", LIMITS.per_10_min, f"Llegaste al límite de {LIMITS.per_10_min} subidas en 10 minutos."),
+    ("1 day", "ip", LIMITS.per_day, f"Llegaste al límite de {LIMITS.per_day} subidas por día."),
+    ("1 day", "all", PER_DAY_TOTAL, "Se alcanzó el límite de subidas de hoy; prueba con una muestra."),
+)  # fmt: skip
+
+
+def upload_type(data: bytes) -> str:
+    """The upload's suffix from its first bytes, never from its name or declared type."""
+    if data.startswith(b"%PDF-"):
+        try:
+            with pymupdf.open(stream=data, filetype="pdf") as doc:
+                if doc.needs_pass:
+                    raise HTTPException(415, "El PDF está protegido con contraseña.")
+                if doc.page_count > LIMITS.max_pages:
+                    raise HTTPException(
+                        422, f"El documento tiene más de {LIMITS.max_pages} páginas."
+                    )
+        except (RuntimeError, ValueError) as exc:  # PyMuPDF could not open it
+            raise HTTPException(415, "No se pudo abrir el archivo como PDF.") from exc
+        return ".pdf"
+    if data.startswith(b"\x89PNG\r\n\x1a\n"):
+        return ".png"
+    if data.startswith(b"\xff\xd8\xff"):
+        return ".jpg"
+    raise HTTPException(415, "Solo se aceptan archivos PDF, PNG o JPG.")
+
+
+def check_quotas(conn, ip: str) -> None:
+    for window, scope, limit, message in QUOTAS:
+        row = conn.execute(
+            "SELECT count(*) AS n, min(created_at) + %s::interval - now() AS wait FROM upload_log"
+            " WHERE created_at > now() - %s::interval AND (%s = 'all' OR client_ip = %s)",
+            (window, window, scope, ip),
+        ).fetchone()
+        if row["n"] >= limit:
+            raise too_many(message, max(int(row["wait"].total_seconds()) + 1, 1))
+
+
+async def start_upload(request: Request, ctx: sessions.Ctx, conn) -> TryStarted:
+    if not live_uploads(conn):
+        raise HTTPException(403, "Las subidas en vivo están desactivadas.")
+    if JOBS.running(ctx.session_id):  # before the quota counts this upload
+        raise too_many(BUSY_ES, 5)
+    too_big = HTTPException(413, f"El archivo supera {LIMITS.max_mb} MB.")
+    length = request.headers.get("content-length", "")
+    if not length.isdigit() or int(length) > MAX_BYTES + FORM_OVERHEAD:
+        raise too_big
+    ip = client_ip(request)
+    check_quotas(conn, ip)
+    async with request.form(max_files=1, max_fields=1) as form:
+        file = form.get("file")
+        if not isinstance(file, UploadFile):
+            raise HTTPException(422, 'Envía el archivo en el campo "file".')
+        data = await file.read(MAX_BYTES + 1)
+        filename = PurePosixPath(file.filename or "").name[:120]
+    if len(data) > MAX_BYTES:
+        raise too_big
+    suffix = upload_type(data)
+    # Uploads go with their sandbox: drop expired ones now rather than at the next new visitor.
+    conn.execute("DELETE FROM sessions WHERE kind = 'sandbox' AND expires_at < now()")
+    conn.execute("DELETE FROM upload_log WHERE created_at < now() - interval '1 day'")
+    conn.execute("INSERT INTO upload_log (client_ip) VALUES (%s)", (ip,))
+    conn.commit()  # the quota row and a new sandbox, before the job's thread looks
+    name = filename or f"documento{suffix}"
+    job = JOBS.start(ctx.session_id, lambda j: run_upload(j, data, suffix, name))
+    return TryStarted(job_id=job.id, events_url=f"/api/try/{job.id}/events")
+
+
+# --- Admin --------------------------------------------------------------------------
+
+
+@router.put(
+    "/api/admin/settings",
+    responses={401: {"model": ErrorOut}, 404: {"model": ErrorOut}},
+)
+def put_settings(body: AdminSettings, request: Request, conn: Conn) -> AdminSettings:
+    """Switch live uploads on or off with "Authorization: Bearer <ADMIN_TOKEN>"; the route
+    does not exist while ADMIN_TOKEN is empty."""
+    token = get_settings().admin_token
+    if token is None or not token.get_secret_value():
+        raise HTTPException(404, "Not Found")
+    given = request.headers.get("authorization", "").removeprefix("Bearer ").strip()
+    if not hmac.compare_digest(given.encode(), token.get_secret_value().encode()):
+        raise HTTPException(401, "Token de administración inválido.")
+    with conn.transaction():
+        db.set_setting(conn, "live_uploads", body.live_uploads)
+    return AdminSettings(live_uploads=live_uploads(conn))
 
 
 def owned_job(job_id: str, request: Request) -> Job:

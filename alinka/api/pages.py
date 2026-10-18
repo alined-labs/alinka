@@ -8,12 +8,14 @@ at every scale. Recent renders stay in memory.
 
 from __future__ import annotations
 
+import io
 from functools import lru_cache
 from pathlib import Path
 
 import pymupdf
+from PIL import Image, ImageOps
 
-from alinka.ingest.dispatch import IMAGE_SUFFIXES, ingest_path, render_pages
+from alinka.ingest.dispatch import IMAGE_SUFFIXES, ingest_bytes
 
 ROOT = Path(__file__).resolve().parents[2]
 DPI = {1: 150, 2: 300, 3: 450}
@@ -34,24 +36,33 @@ def _file(path: str | None) -> Path | None:
 
 @lru_cache(maxsize=32)
 def _pages(path: str | None) -> tuple[Page, ...] | None:
-    """Every page of the document as something PyMuPDF renders; None when it can't."""
+    """Every page of a repo document as something PyMuPDF renders; None when it can't."""
     file = _file(path)
-    if file is None:
-        return None
-    suffix = file.suffix.lower()
+    return None if file is None else split(file.read_bytes(), file.suffix)
+
+
+@lru_cache(maxsize=8)  # holds the bytes: a few recent uploads at most
+def split(data: bytes, suffix: str) -> tuple[Page, ...] | None:
+    """Every page of a document's bytes (a repo file or an upload); None for other types."""
+    suffix = suffix.lower()
     if suffix == ".pdf":
-        data = file.read_bytes()
         with pymupdf.open(stream=data, filetype="pdf") as doc:
             return tuple((data, "pdf", i) for i in range(doc.page_count))
     if suffix in IMAGE_SUFFIXES:
-        return tuple((png, "png", 0) for png in render_pages(file))
+        image = ImageOps.exif_transpose(Image.open(io.BytesIO(data))).convert("RGB")
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        return ((buffer.getvalue(), "png", 0),)
     if suffix in TEXT_SUFFIXES:
         return tuple(
             (p.source_pdf, "pdf", p.source_page) if p.source_pdf else (p.png, "png", 0)
-            for p in ingest_path(file).pages
+            for p in ingest_bytes(data, suffix).pages
             if p.source_pdf or p.png
         )
     return None
+
+
+Upload = tuple[bytes, str]  # an uploaded document's bytes and suffix
 
 
 def _placeholder(label: str, dpi: int) -> bytes:
@@ -68,8 +79,15 @@ def _placeholder(label: str, dpi: int) -> bytes:
 def render_page(path: str | None, n: int, label: str, scale: int = 1) -> bytes | None:
     """PNG bytes of page n (1-based) at the scale's dpi, a placeholder when the source
     can't be rendered, or None when n is out of range for a document that exists."""
+    return _render(_pages(path), n, label, scale)
+
+
+def render_upload(upload: Upload, n: int, label: str, scale: int = 1) -> bytes | None:
+    return _render(split(*upload), n, label, scale)
+
+
+def _render(pages: tuple[Page, ...] | None, n: int, label: str, scale: int) -> bytes | None:
     dpi = DPI[scale]
-    pages = _pages(path)
     if pages is None:
         return _placeholder(f"{label} · página {n}", dpi) if n == 1 else None
     if not 1 <= n <= len(pages):
@@ -84,8 +102,15 @@ def render_page(path: str | None, n: int, label: str, scale: int = 1) -> bytes |
 @lru_cache(maxsize=256)
 def page_sizes(path: str | None) -> tuple[tuple[int, int], ...]:
     """Pixel width and height of every page at scale 1; one A4 page for the placeholder."""
+    return _sizes(_pages(path))
+
+
+def upload_sizes(upload: Upload) -> tuple[tuple[int, int], ...]:
+    return _sizes(split(*upload))
+
+
+def _sizes(pages: tuple[Page, ...] | None) -> tuple[tuple[int, int], ...]:
     k = DPI[1] / 72
-    pages = _pages(path)
     if pages is None:
         return ((round(595 * k), round(842 * k)),)
     sizes = []
