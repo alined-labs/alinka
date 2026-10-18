@@ -1,0 +1,95 @@
+{
+ "cost_usd": 0.000111132,
+ "input_hash": "abd787711e1f212ef8f72651175021822a0cecd431e1a42ee8a98e1f627b3150",
+ "input_tokens": 2646,
+ "key": "427d4d98626af5eee1d0a1eba1844baf25655b02ce036486d4243672d3072bd8",
+ "latency_ms": 1190,
+ "model": "typesafe/jev-1.13",
+ "output_tokens": 594,
+ "prompt_hash": "34b3dbf1dd80c9f2200402ed773dcbdef8bc4ba6820806d791d6222eb73cc924",
+ "recorded_at": "2026-10-18T08:27:51Z",
+ "request": {
+  "model": "typesafe/jev-1.13",
+  "questions": [
+   "J1a",
+   "J1b",
+   "J2.beneficiary_name",
+   "J2.beneficiary_tax_id",
+   "J2.currency",
+   "J2.due_date",
+   "J2.invoice_number",
+   "J2.total"
+  ],
+  "role": "jev"
+ },
+ "response": {
+  "answers": {
+   "J1a": {
+    "choice": "3.600.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "2.219,00": 0,
+     "2.352.941,00": 0,
+     "22.641.369,00": 0,
+     "3.025.210,00": 0,
+     "3.600.000,00": 1,
+     "4.417.302,00": 0,
+     "5.000,00": 0,
+     "574.790,00": 0,
+     "672.269,00": 0,
+     "900.765.432,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J1b": {
+    "choice": "3.600.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "2.219,00": 0,
+     "2.352.941,00": 0,
+     "22.641.369,00": 0,
+     "3.025.210,00": 0,
+     "3.600.000,00": 1,
+     "4.417.302,00": 0,
+     "5.000,00": 0,
+     "574.790,00": 0,
+     "672.269,00": 0,
+     "900.765.432,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J2.beneficiary_name": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.beneficiary_tax_id": {
+    "noul": 0.05,
+    "type": "noul"
+   },
+   "J2.currency": {
+    "noul": 0.05,
+    "type": "noul"
+   },
+   "J2.due_date": {
+    "noul": 0.05,
+    "type": "noul"
+   },
+   "J2.invoice_number": {
+    "noul": 0.08,
+    "type": "noul"
+   },
+   "J2.total": {
+    "noul": 0.04,
+    "type": "noul"
+   }
+  },
+  "model": "typesafe/jev-1.13-20260917"
+ },
+ "stop_reason": "end_turn"
+}
