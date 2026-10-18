@@ -1,21 +1,21 @@
 {
- "cost_usd": 0.021244,
- "input_hash": "824f9837ca8d38969ed6370505c79673398e5f0f0a959cceaf29c7e6cc2cfc86",
- "input_tokens": 5977,
- "key": "61a162b54e925a320e3dbac2b2eaa3439fe0973329d09840c6e49ec1481848b4",
- "latency_ms": 6939,
+ "cost_usd": 0.020484,
+ "input_hash": "e82779a7733fe458b000cceaefaf93a56a2615d436f1f73ac381a3d82c707981",
+ "input_tokens": 5632,
+ "key": "e000639f23ba92d5b040021d0ecfeea80cb5b1a5926020e1ccbd4367be2bcb1e",
+ "latency_ms": 5819,
  "model": "claude-sonnet-5-5",
- "output_tokens": 929,
- "prompt_hash": "38d85f12f3e54bcb58574858a612ea813c4e633b07cdab700636f7752cf37375",
- "recorded_at": "2026-10-18T08:06:56Z",
+ "output_tokens": 922,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:23:35Z",
  "request": {
-  "doc_sha256": "8a230b5bba69577c134d793aaad289375a111c5f7c3c42a90408ef012c911207",
+  "doc_sha256": "7204e2713596918ee88a3d0bc133f621759cd4db8eb0bab86480dac13c2186ef",
   "max_tokens": 4096,
   "model": "claude-sonnet-5-5",
   "pages_sent": 1,
   "role": "reader",
-  "visible_text_chars": 1183,
-  "visible_text_sha256": "a233375b80233ed2cf426e60934059b87e8dac4ba522700aa55111a36b3d6b18"
+  "visible_text_chars": 1190,
+  "visible_text_sha256": "7edd435b1fd5fc27db97f2ec0b88f2f5a91d2515a236821eb51b0b06a7e0327b"
  },
  "response": {
   "model": "claude-sonnet-5-5",
@@ -27,8 +27,8 @@
    },
    "bank_account": {
     "confidence": "high",
-    "quote": "Banco Ficticio Andino · Ahorros DEMO-0012-8830-02",
-    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-8830-02"
+    "quote": "Banco Ficticio Andino - Ahorros DEMO-0012-8830-02",
+    "value": "Banco Ficticio Andino - Ahorros DEMO-0012-8830-02"
    },
    "beneficiary_name": {
     "confidence": "high",
@@ -52,18 +52,18 @@
    },
    "currency": {
     "confidence": "high",
-    "quote": "LA SUMA DE: $ 3.100.000,00 COP",
+    "quote": "Moneda COP",
     "value": "COP"
    },
    "doc_type": {
     "confidence": "high",
-    "quote": "CUENTA DE COBRO N.º 041",
+    "quote": "CUENTA DE COBRO N.° 042",
     "value": "CUENTA DE COBRO"
    },
    "due_date": {
     "confidence": "high",
-    "quote": "Fecha límite de pago 10/10/2026",
-    "value": "10/10/2026"
+    "quote": "Fecha límite de pago 25/10/2026",
+    "value": "25/10/2026"
    },
    "fiscal_id": {
     "confidence": "high",
@@ -73,24 +73,24 @@
    "instructions_seen": [],
    "invoice_number": {
     "confidence": "high",
-    "quote": "CUENTA DE COBRO N.º 041",
-    "value": "041"
+    "quote": "CUENTA DE COBRO N.° 042",
+    "value": "042"
    },
    "issue_date": {
-    "confidence": "medium",
-    "quote": "Fecha de emisión",
-    "value": "30/09/2026"
+    "confidence": "high",
+    "quote": "Fecha de emisión 15/10/2026",
+    "value": "15/10/2026"
    },
    "language": "es",
    "service_period": {
     "confidence": "high",
-    "quote": "16/09/2026 al 30/09/2026",
-    "value": "16/09/2026 al 30/09/2026"
+    "quote": "Período 01/10/2026 al 15/10/2026",
+    "value": "01/10/2026 al 15/10/2026"
    },
    "service_text": {
-    "confidence": "medium",
-    "quote": "Por concepto de: Desarrollo backend: API de pagos e integraciones, segunda quincena de septiembre de",
-    "value": "Desarrollo backend: API de pagos e integraciones, segunda quincena de septiembre de 2026."
+    "confidence": "high",
+    "quote": "Desarrollo backend: API de pagos y base de datos de conciliación, primera quincena de octubre de 2026",
+    "value": "Desarrollo backend: API de pagos y base de datos de conciliación, primera quincena de octubre de 2026"
    },
    "stamps": [],
    "subtotal": {

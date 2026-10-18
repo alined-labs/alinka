@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.023454,
+ "input_hash": "4a553f3271775b132145e53f9c8f9c27266239d541d93bf33b7d66b97bdb5ba3",
+ "input_tokens": 6692,
+ "key": "b039b270826feaf7d542e3a8afbccc9e3a5f29bee69dfc885a73d73ddc975078",
+ "latency_ms": 5947,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 1007,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:23:23Z",
+ "request": {
+  "doc_sha256": "f7b5f0da9817d7e6ebd310573091c594e19da282fa34faaa12de00a7cf9d092f",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1865,
+  "visible_text_sha256": "490a2ca450f5f4ad478797d4c7cde6ca640aaeabffee9a81bc4a96d959cf4736"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "(DIEZ MIL DOSCIENTOS PESOS 00/100 M.N.)",
+    "value": "(DIEZ MIL DOSCIENTOS PESOS 00/100 M.N.)"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 07",
+    "value": "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 07"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Bajío Traducciones S.C.",
+    "value": "Bajío Traducciones S.C."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "RFC: DEMO020202CD2",
+    "value": "DEMO020202CD2"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "medium",
+    "quote": "Núm. reg. id. trib.: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "MXN",
+    "value": "MXN"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "FACTURA · CFDI 4.0 (REPRESENTACIÓN IMPRESA)",
+    "value": "FACTURA"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "29/10/2026",
+    "value": "29/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": "AC8DC6CB-84DC-51EC-830A-44FDF6C2B1FA",
+    "value": "AC8DC6CB-84DC-51EC-830A-44FDF6C2B1FA"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Serie y folio T-0588",
+    "value": "T-0588"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión 2026-10-14T10:10:12",
+    "value": "2026-10-14T10:10:12"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "10/10/2026 al 14/10/2026",
+    "value": "10/10/2026 al 14/10/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Localización al portugués de la aplicación móvil (2,150 cadenas)",
+    "value": "Localización al portugués de la aplicación móvil (2,150 cadenas)"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal\n10,200.00",
+    "value": "10,200.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA trasladado 0% (exportación)\n0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "$ 10,200.00",
+    "value": "10,200.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

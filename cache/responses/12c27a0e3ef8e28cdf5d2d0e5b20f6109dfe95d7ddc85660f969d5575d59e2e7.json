@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.02141,
+ "input_hash": "f116f68994879a3925a3f832e9b6b94ad13726db9aace22709716bc0beda3083",
+ "input_tokens": 6220,
+ "key": "12c27a0e3ef8e28cdf5d2d0e5b20f6109dfe95d7ddc85660f969d5575d59e2e7",
+ "latency_ms": 5592,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 897,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:23:01Z",
+ "request": {
+  "doc_sha256": "af701d9375aac9a35237f89c92dd64946524fd5d8db0ebad3ddf25caa484fce2",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1342,
+  "visible_text_sha256": "c3183f5a71aa56cdeb9b7f9de54c56715c490d234a4cff662fde8cfac0f1fa12"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Amount in words: Seven hundred eighty and 00/100 US Dollars",
+    "value": "Seven hundred eighty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Account: Demo Plains Bank · ABA DEMO-1040 · Acct DEMO-3317-0099",
+    "value": "Demo Plains Bank · ABA DEMO-1040 · Acct DEMO-3317-0099"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Tallgrass Demo Analytics, LLC (fictitious company)",
+    "value": "Tallgrass Demo Analytics, LLC"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-83-5521907",
+    "value": "DEMO-83-5521907"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Bill to: Ceiba Demo Labs, Inc. (fictitious company)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency: USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Invoice\nInvoice # TGA-00417",
+    "value": "Invoice"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date: November 8, 2026",
+    "value": "November 8, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # TGA-00417",
+    "value": "TGA-00417"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date: October 9, 2026",
+    "value": "October 9, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "service_text": {
+    "confidence": "medium",
+    "quote": "1 | Product analytics dashboard setup | 1 | project | 600.00 | 600.00",
+    "value": "Product analytics dashboard setup; Event tracking plan and QA"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal: 780.00",
+    "value": "780.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax: 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD): $780.00",
+    "value": "780.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

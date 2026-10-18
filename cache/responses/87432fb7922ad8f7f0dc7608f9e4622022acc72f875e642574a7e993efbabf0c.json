@@ -1,13 +1,13 @@
 {
- "cost_usd": 0.020588,
+ "cost_usd": 0.021222,
  "input_hash": "555580c0c75fa62a1ed65f5e5169a47dd077518f9295f13ded7703d5a5dc3047",
- "input_tokens": 5994,
- "key": "ab8789b8e5bb3763de2e327651272c9568d110b37977120c5ebc967b572b7eb7",
- "latency_ms": 6756,
+ "input_tokens": 6191,
+ "key": "87432fb7922ad8f7f0dc7608f9e4622022acc72f875e642574a7e993efbabf0c",
+ "latency_ms": 8007,
  "model": "claude-sonnet-5-5",
- "output_tokens": 860,
- "prompt_hash": "38d85f12f3e54bcb58574858a612ea813c4e633b07cdab700636f7752cf37375",
- "recorded_at": "2026-10-18T08:06:56Z",
+ "output_tokens": 884,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:21:56Z",
  "request": {
   "doc_sha256": "28937aa218a9c70fb60bd1f0dd699ce603fb91bbdd7c31a45c2bfe63c2da0802",
   "max_tokens": 4096,
@@ -26,8 +26,8 @@
     "value": "One thousand one hundred eighty and 00/100 US Dollars"
    },
    "bank_account": {
-    "confidence": "medium",
-    "quote": "Demo Federal Bank · ABA DEMO-0210 · Acct",
+    "confidence": "high",
+    "quote": "Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-4421-0010",
     "value": "Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-4421-0010"
    },
    "beneficiary_name": {
@@ -88,19 +88,19 @@
     "value": "September 1, 2026 – September 30, 2026"
    },
    "service_text": {
-    "confidence": "high",
+    "confidence": "medium",
     "quote": "Cloud hosting – compute (4 vCPU nodes), September 2026",
     "value": "Cloud hosting – compute (4 vCPU nodes), September 2026"
    },
    "stamps": [],
    "subtotal": {
-    "confidence": "high",
-    "quote": "1,180.00",
+    "confidence": "medium",
+    "quote": "Subtotal 1,180.00",
     "value": "1,180.00"
    },
    "tax_total": {
-    "confidence": "high",
-    "quote": "0.00",
+    "confidence": "medium",
+    "quote": "Sales tax 0.00",
     "value": "0.00"
    },
    "total": {

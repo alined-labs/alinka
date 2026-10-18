@@ -1,13 +1,13 @@
 {
- "cost_usd": 0.022818,
+ "cost_usd": 0.023582,
  "input_hash": "aa63e5c208ae7d5d32e6e13646371a59e3bc48151e5879471e4b3b956c434daa",
- "input_tokens": 6494,
- "key": "4cda5555fbe04e19ae96db4485ed99cdd8f0a27351ab87385a8bb0694109a931",
- "latency_ms": 6220,
+ "input_tokens": 6691,
+ "key": "e2abf32c0c1e95f10629d29d5323dff888e726e0f7b112fb33b732f77c4364a0",
+ "latency_ms": 6258,
  "model": "claude-sonnet-5-5",
- "output_tokens": 983,
- "prompt_hash": "38d85f12f3e54bcb58574858a612ea813c4e633b07cdab700636f7752cf37375",
- "recorded_at": "2026-10-18T08:07:02Z",
+ "output_tokens": 1020,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:22:06Z",
  "request": {
   "doc_sha256": "eb54ad9033cbcb75e4c3f64ce4e6c6a4b1ad050f27b942adfc7ea1463f761bb4",
   "max_tokens": 4096,
@@ -31,8 +31,8 @@
     "value": "Banco Ficticio de Occidente · CLABE DEMO 0000 0000 0000 06"
    },
    "beneficiary_name": {
-    "confidence": "medium",
-    "quote": "Talleres Digitales Aztlán S.A. de",
+    "confidence": "high",
+    "quote": "Talleres Digitales Aztlán S.A. de C.V.",
     "value": "Talleres Digitales Aztlán S.A. de C.V."
    },
    "beneficiary_tax_id": {
@@ -52,17 +52,17 @@
    },
    "currency": {
     "confidence": "high",
-    "quote": "MXN",
+    "quote": "Moneda\nMXN",
     "value": "MXN"
    },
    "doc_type": {
-    "confidence": "medium",
+    "confidence": "high",
     "quote": "FACTURA · CFDI 4.0 (REPRESENTACIÓN",
-    "value": "FACTURA · CFDI 4.0 (REPRESENTACIÓN IMPRESA)"
+    "value": "FACTURA"
    },
    "due_date": {
     "confidence": "high",
-    "quote": "31/10/2026",
+    "quote": "Fecha límite de pago\n31/10/2026",
     "value": "31/10/2026"
    },
    "fiscal_id": {
@@ -88,24 +88,24 @@
     "value": "01/09/2026 al 30/09/2026"
    },
    "service_text": {
-    "confidence": "medium",
-    "quote": "calidad, septiembre 2026",
+    "confidence": "high",
+    "quote": "Pruebas de software y aseguramiento de calidad, septiembre 2026",
     "value": "Pruebas de software y aseguramiento de calidad, septiembre 2026"
    },
    "stamps": [],
    "subtotal": {
     "confidence": "high",
-    "quote": "26,000.00",
+    "quote": "Subtotal\n26,000.00",
     "value": "26,000.00"
    },
    "tax_total": {
     "confidence": "high",
-    "quote": "0.00",
+    "quote": "IVA trasladado 0% (exportación)\n0.00",
     "value": "0.00"
    },
    "total": {
     "confidence": "high",
-    "quote": "$ 26,000.00",
+    "quote": "Total (MXN)\n$ 26,000.00",
     "value": "26,000.00"
    }
   },

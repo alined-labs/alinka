@@ -32,9 +32,10 @@ FIELD_ORDER: tuple[str, ...] = (
 
 FIELD_HELP: dict[str, str] = {
     "doc_type": "the document's own title: FACTURA, CUENTA DE COBRO, INVOICE, PROFORMA, COTIZACIÓN, NOTA CRÉDITO...",
-    "beneficiary_name": "the seller or person who issues the document and wants to be paid",
-    "beneficiary_tax_id": "the seller's tax ID or national ID (NIT, RFC, EIN, CC...)",
-    "buyer_name": "the customer the document is billed to",
+    "beneficiary_name": "the seller or person who issues the document and wants to be paid; "
+    "in a cuenta de cobro, the one after 'DEBE A:' (never the customer who owes)",
+    "beneficiary_tax_id": "the seller's tax ID or national ID (NIT, RFC, EIN, C.C., CNPJ...)",
+    "buyer_name": "the customer the document is billed to, who owes the amount",
     "buyer_tax_id": "the customer's tax ID",
     "invoice_number": "the document number (with series or prefix if printed together)",
     "fiscal_id": "a tax-authority identifier when printed: CUFE, CFDI UUID / folio fiscal, CAE...",

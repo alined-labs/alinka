@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001784,
+ "input_hash": "4004dce0979e8cfcf281e6b59e4f330e8481c8735b7cf0d51f0f2d56bb2b609b",
+ "input_tokens": 6205,
+ "key": "290960cb72af7a7c25e1157b5c8c226526efccfbca2ef6cecd8fecd940daa52f",
+ "latency_ms": 8580,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 2327,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:23:42Z",
+ "request": {
+  "doc_sha256": "f16976bbe643e3e019f30d01539e1aa6c0ec416e501a11e37d7de1a3ded30616",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1274,
+  "visible_text_sha256": "87efe33af063df781de90bde321603f255431805183bdd26ea9091ffc529645d"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: SETECIENTOS VEINTE DÓLARES ESTADOUNIDENSES",
+    "value": "SON: SETECIENTOS VEINTE DÓLARES ESTADOUNIDENSES"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Consignar a: Cooperativa Ficticia del Café · Ahorros DEMO-7710-0003",
+    "value": "Cooperativa Ficticia del Café · Ahorros DEMO-7710-0003"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "DEBE A: Valentina Ospina Duarte",
+    "value": "Valentina Ospina Duarte"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C. DEMO- CC-1036789012",
+    "value": "DEMO-CC-1036789012"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º 2026-020 | Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda: USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º 2026-020",
+    "value": "CUENTA DE COBRO"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago: 30/10/2026",
+    "value": "30/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º 2026-020",
+    "value": "2026-020"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión: 15/10/2026",
+    "value": "15/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período: 01/10/2026 al 15/10/2026",
+    "value": "01/10/2026 al 15/10/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Por concepto de: Servicios de desarrollo frontend: componentes React del tablero y mejoras de accesibilidad, primera quincena de octubre de 2026.",
+    "value": "Servicios de desarrollo frontend: componentes React del tablero y mejoras de accesibilidad, primera quincena de octubre de 2026."
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "LA SUMA DE: USD $ 720,00 USD",
+    "value": "720,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

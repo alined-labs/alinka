@@ -1,24 +1,24 @@
 {
- "cost_usd": 0.02139,
+ "cost_usd": 0.001084,
  "input_hash": "a4d04c91cb1b849f23c91c55e36a2003bd7d1aafa450cb46bf94c6e9b05f83af",
- "input_tokens": 5995,
- "key": "3ca2f0bb0c37588be642c0d85a688fae4c42d09e0fcda3ab1ac766d9a8e9f5e7",
- "latency_ms": 7594,
- "model": "claude-sonnet-5-5",
- "output_tokens": 940,
- "prompt_hash": "38d85f12f3e54bcb58574858a612ea813c4e633b07cdab700636f7752cf37375",
- "recorded_at": "2026-10-18T08:06:57Z",
+ "input_tokens": 6190,
+ "key": "f2171cbd252921125cd2044aaf93eb1165b5855a3b5702bfd14f13d62ff74eab",
+ "latency_ms": 3616,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 931,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:21:59Z",
  "request": {
   "doc_sha256": "6e1451f63a6a1aa8e785c58af9334e28ae769320c919e8c36c0c4210ca1b383a",
   "max_tokens": 4096,
-  "model": "claude-sonnet-5-5",
+  "model": "claude-haiku-5-5",
   "pages_sent": 1,
-  "role": "reader",
+  "role": "checker",
   "visible_text_chars": 1241,
   "visible_text_sha256": "2c2acce13556b6a32a3fc0976900e3bb88d605bc474500de335b7e7074395706"
  },
  "response": {
-  "model": "claude-sonnet-5-5",
+  "model": "claude-haiku-5-5",
   "parsed": {
    "amount_in_words": {
     "confidence": "high",
@@ -27,12 +27,12 @@
    },
    "bank_account": {
     "confidence": "high",
-    "quote": "Cooperativa Ficticia del Café · Ahorros DEMO-7710-0003",
+    "quote": "Consignar a Cooperativa Ficticia del Café · Ahorros DEMO-7710-0003",
     "value": "Cooperativa Ficticia del Café · Ahorros DEMO-7710-0003"
    },
    "beneficiary_name": {
     "confidence": "high",
-    "quote": "Valentina Ospina Duarte",
+    "quote": "DEBE A: Valentina Ospina Duarte",
     "value": "Valentina Ospina Duarte"
    },
    "beneficiary_tax_id": {
@@ -42,17 +42,17 @@
    },
    "buyer_name": {
     "confidence": "high",
-    "quote": "Ceiba Demo Labs, Inc.",
-    "value": "Ceiba Demo Labs, Inc."
+    "quote": null,
+    "value": null
    },
    "buyer_tax_id": {
     "confidence": "high",
-    "quote": "EIN: DEMO-88-4417302",
-    "value": "DEMO-88-4417302"
+    "quote": null,
+    "value": null
    },
    "currency": {
     "confidence": "high",
-    "quote": "USD",
+    "quote": "Moneda USD",
     "value": "USD"
    },
    "doc_type": {
@@ -78,25 +78,25 @@
    },
    "issue_date": {
     "confidence": "high",
-    "quote": "30/09/2026",
+    "quote": "Fecha de emisión 30/09/2026",
     "value": "30/09/2026"
    },
    "language": "es",
    "service_period": {
     "confidence": "high",
-    "quote": "16/09/2026 al 30/09/2026",
+    "quote": "Período 16/09/2026 al 30/09/2026",
     "value": "16/09/2026 al 30/09/2026"
    },
    "service_text": {
-    "confidence": "medium",
-    "quote": "Por concepto de: Servicios de desarrollo frontend: componentes de la interfaz web y accesibilidad, segunda",
-    "value": "Servicios de desarrollo frontend: componentes de la interfaz web y accesibilidad, segunda quincena de septiembre de 2026."
+    "confidence": "high",
+    "quote": "Por concepto de: Servicios de desarrollo frontend: componentes de la interfaz web y accesibilidad, segunda quincena de septiembre de 2026.",
+    "value": "Servicios de desarrollo frontend: componentes de la interfaz web y accesibilidad, segunda quincena de septiembre de 2026"
    },
    "stamps": [],
    "subtotal": {
-    "confidence": "high",
-    "quote": null,
-    "value": null
+    "confidence": "medium",
+    "quote": "720,00",
+    "value": "720,00"
    },
    "tax_total": {
     "confidence": "high",
