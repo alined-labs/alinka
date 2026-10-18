@@ -6,12 +6,18 @@ import { api, type Board, type Schemas, unwrap } from "~/api/client";
 import { DocSlip } from "~/components/badges";
 import { diffBoards, impactSentence } from "~/lib/board";
 import { formatMoney, parseMajor } from "~/lib/format";
+import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
 import { boardKey } from "./tablero";
 
 export function meta() {
-  return [{ title: "Reglas · Alinka" }];
+  return seo({
+    path: "/reglas",
+    title: "Reglas",
+    description:
+      "Las reglas de pago de la empresa escritas como frases: topes, umbrales y presupuestos. Cámbialas en tu sandbox y mira qué facturas cambian de estado.",
+  });
 }
 
 type RulesOut = Schemas["RulesOut"];

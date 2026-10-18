@@ -10,10 +10,11 @@ import { BoardTable } from "~/components/board-table";
 import { InvoiceCard } from "~/components/invoice-card";
 import { Segmented } from "~/components/segmented";
 import { allCards, COLUMN_TITLE, type CardState, projectRun, type RunResult, stepDelay } from "~/lib/board";
+import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
 export function meta() {
-  return [{ title: "Tablero · Alinka" }];
+  return seo({ path: "/" });
 }
 
 export const boardKey = (view: View) => ["board", view] as const;

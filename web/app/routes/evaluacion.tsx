@@ -4,9 +4,15 @@ import { useEffect, useRef, useState } from "react";
 import { api, unwrap } from "~/api/client";
 import { cents, type EvalView, pct, type Point, readReport, seconds, threshold } from "~/lib/eval";
 import { formatDateTime } from "~/lib/format";
+import { seo } from "~/lib/seo";
 
 export function meta() {
-  return [{ title: "Evaluación · Alinka" }];
+  return seo({
+    path: "/evaluacion",
+    title: "Evaluación",
+    description:
+      "Aprobaciones indebidas, autonomía, costo, latencia y la curva de riesgo y cobertura, medidos sobre 175 facturas ficticias.",
+  });
 }
 
 export default function Evaluacion() {

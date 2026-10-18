@@ -23,12 +23,18 @@ import { PageViewer } from "~/components/page-viewer";
 import { STATE_LABEL } from "~/lib/board";
 import { type Detail, fieldChecks, type FieldView, orderRules, type RuleView } from "~/lib/detail";
 import { formatDateTime, formatMoney, formatUsd } from "~/lib/format";
+import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
 import type { Route } from "./+types/factura";
 
 export function meta({ params }: Route.MetaArgs) {
-  return [{ title: `${params.invoiceId} · Alinka` }];
+  const id = params.invoiceId;
+  return seo({
+    path: `/facturas/${encodeURIComponent(id)}`,
+    title: id,
+    description: `Factura ${id}: los campos leídos con su cita, las reglas aplicadas y la decisión con su motivo.`,
+  });
 }
 
 const NEVER_APPROVABLE = ["R01", "R12"];

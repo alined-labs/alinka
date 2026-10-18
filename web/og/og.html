@@ -1,0 +1,86 @@
+<!doctype html>
+<!--
+  The Open Graph image, 1200x630, in the design system's light theme (paper and ink).
+  Rendered to web/public/og.png by `pnpm --filter ./web run og`. Colours are the tokens in
+  app/styles/tokens.css; the wordmark is public/brand/alinka-logo.svg; icons are Lucide.
+-->
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&display=block"
+    />
+    <style>
+      :root {
+        --paper: #f7f7f4; --surface: #ffffff; --desk: #ececE5; --ink: #1c253a; --ink-muted: #5b6272;
+        --line: #e3e3dd; --line-strong: #767c88;
+        --pagada: #0b6669; --pagada-tint: #ddefee;
+        --retenida: #a3302b; --retenida-tint: #f6e3e0;
+        --pendiente: #7a4e00; --pendiente-tint: #f5e8cf;
+      }
+      * { box-sizing: border-box; margin: 0; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+      body {
+        position: relative; display: grid; grid-template-rows: auto 1fr auto; padding: 64px 72px 56px;
+        background: var(--paper); color: var(--ink); font-family: Manrope, sans-serif;
+        font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased;
+      }
+      .logo { height: 60px; width: auto; }
+      h1 { align-self: center; font-size: 64px; line-height: 76px; font-weight: 800; letter-spacing: -0.02em; }
+      h1 span { display: block; }
+      .foot { display: flex; align-items: center; justify-content: space-between; }
+      .chips { display: flex; gap: 14px; }
+      .chip {
+        display: inline-flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px 0 16px;
+        border-radius: 999px; font-size: 24px; font-weight: 700; white-space: nowrap;
+      }
+      .chip svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+      .pagada { color: var(--pagada); background: var(--pagada-tint); }
+      .frenada { color: var(--retenida); background: var(--retenida-tint); }
+      .pendiente { color: var(--pendiente); background: var(--pendiente-tint); }
+      .note { color: var(--ink-muted); font-size: 20px; font-weight: 600; text-align: right; line-height: 28px; }
+      /* The chain: a faint column of linked hashes on the right, as in Registro. */
+      .chain {
+        position: absolute; top: 64px; right: 72px; display: grid; gap: 10px; justify-items: end;
+        color: var(--line-strong); font: 400 18px/24px "JetBrains Mono", monospace; opacity: .55;
+      }
+      .chain span { display: inline-flex; align-items: center; gap: 8px; }
+      .chain svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    </style>
+  </head>
+  <body>
+    <svg class="logo" xmlns="http://www.w3.org/2000/svg" viewBox="-3 -2 131 48" role="img" aria-label="alinka">
+      <g fill="none" stroke="#1C253A" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="23" r="9" /><path d="M21 14 V32" /><path d="M3 41 H122" /><path d="M32 4 V32" />
+        <path d="M42 14 V32" /><circle cx="42" cy="5.6" r="3" fill="#1C253A" stroke="none" />
+        <path d="M52 14 V32 M52 23 A9 9 0 0 1 70 23 V32" /><path d="M81 4 V32 M93 14 L81 26 M85.6 21.6 L94 32" />
+        <circle cx="113" cy="23" r="9" /><path d="M122 14 V32" />
+      </g>
+    </svg>
+    <div class="chain" aria-hidden="true">
+      <span><svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2" /><path d="M15 7h2a5 5 0 1 1 0 10h-2" /><line x1="8" x2="16" y1="12" y2="12" /></svg>5c2026ad53</span>
+      <span><svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2" /><path d="M15 7h2a5 5 0 1 1 0 10h-2" /><line x1="8" x2="16" y1="12" y2="12" /></svg>63af656215</span>
+      <span><svg viewBox="0 0 24 24"><path d="M9 17H7A5 5 0 0 1 7 7h2" /><path d="M15 7h2a5 5 0 1 1 0 10h-2" /><line x1="8" x2="16" y1="12" y2="12" /></svg>6be9a3c28e</span>
+    </div>
+    <h1><span>La IA lee.</span>
+      <span>Las reglas deciden.</span>
+      <span>El registro explica.</span></h1>
+    <div class="foot">
+      <div class="chips">
+        <span class="chip pagada">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="m9 12 2 2 4-4" /></svg>Pagada
+        </span>
+        <span class="chip frenada">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="10" x2="10" y1="15" y2="9" /><line x1="14" x2="14" y1="15" y2="9" /></svg>Frenada
+        </span>
+        <span class="chip pendiente">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>Pendiente de aprobación
+        </span>
+      </div>
+      <p class="note">Cuentas por pagar<br />Datos ficticios</p>
+    </div>
+  </body>
+</html>
