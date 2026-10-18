@@ -1,6 +1,6 @@
 # Evaluation report
 
-Source: gold facts from data/labels. Rules 2026-10-18.1, as of 2026-10-17. 175 invoices; generated 2026-10-18T08:27:32+00:00.
+Source: gold facts from data/labels. Rules 2026-10-18.1, as of 2026-10-17. 175 invoices; generated 2026-10-18T08:43:09+00:00.
 
 ## Headline
 

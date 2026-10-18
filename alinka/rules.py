@@ -144,6 +144,12 @@ def usd(minor: int) -> str:
     return format_minor(minor, "USD")
 
 
+def limit(minor: int) -> str:
+    """Configured limits are whole USD and read as written in the rules: 2.000 USD."""
+    text = usd(minor)
+    return text.replace(",00 USD", " USD")
+
+
 def result(
     rule: RuleId,
     outcome: Outcome,
@@ -254,13 +260,13 @@ def r04(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
     ctr, total, cur = ben.contract, total_minor(facts), currency(facts)
     if total is None or cur is None:
         return amount_unknown("R04")
-    limit = ctr.rate_minor * (100 + ctr.tolerance_pct) / 100
+    ceiling = ctr.rate_minor * (100 + ctr.tolerance_pct) / 100
     if cur == ctr.currency:
-        over = total > limit
+        over = total > ceiling
         shown, agreed = format_minor(total, cur), format_minor(ctr.rate_minor, ctr.currency)
     else:  # R02 holds already; compare in USD so the excess is still visible
         mine = usd_minor(facts, world, cfg)
-        cap = usd_of(int(limit), ctr.currency, cfg.as_of, cfg.fx_max_age_days, world.fx)
+        cap = usd_of(int(ceiling), ctr.currency, cfg.as_of, cfg.fx_max_age_days, world.fx)
         if mine is None or cap is None:
             return amount_unknown("R04")
         over = mine > cap[0]
@@ -289,8 +295,8 @@ def r05(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
         return amount_unknown("R05")
     cap = cfg.per_payment_cap_usd * 100
     if amount > cap:
-        return result("R05", HOLD, "over_cap", approvable=False, usd=usd(amount), cap=usd(cap))
-    return result("R05", PASS, "ok", usd=usd(amount), cap=usd(cap))
+        return result("R05", HOLD, "over_cap", approvable=False, usd=usd(amount), cap=limit(cap))
+    return result("R05", PASS, "ok", usd=usd(amount), cap=limit(cap))
 
 
 def r06(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> RuleResult:
@@ -299,13 +305,12 @@ def r06(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
         return amount_unknown("R06")
     threshold = cfg.approval_threshold_usd * 100
     band_floor = threshold * (100 - cfg.approval_band_pct) / 100
-    values: dict[str, Scalar] = {
-        "usd": usd(amount), "threshold": usd(threshold), "band_pct": cfg.approval_band_pct,
-    }  # fmt: skip
+    values: dict[str, Scalar] = {"usd": usd(amount), "threshold": limit(threshold)}
     if amount > threshold:
         return result("R06", ESCALATE, "over_threshold", **values)
+    values |= {"band_pct": cfg.approval_band_pct, "band_floor": usd(int(band_floor))}
     if amount >= band_floor:
-        return result("R06", ESCALATE, "near_threshold", band_floor=usd(int(band_floor)), **values)
+        return result("R06", ESCALATE, "near_threshold", **values)
     return result("R06", PASS, "ok", **values)
 
 
@@ -320,7 +325,7 @@ def r07(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
         if e.status in SPENT and (e.decided.year, e.decided.month) == month
     )
     cap = cfg.monthly_cap_usd * 100
-    values: dict[str, Scalar] = {"usd": usd(amount), "spent": usd(spent), "cap": usd(cap)}
+    values: dict[str, Scalar] = {"usd": usd(amount), "spent": usd(spent), "cap": limit(cap)}
     if spent + amount > cap:
         return result("R07", HOLD, "over_monthly_cap", approvable=False, **values)
     return result("R07", PASS, "ok", **values)
@@ -341,7 +346,7 @@ def r08(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
         (c for c in world.company.cost_centers if ben and c.id == ben.contract.cost_center), None
     )
     if center is None:
-        return result("R08", PASS, "ok", usd=usd(amount), balance=usd(balance))
+        return result("R08", PASS, "balance_ok", usd=usd(amount), balance=usd(balance))
     month = (cfg.as_of.year, cfg.as_of.month)
     used = sum(
         e.usd_minor
@@ -472,7 +477,7 @@ def r13(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
     total = amount + sum(e.usd_minor for e in prior)
     threshold = cfg.split_threshold_usd * 100
     values: dict[str, Scalar] = {
-        "usd": usd(amount), "window_total": usd(total), "threshold": usd(threshold),
+        "usd": usd(amount), "window_total": usd(total), "threshold": limit(threshold),
         "window_days": cfg.split_window_days, "others": len(prior),
         "other_invoices": ", ".join(e.invoice_id for e in prior),
     }  # fmt: skip
