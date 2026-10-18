@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import hashlib
+import json
 from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
 
 from alinka.fx import load_fx
-from alinka.types import Beneficiary, Company, FxUsed, RulesConfig
+from alinka.types import Beneficiary, Company, FxUsed, InvoiceFacts, RulesConfig
 
 DATA = Path(__file__).resolve().parents[1] / "data"
 
@@ -51,3 +52,21 @@ def load_world(data: Path = DATA) -> World:
         beneficiaries=load_beneficiaries(data / "vendors.yaml"),
         fx=load_fx(data / "fx.yaml"),
     )
+
+
+def load_run_dir(run_dir: Path) -> tuple[InvoiceFacts, ...]:
+    """Recorded facts from *.jsonl (bare facts or {"facts": ...} lines), in received order.
+
+    The last line wins for a repeated invoice, as in Lane C's resumable runs.
+    """
+    facts: dict[str, InvoiceFacts] = {}
+    for path in sorted(run_dir.glob("*.jsonl")):
+        for line in path.read_text().splitlines():
+            if not line.strip():
+                continue
+            raw = json.loads(line)
+            raw = raw if "source" in raw else raw.get("facts")
+            if raw:
+                f = InvoiceFacts.model_validate(raw)
+                facts[f.source.invoice_id] = f
+    return tuple(sorted(facts.values(), key=lambda f: (f.source.received_at, f.source.invoice_id)))
