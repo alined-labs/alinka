@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.02256,
+ "input_hash": "6d8e28afb9c12e74bb52c30338f930c53d89f618d29fddd126536202c44436e3",
+ "input_tokens": 6135,
+ "key": "d361470168bec192195f346ee360b3b8f9b613ef54febea271bf60f759ec725c",
+ "latency_ms": 6433,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 1029,
+ "prompt_hash": "38d85f12f3e54bcb58574858a612ea813c4e633b07cdab700636f7752cf37375",
+ "recorded_at": "2026-10-18T08:07:02Z",
+ "request": {
+  "doc_sha256": "fea86ed42c4a0786f8e3d4826dc22bcb9a0294b77b3b71e7f804c2221938e7ac",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1374,
+  "visible_text_sha256": "4c1e86a08a67f893af0f5ad6721af32b5b84d646dd11d29c95cb5b5742a7263c"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: CINCO MILLONES DOSCIENTOS MIL PESOS M/CTE",
+    "value": "SON: CINCO MILLONES DOSCIENTOS MIL PESOS M/CTE"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio Andino · Corriente DEMO-0012-4471-01",
+    "value": "Banco Ficticio Andino · Corriente DEMO-0012-4471-01"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Andes Diseño S.A.S.",
+    "value": "Andes Diseño S.A.S."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIT: DEMO-901234567-7",
+    "value": "DEMO-901234567-7"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Tax ID (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "COP",
+    "value": "COP"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "FACTURA ELECTRÓNICA DE VENTA",
+    "value": "FACTURA ELECTRÓNICA DE VENTA"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "31/10/2026",
+    "value": "31/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "medium",
+    "quote": "45286131314f5284db4abc20f8b079dbaad2b4646714a57f25daf616ae5c453bcac1fe4793d631aa4",
+    "value": "45286131314f5284db4abc20f8b079dbaad2b4646714a57f25daf616ae5c453bcac1fe4793d631aa4ca5d4f13bc20e07"
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "N.º DEMO-FAC-0042",
+    "value": "DEMO-FAC-0042"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "01/10/2026",
+    "value": "01/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período 01/09/2026 al 30/09/2026",
+    "value": "01/09/2026 al 30/09/2026"
+   },
+   "service_text": {
+    "confidence": "medium",
+    "quote": "Diseño de interfaz: 14 pantallas del flujo de pagos",
+    "value": "Diseño de interfaz: 14 pantallas del flujo de pagos"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "4.369.748,00",
+    "value": "4.369.748,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "830.252,00",
+    "value": "830.252,00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "$ 5.200.000,00",
+    "value": "5.200.000,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}
