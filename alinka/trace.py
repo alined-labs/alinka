@@ -271,6 +271,12 @@ def verify(facts: InvoiceFacts, risk_max: float, ms: int | None = None) -> Trace
         "risk": v.risk,
         "risk_max": risk_max,
     }
+    if facts.flags.extraction_error or all(f.value is None for f in fields.values()):
+        why = (
+            "la lectura falló" if facts.flags.extraction_error else "la IA no encontró ningún dato"
+        )
+        summary = f"Verificación: no hubo nada que verificar porque {why}"
+        return _step("verify", "flagged", summary, data, ms)
     printed = {f: getattr(facts.printed, f) for f in CRITICAL_FIELDS}
     stated = [f for f, x in printed.items() if x.value is not None]
     missing = [f for f in REQUIRED_FIELDS if printed[f].value is None]
