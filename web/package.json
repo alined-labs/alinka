@@ -9,7 +9,8 @@
     "typecheck": "react-router typegen && tsc",
     "test": "vitest run",
     "gen:api": "openapi-typescript ../openapi.json -o app/api/schema.d.ts",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "og": "node scripts/og.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

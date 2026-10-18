@@ -1,7 +1,14 @@
 import { FileText, ShieldCheck } from "lucide-react";
 
+import { seo } from "~/lib/seo";
+
 export function meta() {
-  return [{ title: "Cómo funciona · Alinka" }];
+  return seo({
+    path: "/como-funciona",
+    title: "Cómo funciona",
+    description:
+      "Cómo decide Alinka: la IA lee la factura, el código la verifica, dieciséis reglas deciden y cada decisión queda en un registro encadenado.",
+  });
 }
 
 // Copy by Lane A (brain note A11), checked against evals/report.json after the date-order fix.

@@ -6,10 +6,16 @@ import { Link } from "react-router";
 import { api, FIXTURES, type Schemas, unwrap } from "~/api/client";
 import { DecisionChip, ReasonText, RuleChip } from "~/components/badges";
 import { formatDateTime } from "~/lib/format";
+import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
 export function meta() {
-  return [{ title: "Registro · Alinka" }];
+  return seo({
+    path: "/registro",
+    title: "Registro",
+    description:
+      "El registro encadenado de cada decisión, con su regla, su motivo y su hash. Verifica la cadena y exporta el CSV para conciliar.",
+  });
 }
 
 type ChainCheck = Schemas["ChainCheck"];

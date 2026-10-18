@@ -7,6 +7,7 @@ import type { Route } from "./+types/root";
 import { FIXTURES } from "./api/client";
 import { AlinkaLogo } from "./components/brand/AlinkaLogo";
 import { Segmented } from "./components/segmented";
+import { seo } from "./lib/seo";
 import { useView } from "./lib/view";
 import "./app.css";
 
@@ -20,13 +21,19 @@ export const links: Route.LinksFunction = () => [
   },
 ];
 
+// The defaults, also in __spa-fallback.html. Every route returns its own full set from seo();
+// here the canonical URL and og:url are left out, since the fallback serves many paths.
+export const meta: Route.MetaFunction = () =>
+  seo({ path: "/" }).filter((d) => !("rel" in d && d.rel === "canonical") && !("property" in d && d.property === "og:url"));
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Alinka · Cuentas por pagar</title>
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#F7F7F4" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131B2B" />
         <Meta />
         <Links />
       </head>
