@@ -28,3 +28,19 @@ def ingest_bytes(data: bytes, suffix: str) -> Ingested:
 def ingest_path(path: str | Path) -> Ingested:
     path = Path(path)
     return ingest_bytes(path.read_bytes(), path.suffix)
+
+
+def render_pages(path: str | Path) -> list[bytes]:
+    """The page images the reader saw and `Field.boxes` refer to: PDF pages at 150 dpi,
+    the photo itself, or the code-rendered text of an email or chat."""
+    path = Path(path)
+    if path.suffix.lower() in IMAGE_SUFFIXES:
+        import io
+
+        from PIL import Image, ImageOps
+
+        image = ImageOps.exif_transpose(Image.open(path)).convert("RGB")
+        buffer = io.BytesIO()
+        image.save(buffer, format="PNG")
+        return [buffer.getvalue()]
+    return [page.png for page in ingest_path(path).pages if page.png]
