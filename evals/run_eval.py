@@ -20,6 +20,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from alinka.decide.core import Session, batch
 from alinka.decide.ledger import MemoryLedger
 from alinka.money import parse_amount
@@ -33,6 +35,7 @@ ROOT = Path(__file__).resolve().parents[1]
 LABELS = ROOT / "data" / "labels"
 RUNS = ROOT / "data" / "runs"
 OUT = ROOT / "evals"
+EXPLANATIONS = OUT / "explanations.yaml"
 THRESHOLDS = tuple(round(t * 0.05, 2) for t in range(1, 21))
 AMOUNT_FIELDS = {"total", "subtotal", "tax_total"}
 
@@ -77,8 +80,17 @@ def newest_run() -> Path | None:
     if not RUNS.is_dir():
         return None
     runs = [p for p in RUNS.iterdir() if p.is_dir() and any(p.glob("*.jsonl"))]
-    runs = [p for p in runs if not p.name.endswith("-nojev")]
-    return max(runs, key=lambda p: p.stat().st_mtime, default=None)
+    runs = [p for p in runs if not p.name.endswith(("-nojev", "-jev-off"))]
+    full = [p for p in runs if p.name == "all-jev-on"]  # Lane C's full run of all 175
+    return full[0] if full else max(runs, key=lambda p: p.stat().st_mtime, default=None)
+
+
+def jev_off_run(run: Path) -> Path | None:
+    """The same documents read with JEV off: <run>-nojev, or *-jev-on paired with *-jev-off."""
+    names = [f"{run.name}-nojev"]
+    if run.name.endswith("-jev-on"):
+        names.append(run.name.removesuffix("-jev-on") + "-jev-off")
+    return next((run.parent / n for n in names if (run.parent / n).is_dir()), None)
 
 
 def episode(label: Label) -> str:
@@ -234,13 +246,16 @@ def risk_coverage(
     return curve
 
 
-def pick(curve: list[dict[str, Any]]) -> float | None:
-    """The threshold with the most coverage at zero improper approvals; ties go to the lower."""
+def pick(curve: list[dict[str, Any]], default: float = 0.7) -> float | None:
+    """The most coverage at zero improper approvals; on a flat stretch, the value nearest the
+    default, so a flat curve does not move the rule."""
     safe = [p for p in curve if p["improper"] == 0]
     if not safe:
         return None
     best = max(p["coverage"] for p in safe)
-    return min(p["threshold"] for p in safe if p["coverage"] == best)
+    return min(
+        (p["threshold"] for p in safe if p["coverage"] == best), key=lambda t: (abs(t - default), t)
+    )
 
 
 # --- Outputs -------------------------------------------------------------------------
@@ -250,13 +265,18 @@ def disagreements(
     labels: list[Label], records: dict[str, DecisionRecord], gold_mode: bool
 ) -> list[dict[str, str]]:
     rows = []
+    notes = (
+        yaml.safe_load(EXPLANATIONS.read_text()) if EXPLANATIONS.is_file() and not gold_mode else {}
+    )
     for lb in labels:
         rec = records.get(lb.invoice_id)
         got = decision_of(records, lb.invoice_id)
         if got == lb.gold_decision:
             continue
         why = ""
-        if rec is None:
+        if lb.invoice_id in (notes or {}):
+            why = notes[lb.invoice_id]
+        elif rec is None:
             why = "sin facts en la corrida"
         elif gold_mode and lb.trap is None and set(fired(rec)) <= {"R03", "R14"}:
             why = "la etiqueta no trae el periodo de servicio; se usó la fecha de emisión"
@@ -273,6 +293,20 @@ def disagreements(
             }
         )  # fmt: skip
     return rows
+
+
+def pick_gain(report: dict[str, Any]) -> str:
+    """How many invoices separate the pick from the default, so a pick resting on one is visible."""
+    vr, curve, n = (
+        report["verifier_risk_max"],
+        report["risk_coverage"]["jev_on"],
+        report["invoices"],
+    )
+    at = {p["threshold"]: p["coverage"] for p in curve}
+    if vr["chosen"] is None or vr["chosen"] not in at or vr["default"] not in at:
+        return "no curve"
+    moved = round((at[vr["chosen"]] - at[vr["default"]]) * n)
+    return f"the pick decides {moved} more invoice(s) autonomously than the default"
 
 
 def show(v: Any, pct: bool = False) -> str:
@@ -296,11 +330,13 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
         f"- **Improper approvals: {ia['k']} of {ia['K']}** (one-sided 95% Clopper–Pearson upper bound "
         f"{ia['upper_95']:.1%}).",
         f"- Autonomy: {au['autonomous']} of {au['total']} decided without a person "
-        f"({(au['rate'] or 0):.0%}), next to a ceiling of {au['ceiling_count']} ({(au['ceiling'] or 0):.0%}).",
+        f"({(au['rate'] or 0):.0%}; {au['correct']} of them as gold), next to a ceiling of "
+        f"{au['ceiling_count']} ({(au['ceiling'] or 0):.0%}).",
     ]
     if month:
         lines.append(
-            f"- The month: {month['autonomous']} of {month['total']} autonomous, ceiling "
+            f"- The month: {month['autonomous']} of {month['total']} autonomous "
+            f"({month['correct']} as gold), ceiling "
             f"{month['ceiling_count']} of {month['total']}."
         )
     sec = q["security_recall"]
@@ -310,8 +346,9 @@ def write_markdown(report: dict[str, Any], path: Path) -> None:
         f"{show(sec['attack'], True)} (n={sec['attack_n']}), overall {show(sec['all'], True)} (n={sec['all_n']}).",
         f"- Rule accuracy: determining rule among the gold rules {show(q['rule_accuracy']['determining_in_gold'], True)}, "
         f"all gold rules fired {show(q['rule_accuracy']['gold_rules_fired'], True)} (n={q['rule_accuracy']['n']}).",
-        f"- verifier_risk_max picked from the data: {show(report['verifier_risk_max']['chosen'])} "
-        f"(default {report['verifier_risk_max']['default']}"
+        f"- verifier_risk_max picked from the data: {show(report['verifier_risk_max']['chosen'])} with JEV on, "
+        f"{show(report['verifier_risk_max']['chosen_jev_off'])} with JEV off "
+        f"(default {report['verifier_risk_max']['default']}; {pick_gain(report)}"
         + ("; not measured on gold facts, whose risk is 0" if report["gold_facts"] else "")
         + ").",
         f"- Latency p50 {show(report['latency_ms']['p50'])} ms, p95 {show(report['latency_ms']['p95'])} ms; "
@@ -382,10 +419,10 @@ def evaluate(
         "confusion": confusion(labels, records),
         "quality": quality(labels, records),
         "by_split": by_split,
-        "verifier_risk_max": {"chosen": None if gold_mode else pick(on), "chosen_jev_off": pick(off) if off else None, "default": cfg.verifier_risk_max},
+        "verifier_risk_max": {"chosen": None if gold_mode else pick(on, cfg.verifier_risk_max), "chosen_jev_off": pick(off, cfg.verifier_risk_max) if off else None, "default": cfg.verifier_risk_max},
         "risk_coverage": {
             "jev_on": on, "jev_off": off,
-            "jev_off_note": None if off else "no data/runs/<run>-nojev recorded; JEV-off curve not drawn",
+            "jev_off_note": None if off else "no JEV-off run recorded (<run>-nojev or *-jev-off); JEV-off curve not drawn",
         },
         "field_accuracy": None if gold_mode else field_accuracy(labels, facts),
         "latency_ms": {"p50": percentile(lat, 50), "p95": percentile(lat, 95), "n": len(lat)},
@@ -417,8 +454,9 @@ def main(argv: list[str] | None = None) -> int:
     else:
         facts = load_run(run)
         source = f"recorded run data/runs/{run.name}"
-        if (run.parent / f"{run.name}-nojev").is_dir():
-            nojev = load_run(run.parent / f"{run.name}-nojev")
+        if (off_run := jev_off_run(run)) is not None:
+            nojev = load_run(off_run)
+            source += f" (JEV off: data/runs/{off_run.name})"
     report, rows = evaluate(facts, labels, world, cfg, source, nojev, run is None)
 
     args.out.mkdir(parents=True, exist_ok=True)

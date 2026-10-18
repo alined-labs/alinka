@@ -28,7 +28,9 @@ def test_pick_prefers_coverage_at_zero_improper():
         {"threshold": 0.6, "coverage": 0.8, "error": 0, "improper": 0},
         {"threshold": 0.9, "coverage": 0.9, "error": 0.1, "improper": 1},
     ]
-    assert pick(curve) == 0.5 and pick(curve[3:]) is None
+    assert pick(curve) == 0.6 and pick(curve[3:]) is None  # flat 0.5-0.6: nearest 0.7
+    flat = [{"threshold": t, "coverage": 0.7, "error": 0, "improper": 0} for t in (0.05, 0.7, 0.9)]
+    assert pick(flat) == 0.7
 
 
 def test_the_month_decides_to_gold_from_gold_facts(tmp_path):
