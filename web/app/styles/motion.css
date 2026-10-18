@@ -1,0 +1,35 @@
+/*
+ * View transitions (app/lib/motion.ts starts them only when supported and motion is allowed).
+ * The header stays still, pages cross-fade, cards and the decision chip morph into place.
+ */
+
+.ak-header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 180ms;
+}
+
+/* Same header on both sides: show the new one at once, nothing moves. */
+::view-transition-old(site-header) {
+  display: none;
+}
+::view-transition-new(site-header) {
+  animation: none;
+}
+
+::view-transition-group(*.card),
+::view-transition-group(decision-chip) {
+  animation-duration: 200ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

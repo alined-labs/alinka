@@ -23,11 +23,11 @@ export const DECISION_STYLE: Record<Decision, { icon: typeof CircleCheck; chip: 
 };
 
 /** The decision as icon plus word, so colour is never the only signal. */
-export function DecisionChip({ decision }: { decision: Decision }) {
+export function DecisionChip({ decision, transitionName }: { decision: Decision; transitionName?: string }) {
   const s = DECISION_STYLE[decision];
   const Icon = s.icon;
   return (
-    <span className={`ak-chip ${s.chip}`}>
+    <span className={`ak-chip ${s.chip}`} style={transitionName ? { viewTransitionName: transitionName } : undefined}>
       <Icon aria-hidden className="ak-icon" />
       {STATE_LABEL[decision]}
     </span>
