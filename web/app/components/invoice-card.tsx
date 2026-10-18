@@ -2,6 +2,7 @@ import { Link } from "react-router";
 
 import type { Card } from "~/api/client";
 import { amountParts, formatDay, formatUsd } from "~/lib/format";
+import { invoiceTransitionName, useMotionOK } from "~/lib/motion";
 import { useView } from "~/lib/view";
 
 import { CHANNEL, ChannelIcon, DecisionChip, DocSlip, ReasonText, RuleChip, SecurityTag } from "./badges";
@@ -32,11 +33,14 @@ export function Amount({ minor, currency }: { minor: number | null | undefined; 
 export function InvoiceCard({ card, moved = false }: { card: Card; moved?: boolean }) {
   const decided = card.state !== "inbox";
   const [view] = useView();
+  const motion = useMotionOK();
   return (
     <li className="grid">
       <Link
         to={{ pathname: `/facturas/${encodeURIComponent(card.invoice_id)}`, search: view === "canonical" ? "?vista=canonica" : "" }}
         className={`ak-card ${moved ? "ak-moved" : ""}`}
+        style={{ viewTransitionName: invoiceTransitionName(card.invoice_id), viewTransitionClass: "card" }}
+        viewTransition={motion}
         aria-label={`Factura ${card.invoice_id}: ${card.beneficiary_name ?? "beneficiario no identificado"}`}
       >
       <div className="ak-card__top">

@@ -1,15 +1,17 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryClientProvider } from "@tanstack/react-query";
 import { Info } from "lucide-react";
-import { useState } from "react";
 import { isRouteErrorResponse, Links, Meta, NavLink, Outlet, Scripts, ScrollRestoration } from "react-router";
 
 import type { Route } from "./+types/root";
 import { FIXTURES } from "./api/client";
+import { queryClient } from "./api/query";
 import { AlinkaLogo } from "./components/brand/AlinkaLogo";
 import { Segmented } from "./components/segmented";
+import { useMotionOK } from "./lib/motion";
 import { seo } from "./lib/seo";
 import { useView } from "./lib/view";
 import "./app.css";
+import "./styles/motion.css";
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
@@ -56,18 +58,24 @@ const NAV = [
 
 function Shell({ children }: { children: React.ReactNode }) {
   const [view, setView] = useView();
+  const motion = useMotionOK();
   return (
     <div className="flex min-h-screen flex-col">
       <a href="#contenido" className="ak-sr focus:not-sr-only focus:absolute focus:z-10 focus:bg-surface focus:p-2">
         Saltar al contenido
       </a>
       <header className="ak-header">
-        <NavLink to="/" className="ak-header__brand" aria-label="Alinka, ir al tablero">
+        <NavLink to="/" className="ak-header__brand" aria-label="Alinka, ir al tablero" viewTransition={motion}>
           <AlinkaLogo />
         </NavLink>
         <nav aria-label="Principal" className="ak-nav">
           {NAV.map((item) => (
-            <NavLink key={item.to} to={{ pathname: item.to, search: view === "canonical" ? "?vista=canonica" : "" }} end>
+            <NavLink
+              key={item.to}
+              to={{ pathname: item.to, search: view === "canonical" ? "?vista=canonica" : "" }}
+              end
+              viewTransition={motion}
+            >
               {item.label}
             </NavLink>
           ))}
@@ -105,11 +113,8 @@ function Shell({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  const [client] = useState(
-    () => new QueryClient({ defaultOptions: { queries: { staleTime: 5_000, retry: 1 } } }),
-  );
   return (
-    <QueryClientProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       <Shell>
         <Outlet />
       </Shell>

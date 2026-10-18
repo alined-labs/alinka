@@ -10,6 +10,7 @@ import { BoardTable } from "~/components/board-table";
 import { InvoiceCard } from "~/components/invoice-card";
 import { Segmented } from "~/components/segmented";
 import { allCards, COLUMN_TITLE, type CardState, projectRun, type RunResult, stepDelay } from "~/lib/board";
+import { prefersReducedMotion, useTransitionedValue } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
@@ -19,8 +20,8 @@ export function meta() {
 
 export const boardKey = (view: View) => ["board", view] as const;
 
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+const boardSignature = (b: Board | undefined) =>
+  b ? allCards(b).map((c) => `${c.invoice_id}:${c.state}:${c.approver ?? ""}`).join("|") : "";
 
 /** "Ejecutar agente": POST /api/run, then replay its steps so invoices move one by one. */
 function useRun(onDone: (board: Board) => void) {
@@ -139,7 +140,8 @@ export default function Tablero() {
   const onDone = useRef((b: Board) => qc.setQueryData(boardKey("sandbox"), b)).current;
   const { mutation: run, progress, shownBoard } = useRun(onDone);
 
-  const data = shownBoard ?? board.data;
+  // Every new board (a run step, a re-decision, the view switch) morphs its cards into place.
+  const data = useTransitionedValue(shownBoard ?? board.data, boardSignature);
   const running = run.isPending || progress !== null;
   const empty = data !== undefined && allCards(data).length === 0;
 

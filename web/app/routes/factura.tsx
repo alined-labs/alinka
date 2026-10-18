@@ -16,6 +16,7 @@ import { useState } from "react";
 import { Link, useParams } from "react-router";
 
 import { api, unwrap, type View } from "~/api/client";
+import { queryClient } from "~/api/query";
 import { ApprovalDialog } from "~/components/approval-dialog";
 import { CHANNEL, DecisionChip, DocSlip, MarkedQuote, ReasonText, RuleChip, SecurityTag } from "~/components/badges";
 import { Amount, BeneficiaryName } from "~/components/invoice-card";
@@ -23,6 +24,7 @@ import { PageViewer } from "~/components/page-viewer";
 import { STATE_LABEL } from "~/lib/board";
 import { type Detail, fieldChecks, type FieldView, orderRules, type RuleView } from "~/lib/detail";
 import { formatDateTime, formatMoney, formatUsd } from "~/lib/format";
+import { invoiceTransitionName, useTransitionedValue } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
@@ -41,14 +43,26 @@ const NEVER_APPROVABLE = ["R01", "R12"];
 
 export const detailKey = (view: View, id: string) => ["invoice", view, id] as const;
 
+const detailQuery = (view: View, id: string) => ({
+  queryKey: detailKey(view, id),
+  queryFn: () => unwrap(api.GET("/api/invoices/{invoice_id}", { params: { path: { invoice_id: id }, query: { view } } })),
+});
+
+/** Load the invoice before the navigation commits, so the card can morph into the detail. */
+export async function clientLoader({ params, request }: Route.ClientLoaderArgs) {
+  const view: View = new URL(request.url).searchParams.get("vista") === "canonica" ? "canonical" : "sandbox";
+  // A failure is shown by the screen itself, with its message, not by the route error boundary.
+  await queryClient.ensureQueryData(detailQuery(view, params.invoiceId)).catch(() => undefined);
+  return null;
+}
+
 export default function Factura() {
   const { invoiceId = "" } = useParams();
   const [view] = useView();
   const qc = useQueryClient();
-  const detail = useQuery({
-    queryKey: detailKey(view, invoiceId),
-    queryFn: () => unwrap(api.GET("/api/invoices/{invoice_id}", { params: { path: { invoice_id: invoiceId }, query: { view } } })),
-  });
+  const detail = useQuery(detailQuery(view, invoiceId));
+  // An approval or rejection changes the state: the chip morphs into its new decision.
+  const shown = useTransitionedValue(detail.data, (d) => (d ? `${d.card.state}:${d.card.approver ?? ""}` : ""));
   const back = { pathname: "/", search: view === "canonical" ? "?vista=canonica" : "" };
 
   return (
@@ -70,9 +84,9 @@ export default function Factura() {
           No se pudo cargar la factura {invoiceId}: {detail.error.message}
         </p>
       )}
-      {detail.data && (
+      {shown && (
         <DetailView
-          detail={detail.data}
+          detail={shown}
           view={view}
           onChange={(d) => qc.setQueryData(detailKey(view, invoiceId), d)}
         />
@@ -100,7 +114,7 @@ function DetailView({ detail, view, onChange }: { detail: Detail; view: View; on
   return (
     <article className="ak-detail overflow-hidden rounded-xl border border-line" aria-labelledby="detalle-titulo">
       <div className="ak-detail__data">
-        <header className="ak-detail__head">
+        <header className="ak-detail__head" style={{ viewTransitionName: invoiceTransitionName(card.invoice_id) }}>
           <p className="ak-card__meta">
             {card.invoice_id} · {CHANNEL[card.channel].label} · recibida el {formatDateTime(card.received_at)}
           </p>
@@ -122,7 +136,7 @@ function DetailView({ detail, view, onChange }: { detail: Detail; view: View; on
             {card.state === "inbox" ? (
               <span className="ak-rule">{STATE_LABEL.inbox}</span>
             ) : (
-              <DecisionChip decision={card.state} />
+              <DecisionChip decision={card.state} transitionName="decision-chip" />
             )}
             {card.determining_rule && card.state !== "inbox" && (
               <RuleChip rule={card.determining_rule} name={card.determining_rule_es} decision={card.state} />
