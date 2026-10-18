@@ -5,15 +5,19 @@ from __future__ import annotations
 import re
 from decimal import ROUND_CEILING, Decimal
 
-# ISO 4217 minor-unit digits for every currency in the world files.
-MINOR_DIGITS: dict[str, int] = {"COP": 2, "MXN": 2, "BRL": 2, "EUR": 2, "USD": 2}
+# ISO 4217 minor-unit digits: the world's currencies, plus ones a document may claim.
+MINOR_DIGITS: dict[str, int] = {
+    "COP": 2, "MXN": 2, "BRL": 2, "EUR": 2, "USD": 2,
+    "ARS": 2, "CLP": 0, "PEN": 2, "UYU": 2, "GBP": 2, "CAD": 2, "JPY": 0, "CHF": 2,
+}  # fmt: skip
 
 _SYMBOLS = re.compile(r"[A-Za-z$€£R \s]+")
 _SEPARATORS = ".,'’ "
 
 
 def minor_digits(currency: str) -> int:
-    return MINOR_DIGITS[currency.upper()]
+    """Digits after the decimal point; 2, the ISO 4217 default, for codes not listed."""
+    return MINOR_DIGITS.get(currency.upper(), 2)
 
 
 def parse_amount(text: str | None, currency: str = "USD") -> int | None:
