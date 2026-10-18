@@ -18,10 +18,9 @@ import { useMemo, useState } from "react";
 
 import type { Card } from "~/api/client";
 import { STATE_LABEL } from "~/lib/board";
-import { formatMoney, formatUsd } from "~/lib/format";
 
-import { AlertBadge, ChannelIcon, StateBadge } from "./badges";
-import { BeneficiaryName } from "./invoice-card";
+import { CHANNEL, ChannelIcon, DecisionChip, ReasonText, RuleChip, SecurityTag } from "./badges";
+import { Amount, BeneficiaryName } from "./invoice-card";
 
 const features = tableFeatures({
   columnFilteringFeature,
@@ -39,9 +38,17 @@ const NO_RULE = "__none__";
 const columns = col.columns([
   col.accessor("invoice_id", {
     header: "Factura",
-    cell: (info) => <span className="font-mono">{info.getValue()}</span>,
+    cell: (info) => <span className="font-mono whitespace-nowrap">{info.getValue()}</span>,
   }),
-  col.accessor("channel", { header: "Canal", cell: (info) => <ChannelIcon channel={info.getValue()} withLabel /> }),
+  col.accessor("channel", {
+    header: "Canal",
+    cell: (info) => (
+      <span className="inline-flex items-center gap-1.5">
+        <ChannelIcon channel={info.getValue()} />
+        {CHANNEL[info.getValue()].label}
+      </span>
+    ),
+  }),
   col.accessor((c) => c.beneficiary_id ?? NO_BENEFICIARY, {
     id: "beneficiary",
     header: "Beneficiario",
@@ -51,26 +58,55 @@ const columns = col.columns([
   col.accessor("amount_minor", {
     header: "Monto",
     sortFn: "basic",
-    cell: (info) => formatMoney(info.getValue(), info.row.original.currency),
+    cell: (info) => (
+      <span className="ak-card__amount">
+        <Amount minor={info.getValue()} currency={info.row.original.currency} />
+      </span>
+    ),
   }),
-  col.accessor("usd_minor", { header: "USD", sortFn: "basic", cell: (info) => formatUsd(info.getValue()) }),
-  col.accessor("state", { header: "Estado", filterFn: "equals", cell: (info) => <StateBadge state={info.getValue()} /> }),
+  col.accessor("usd_minor", {
+    header: "USD",
+    sortFn: "basic",
+    cell: (info) => (
+      <span className="ak-card__amount">
+        <Amount minor={info.getValue()} currency="USD" />
+      </span>
+    ),
+  }),
+  col.accessor("state", {
+    header: "Estado",
+    cell: (info) => {
+      const state = info.getValue();
+      return state === "inbox" ? <span className="ak-muted">{STATE_LABEL.inbox}</span> : <DecisionChip decision={state} />;
+    },
+  }),
   col.accessor((c) => c.determining_rule ?? NO_RULE, {
     id: "rule",
     header: "Regla",
     filterFn: "equals",
     cell: (info) => {
       const c = info.row.original;
-      return c.determining_rule ? `${c.determining_rule} · ${c.determining_rule_es ?? ""}` : "—";
+      if (!c.determining_rule) return <span className="ak-muted">—</span>;
+      return (
+        <RuleChip rule={c.determining_rule} name={c.determining_rule_es} decision={c.state === "inbox" ? undefined : c.state} />
+      );
     },
   }),
   col.accessor((c) => c.alerts.join(","), {
     id: "alerts",
     header: "Alertas",
     enableSorting: false,
-    cell: (info) => <AlertBadge rules={info.row.original.alerts} />,
+    cell: (info) => <SecurityTag rules={info.row.original.alerts} />,
   }),
-  col.accessor("reason_es", { header: "Motivo", enableSorting: false }),
+  col.accessor("reason_es", {
+    header: "Motivo",
+    enableSorting: false,
+    cell: (info) => (
+      <div className="min-w-80">
+        <ReasonText text={info.getValue()} className="ak-muted" />
+      </div>
+    ),
+  }),
 ]);
 
 function Filter({
@@ -87,14 +123,9 @@ function Filter({
   onChange: (value: string) => void;
 }) {
   return (
-    <label className="flex flex-col gap-1 text-sm" htmlFor={id}>
+    <label className="grid min-w-56 gap-1 text-small text-ink-muted" htmlFor={id}>
       {label}
-      <select
-        id={id}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="rounded-md border border-border bg-surface px-2 py-1.5"
-      >
+      <select id={id} value={value} onChange={(e) => onChange(e.target.value)} className="ak-input ak-input--text">
         <option value="">Todas</option>
         {options.map((o) => (
           <option key={o.value} value={o.value}>
@@ -120,7 +151,6 @@ export function BoardTable({ cards }: { cards: Card[] }) {
   });
 
   const options = useMemo(() => {
-    const states = [...new Set(cards.map((c) => c.state))].map((s) => ({ value: s, label: STATE_LABEL[s] }));
     const rules = new Map<string, string>();
     const beneficiaries = new Map<string, string>();
     for (const c of cards) {
@@ -129,7 +159,7 @@ export function BoardTable({ cards }: { cards: Card[] }) {
     }
     const sorted = (m: Map<string, string>) =>
       [...m].map(([value, label]) => ({ value, label })).sort((a, b) => a.label.localeCompare(b.label, "es"));
-    return { states, rules: sorted(rules), beneficiaries: sorted(beneficiaries) };
+    return { rules: sorted(rules), beneficiaries: sorted(beneficiaries) };
   }, [cards]);
 
   const filterValue = (id: string) => String(columnFilters.find((f) => f.id === id)?.value ?? "");
@@ -139,8 +169,7 @@ export function BoardTable({ cards }: { cards: Card[] }) {
   const rows = table.getRowModel().rows;
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap gap-4" role="group" aria-label="Filtros">
-        <Filter id="f-state" label="Decisión" value={filterValue("state")} options={options.states} onChange={setFilter("state")} />
+      <div className="flex flex-wrap items-end gap-4" role="group" aria-label="Filtros">
         <Filter id="f-rule" label="Regla" value={filterValue("rule")} options={options.rules} onChange={setFilter("rule")} />
         <Filter
           id="f-beneficiary"
@@ -150,13 +179,13 @@ export function BoardTable({ cards }: { cards: Card[] }) {
           onChange={setFilter("beneficiary")}
         />
       </div>
-      <p className="text-sm text-muted" aria-live="polite">
+      <p className="text-small text-ink-muted" aria-live="polite">
         {rows.length} de {cards.length} facturas
       </p>
-      <div className="overflow-x-auto rounded-lg border border-border bg-surface">
-        <table className="w-full text-left text-sm">
-          <caption className="sr-only">Facturas del tablero</caption>
-          <thead className="bg-surface-muted">
+      <div className="overflow-x-auto rounded-xl border border-line bg-surface">
+        <table className="ak-log">
+          <caption className="ak-sr">Facturas del tablero</caption>
+          <thead>
             {table.getHeaderGroups().map((group) => (
               <tr key={group.id}>
                 {group.headers.map((header) => {
@@ -166,18 +195,17 @@ export function BoardTable({ cards }: { cards: Card[] }) {
                     <th
                       key={header.id}
                       scope="col"
-                      className="px-3 py-2 font-semibold"
                       aria-sort={sorted === "asc" ? "ascending" : sorted === "desc" ? "descending" : undefined}
                     >
                       {canSort ? (
                         <button
                           type="button"
                           onClick={header.column.getToggleSortingHandler()}
-                          className="inline-flex items-center gap-1 hover:underline"
+                          className="inline-flex items-center gap-1 font-semibold hover:text-ink"
                         >
                           <table.FlexRender header={header} />
-                          {sorted === "asc" && <ArrowUp aria-hidden size={14} />}
-                          {sorted === "desc" && <ArrowDown aria-hidden size={14} />}
+                          {sorted === "asc" && <ArrowUp aria-hidden className="ak-icon" />}
+                          {sorted === "desc" && <ArrowDown aria-hidden className="ak-icon" />}
                         </button>
                       ) : (
                         <table.FlexRender header={header} />
@@ -190,9 +218,9 @@ export function BoardTable({ cards }: { cards: Card[] }) {
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.id} className="border-t border-border align-top">
+              <tr key={row.id}>
                 {row.getAllCells().map((cell) => (
-                  <td key={cell.id} className="px-3 py-2">
+                  <td key={cell.id}>
                     <table.FlexRender cell={cell} />
                   </td>
                 ))}
@@ -200,7 +228,7 @@ export function BoardTable({ cards }: { cards: Card[] }) {
             ))}
             {rows.length === 0 && (
               <tr>
-                <td colSpan={columns.length} className="px-3 py-6 text-center text-muted">
+                <td colSpan={columns.length} className="ak-empty">
                   Ninguna factura coincide con los filtros.
                 </td>
               </tr>

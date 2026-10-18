@@ -1,0 +1,341 @@
+/*
+  Alinka design system: base and components (adapted for Tailwind CSS 4).
+  Source: alinka-ui (alinka.css). Changes from the kit:
+  - no Pico.css: its variables are dropped; Tailwind's preflight is the reset;
+  - fonts load from root.tsx (<link>), not from an @import here;
+  - base styles in @layer base, the ak- components in @layer components,
+    so any Tailwind utility can still override them;
+  - document sheets and page images stay paper-white in dark mode (--doc-*);
+  - additions at the end: header, nav, segmented switch, stat tiles,
+    page-image boxes, dialog, text input, chart strokes, responsive grids.
+*/
+
+@layer base {
+  html { background: var(--paper); color-scheme: light dark; }
+  html[data-theme="light"] { color-scheme: light; }
+  html[data-theme="dark"] { color-scheme: dark; }
+  body {
+    font-family: var(--font-sans); font-size: 15px; line-height: 22px;
+    color: var(--ink); background: var(--paper);
+    font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+}
+
+@layer components {
+  /* Alinka: componentes con prefijo ak-. Lee los tokens (--paper, --ink, --pagada...). */
+  .ak-root {
+    font-family: var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif);
+    font-size: 15px; line-height: 22px;
+    color: var(--ink, #1C253A); background: var(--paper, #F7F7F4);
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  .ak-root *, .ak-root *::before, .ak-root *::after { box-sizing: border-box; }
+  .ak-pad { padding: var(--space-4, 16px); }
+  .ak-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2, 8px); }
+  .ak-between { justify-content: space-between; }
+  .ak-stack { display: grid; gap: var(--space-3, 12px); }
+  .ak-grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3, 12px); }
+  .ak-muted { color: var(--ink-muted, #5B6272); }
+  .ak-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  .ak-icon { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Botones */
+  .ak-btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2, 8px);
+    min-height: 40px; padding: 0 var(--space-4, 16px);
+    border: 1px solid transparent; border-radius: var(--radius-control, 8px);
+    font: 600 15px/1 var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); text-decoration: none; cursor: pointer;
+    transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease;
+  }
+  .ak-btn--primary { background: var(--ink, #1C253A); color: var(--on-ink, #F7F7F4); }
+  .ak-btn--primary:hover { box-shadow: inset 0 0 0 999px rgba(127, 127, 127, .18); }
+  .ak-btn--secondary { background: var(--surface, #FFFFFF); color: var(--ink, #1C253A); border-color: var(--line-strong, #767C88); }
+  .ak-btn--secondary:hover { border-color: var(--ink, #1C253A); }
+  .ak-btn--ghost { background: transparent; color: var(--ink, #1C253A); }
+  .ak-btn--ghost:hover { background: var(--desk, #ECECE5); }
+  .ak-btn--sm { min-height: 32px; padding: 0 var(--space-3, 12px); font-size: 13px; }
+  .ak-btn[disabled] { opacity: .45; cursor: not-allowed; box-shadow: none; }
+  .ak-btn:focus-visible, .ak-count:focus-visible, .ak-card:focus-visible, .ak-input:focus-visible, .ak-drop:focus-within {
+    outline: 2px solid var(--focus, #1C253A); outline-offset: 2px;
+  }
+
+  /* Chip de decisión */
+  .ak-chip {
+    display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px 0 8px;
+    border-radius: var(--radius-pill, 999px); font: 600 13px/1 var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); white-space: nowrap;
+  }
+  .ak-chip .ak-icon { width: 15px; height: 15px; stroke-width: 2; }
+  .ak-chip--pagada { color: var(--pagada, #0B6669); background: var(--pagada-tint, #DDEFEE); }
+  .ak-chip--retenida { color: var(--retenida, #A3302B); background: var(--retenida-tint, #F6E3E0); }
+  .ak-chip--pendiente { color: var(--pendiente, #7A4E00); background: var(--pendiente-tint, #F5E8CF); }
+
+  /* Chip de regla */
+  .ak-rule {
+    display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px 0 7px;
+    border: 1px solid var(--line, #E3E3DD); border-radius: var(--radius-pill, 999px); background: var(--surface, #FFFFFF);
+    color: var(--ink-muted, #5B6272); font: 500 12px/1 var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); white-space: nowrap;
+  }
+  .ak-rule .ak-icon { width: 14px; height: 14px; }
+  .ak-rule b { font-weight: 700; color: var(--ink, #1C253A); }
+  .ak-rule--pasa .ak-icon { color: var(--pagada, #0B6669); }
+  .ak-rule--retiene { border-color: var(--retenida, #A3302B); color: var(--retenida, #A3302B); }
+  .ak-rule--escala { border-color: var(--pendiente, #7A4E00); color: var(--pendiente, #7A4E00); }
+  .ak-rule--retiene b, .ak-rule--escala b { color: inherit; }
+
+  /* Alerta de seguridad: sin color propio, contorno de tinta y escudo */
+  .ak-sec {
+    display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 10px 0 8px;
+    border: 1.5px solid var(--ink, #1C253A); border-radius: var(--radius-pill, 999px); background: var(--surface, #FFFFFF);
+    color: var(--ink, #1C253A); font: 700 12px/1 var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); white-space: nowrap;
+  }
+  .ak-sec .ak-icon { width: 15px; height: 15px; stroke-width: 2; }
+  .ak-sec-box {
+    display: grid; grid-template-columns: 18px 1fr; gap: 4px 10px; padding: var(--space-3, 12px) 14px;
+    border: 1.5px solid var(--ink, #1C253A); border-radius: var(--radius-container, 12px); background: var(--surface, #FFFFFF); color: var(--ink, #1C253A);
+  }
+  .ak-sec-box .ak-icon { width: 18px; height: 18px; margin-top: 2px; stroke-width: 2; }
+  .ak-sec-box strong { font-weight: 700; }
+  .ak-sec-box p { grid-column: 2; margin: 0; color: var(--ink-muted, #5B6272); font-size: 13px; line-height: 18px; }
+
+  /* Conteos por estado (también filtran) */
+  .ak-counts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2, 8px); }
+  .ak-count {
+    display: grid; gap: 2px; justify-items: start; padding: var(--space-3, 12px) 14px; text-align: left;
+    border: 1px solid var(--line, #E3E3DD); border-radius: var(--radius-container, 12px); background: var(--surface, #FFFFFF);
+    color: var(--ink-muted, #5B6272); font: 500 13px/18px var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); cursor: pointer;
+  }
+  .ak-count strong { font: 700 24px/30px var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); color: var(--ink, #1C253A); }
+  .ak-count[aria-pressed="true"] { border: 2px solid var(--ink, #1C253A); padding: 11px 13px; color: var(--ink, #1C253A); }
+  .ak-count__label { display: inline-flex; align-items: center; gap: 6px; }
+  .ak-c-pagada { color: var(--pagada, #0B6669); } .ak-c-retenida { color: var(--retenida, #A3302B); } .ak-c-pendiente { color: var(--pendiente, #7A4E00); }
+
+  /* Tablero */
+  .ak-board { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4, 16px); align-items: start; }
+  .ak-column { display: grid; gap: var(--space-2, 8px); }
+  .ak-column__head { display: flex; align-items: center; justify-content: space-between; padding: 0 4px; font-weight: 600; }
+  .ak-column__head span:last-child { color: var(--ink-subtle, #6B7180); font-weight: 500; font-size: 13px; }
+
+  /* Tarjeta de factura */
+  .ak-card {
+    display: grid; gap: 10px; padding: 14px var(--space-4, 16px);
+    border: 1px solid var(--line, #E3E3DD); border-radius: var(--radius-container, 12px); background: var(--surface, #FFFFFF);
+    color: var(--ink, #1C253A); text-decoration: none;
+  }
+  .ak-card:hover { border-color: var(--line-strong, #767C88); }
+  .ak-card__top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-3, 12px); }
+  .ak-card__who { font-weight: 600; }
+  .ak-card__amount { font-weight: 700; white-space: nowrap; }
+  .ak-card__amount small { margin-left: 4px; font-size: 12px; font-weight: 500; color: var(--ink-subtle, #6B7180); }
+  .ak-card__meta { display: flex; align-items: center; gap: 6px; color: var(--ink-subtle, #6B7180); font-size: 12px; line-height: 16px; }
+  .ak-card__meta .ak-icon { width: 14px; height: 14px; }
+  .ak-card__reason { margin: 0; color: var(--ink-muted, #5B6272); font-size: 13px; line-height: 18px; }
+  .ak-card__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  /* Texto del documento: la frontera de confianza */
+  .ak-slip {
+    margin: 0; padding: 10px 14px 12px;
+    background: var(--desk, #ECECE5); border: 1px dashed var(--line-strong, #767C88); border-radius: var(--radius-sheet, 0px);
+    color: var(--ink, #1C253A);
+  }
+  .ak-slip figcaption { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; color: var(--ink-muted, #5B6272); font: 500 12px/16px var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); }
+  .ak-slip figcaption .ak-icon { width: 14px; height: 14px; }
+  .ak-slip blockquote {
+    margin: 0; font: 400 13px/20px var(--font-mono, "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace); white-space: pre-wrap; overflow-wrap: anywhere;
+    font-variant-ligatures: none;
+  }
+  .ak-slip--inline { padding: 6px 10px; }
+  .ak-slip mark { background: transparent; color: inherit; box-shadow: inset 0 -2px 0 var(--ink, #1C253A); }
+  .ak-slip del { color: var(--ink-muted, #5B6272); text-decoration-thickness: 2px; }
+  .ak-hidden-char {
+    display: inline-block; margin: 0 2px; padding: 0 4px; border: 1px solid var(--pendiente, #7A4E00); border-radius: 4px;
+    color: var(--pendiente, #7A4E00); font: 600 11px/16px var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); vertical-align: 1px;
+  }
+
+  /* Campo con su evidencia */
+  .ak-fields { margin: 0; }
+  .ak-field { display: grid; grid-template-columns: 128px minmax(0, 1fr); gap: 6px var(--space-4, 16px); padding: var(--space-3, 12px) 0; border-bottom: 1px solid var(--line, #E3E3DD); }
+  .ak-field:last-child { border-bottom: 0; }
+  .ak-field dt { color: var(--ink-muted, #5B6272); font-size: 13px; line-height: 22px; }
+  .ak-field dd { display: grid; gap: var(--space-2, 8px); margin: 0; }
+  .ak-field__value { font-weight: 600; }
+  .ak-note { display: block; color: var(--ink-subtle, #6B7180); font-size: 12px; line-height: 16px; font-weight: 500; }
+  .ak-checks { display: flex; flex-wrap: wrap; gap: 6px 14px; margin: 0; padding: 0; list-style: none; color: var(--ink-muted, #5B6272); font-size: 12px; line-height: 16px; }
+  .ak-checks li { display: inline-flex; align-items: center; gap: 4px; }
+  .ak-checks .ak-icon { width: 14px; height: 14px; stroke-width: 2; }
+  .ak-checks .ok .ak-icon { color: var(--pagada, #0B6669); }
+  .ak-checks .warn { color: var(--pendiente, #7A4E00); }
+
+  /* Cuenta de pago */
+  .ak-account {
+    display: flex; align-items: center; gap: var(--space-3, 12px); padding: var(--space-3, 12px) 14px;
+    border: 1px solid var(--line, #E3E3DD); border-radius: var(--radius-container, 12px); background: var(--surface, #FFFFFF);
+  }
+  .ak-account > .ak-icon { width: 20px; height: 20px; color: var(--ink-muted, #5B6272); }
+  .ak-account__num { font-weight: 600; }
+  .ak-account__src { color: var(--ink-subtle, #6B7180); font-size: 12px; line-height: 16px; }
+
+  /* Línea de tiempo */
+  .ak-timeline { display: grid; margin: 0; padding: 0; list-style: none; }
+  .ak-timeline li { position: relative; display: grid; grid-template-columns: 24px 1fr; gap: 0 10px; padding-bottom: 14px; }
+  .ak-timeline li::before { content: ""; position: absolute; left: 11px; top: 24px; bottom: 2px; width: 2px; background: var(--line, #E3E3DD); }
+  .ak-timeline li:last-child { padding-bottom: 0; }
+  .ak-timeline li:last-child::before { display: none; }
+  .ak-timeline .ak-icon { width: 20px; height: 20px; margin: 1px 0 0 2px; color: var(--ink-muted, #5B6272); }
+  .ak-timeline strong { font-weight: 600; }
+  .ak-timeline time, .ak-timeline small { display: block; color: var(--ink-subtle, #6B7180); font-size: 12px; line-height: 16px; }
+
+  /* Registro encadenado */
+  .ak-log { width: 100%; border-collapse: collapse; font-size: 13px; line-height: 18px; }
+  .ak-log th { padding: 8px 10px; border-bottom: 1px solid var(--line-strong, #767C88); color: var(--ink-muted, #5B6272); font-weight: 600; text-align: left; }
+  .ak-log td { padding: 10px; border-bottom: 1px solid var(--line, #E3E3DD); vertical-align: top; }
+  .ak-hash { display: inline-flex; align-items: center; gap: 4px; color: var(--ink-subtle, #6B7180); font: 400 12px/16px var(--font-mono, "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace); white-space: nowrap; }
+  .ak-hash .ak-icon { width: 13px; height: 13px; }
+  .ak-verify { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; }
+  .ak-verify--ok .ak-icon { color: var(--pagada, #0B6669); }
+  .ak-verify--roto { color: var(--retenida, #A3302B); }
+
+  /* Regla escrita como frase */
+  .ak-sentence {
+    display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2, 8px);
+    padding: 14px var(--space-4, 16px); border: 1px solid var(--line, #E3E3DD); border-radius: var(--radius-container, 12px); background: var(--surface, #FFFFFF);
+  }
+  .ak-sentence__id { font-weight: 700; margin-right: 2px; }
+  .ak-input {
+    width: 8ch; height: 36px; padding: 0 10px; border: 1px solid var(--line-strong, #767C88); border-radius: var(--radius-control, 8px);
+    background: var(--surface, #FFFFFF); color: var(--ink, #1C253A); font: 600 15px/1 var(--font-sans, "Manrope", ui-sans-serif, system-ui, sans-serif); font-variant-numeric: tabular-nums;
+  }
+  .ak-input--short { width: 5ch; }
+  .ak-impact { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2, 8px) var(--space-3, 12px); margin: 0; color: var(--ink-muted, #5B6272); font-size: 13px; }
+  .ak-impact .ak-icon { color: var(--ink, #1C253A); }
+
+  /* Subida */
+  .ak-steps { display: flex; gap: var(--space-4, 16px); margin: 0; padding: 0; list-style: none; counter-reset: ak-step; color: var(--ink-subtle, #6B7180); font-size: 13px; }
+  .ak-steps li { display: inline-flex; align-items: center; gap: 6px; }
+  .ak-steps li::before {
+    counter-increment: ak-step; content: counter(ak-step);
+    display: inline-grid; place-items: center; width: 20px; height: 20px;
+    border: 1px solid var(--line-strong, #767C88); border-radius: 50%; font-size: 11px; font-weight: 700;
+  }
+  .ak-steps li[aria-current="step"] { color: var(--ink, #1C253A); font-weight: 600; }
+  .ak-steps li[aria-current="step"]::before { background: var(--ink, #1C253A); border-color: var(--ink, #1C253A); color: var(--on-ink, #F7F7F4); }
+  .ak-drop {
+    position: relative; display: grid; justify-items: center; align-content: center; gap: 6px;
+    min-height: 140px; padding: var(--space-6, 24px); text-align: center;
+    border: 1.5px dashed var(--line-strong, #767C88); border-radius: var(--radius-container, 12px); background: var(--surface, #FFFFFF);
+    color: var(--ink-muted, #5B6272); font-size: 13px; cursor: pointer;
+  }
+  .ak-drop strong { color: var(--ink, #1C253A); font-size: 15px; }
+  .ak-drop .ak-icon { width: 22px; height: 22px; color: var(--ink, #1C253A); }
+  .ak-drop:hover, .ak-drop.is-over { border-color: var(--ink, #1C253A); }
+
+  /* Leyendo la factura: esqueleto */
+  .ak-extract { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--space-4, 16px); align-items: stretch; }
+  .ak-extract__text { align-self: center; }
+  .ak-extract__text p { margin: 0 0 4px; }
+  .ak-extract__title { font-size: 20px; line-height: 26px; font-weight: 600; }
+  .ak-stage { padding: var(--space-4, 16px); background: var(--desk, #ECECE5); }
+  .ak-sheet { display: grid; gap: var(--space-3, 12px); margin: 0; padding: 14px; background: var(--surface, #FFFFFF); border: 1px solid var(--line, #E3E3DD); border-radius: var(--radius-sheet, 0px); }
+  .ak-sheet figcaption { color: var(--ink-muted, #5B6272); font-size: 12px; line-height: 16px; }
+  .ak-progress { position: relative; height: 3px; overflow: hidden; background: var(--line, #E3E3DD); }
+  .ak-progress i { position: absolute; inset: 0 auto 0 0; width: 40%; background: var(--ink, #1C253A); animation: ak-progress 1.6s ease-in-out infinite; }
+  .ak-skel { display: grid; gap: 9px; }
+  .ak-skel span {
+    display: block; height: 9px; border-radius: 5px;
+    background: linear-gradient(90deg, var(--line, #E3E3DD) 0%, var(--desk, #ECECE5) 50%, var(--line, #E3E3DD) 100%); background-size: 200% 100%;
+    animation: ak-shimmer 1.4s ease-in-out infinite;
+  }
+  @keyframes ak-shimmer { from { background-position: 100% 0; } to { background-position: -100% 0; } }
+  @keyframes ak-progress { from { transform: translateX(-100%); } to { transform: translateX(250%); } }
+  @media (prefers-reduced-motion: reduce) {
+    .ak-skel span, .ak-progress i { animation: none; }
+    .ak-btn, .ak-card { transition: none; }
+  }
+
+  /* Estado vacío */
+  .ak-empty { display: grid; justify-items: center; gap: 10px; padding: var(--space-8, 32px) var(--space-4, 16px); text-align: center; color: var(--ink-muted, #5B6272); }
+  .ak-empty strong { color: var(--ink, #1C253A); font-size: 17px; }
+  .ak-schema { display: grid; grid-template-columns: repeat(3, 72px); gap: 10px; margin-bottom: 6px; }
+  .ak-schema div { display: grid; gap: 6px; padding: 8px; border: 1px solid var(--line, #E3E3DD); border-radius: 8px; background: var(--surface, #FFFFFF); }
+  .ak-schema i { width: 10px; height: 10px; border-radius: 50%; }
+  .ak-schema span { height: 6px; border-radius: 3px; background: var(--line, #E3E3DD); }
+
+  /* Banners y pie */
+  .ak-banner { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: var(--radius-control, 8px); font-size: 13px; line-height: 18px; }
+  .ak-banner .ak-icon { margin-top: 1px; }
+  .ak-banner--demo { background: var(--desk, #ECECE5); border: 1px dashed var(--line-strong, #767C88); color: var(--ink, #1C253A); }
+  .ak-banner--error { background: var(--surface, #FFFFFF); border: 1.5px solid var(--ink, #1C253A); color: var(--ink, #1C253A); }
+  .ak-footer { margin: 0; color: var(--ink-subtle, #6B7180); font-size: 12px; line-height: 16px; }
+
+  /* Movimiento: el parpadeo al re-decidir (lo dispara la app al mover tarjetas) */
+  .ak-moved { animation: ak-blink .2s ease-out; }
+  @keyframes ak-blink { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .ak-moved { animation: none; } }
+
+  /* Detalle de factura */
+  .ak-detail { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: 100%; }
+  .ak-detail__data { display: grid; align-content: start; gap: var(--space-4, 16px); padding: var(--space-6, 24px); background: var(--surface, #FFFFFF); }
+  .ak-detail__doc { padding: var(--space-6, 24px); background: var(--desk, #ECECE5); }
+  .ak-detail__head { display: grid; gap: 6px; }
+  .ak-detail__amount { font-size: 40px; line-height: 44px; font-weight: 700; letter-spacing: -0.02em; }
+  .ak-detail__amount small { margin-left: 6px; font-size: 15px; font-weight: 500; color: var(--ink-subtle, #6B7180); letter-spacing: 0; }
+  .ak-h2 { margin: 0; font-size: 20px; line-height: 26px; font-weight: 600; }
+  .ak-h1 { margin: 0; font-size: 28px; line-height: 34px; font-weight: 700; letter-spacing: -0.01em; }
+  .ak-docsheet { margin: 0; padding: 28px 26px; background: var(--doc-paper, #FFFFFF); color: var(--doc-ink, #1C253A); border: 1px solid var(--line, #E3E3DD); border-radius: var(--radius-sheet, 0px); font: 400 12.5px/19px var(--font-mono, "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace); white-space: pre-wrap; }
+  .ak-docsheet mark { background: transparent; color: inherit; box-shadow: 0 0 0 2px var(--doc-ink, #1C253A); border-radius: 2px; }
+  .ak-doctools { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; color: var(--ink-muted, #5B6272); font-size: 12px; }
+  /* ---- Alinka adaptation: pieces the app needs that the kit doesn't have ---- */
+
+  /* Header and navigation */
+  .ak-header { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-3) var(--space-6); border-bottom: 1px solid var(--line); background: var(--surface); }
+  .ak-header__brand { display: inline-flex; align-items: center; gap: var(--space-3); color: var(--ink); text-decoration: none; }
+  .ak-header__brand svg { height: 22px; width: auto; }
+  .ak-nav { display: flex; flex-wrap: wrap; gap: var(--space-1); }
+  .ak-nav a { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 var(--space-3); border-radius: var(--radius-control); color: var(--ink-muted); font: 600 14px/1 var(--font-sans); text-decoration: none; }
+  .ak-nav a:hover { color: var(--ink); background: var(--desk); }
+  .ak-nav a[aria-current="page"] { color: var(--ink); border-radius: 0; box-shadow: inset 0 -2px 0 var(--ink); }
+  .ak-nav a:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* Segmented switch: canonical run vs my sandbox */
+  .ak-seg { display: inline-flex; gap: 2px; padding: 2px; border: 1px solid var(--line-strong); border-radius: var(--radius-control); background: var(--surface); }
+  .ak-seg button { min-height: 32px; padding: 0 var(--space-3); border: 0; border-radius: 6px; background: transparent; color: var(--ink-muted); font: 600 13px/1 var(--font-sans); cursor: pointer; }
+  .ak-seg button[aria-pressed="true"] { background: var(--ink); color: var(--on-ink); }
+  .ak-seg button:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+
+  /* Stat tile (Evaluación): the .ak-count look, not interactive */
+  .ak-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: var(--space-2); }
+  .ak-stat { display: grid; gap: 2px; padding: var(--space-3) 14px; border: 1px solid var(--line); border-radius: var(--radius-container); background: var(--surface); color: var(--ink-muted); font: 500 13px/18px var(--font-sans); }
+  .ak-stat strong { font: 700 24px/30px var(--font-sans); color: var(--ink); }
+  .ak-stat small { font-size: 12px; line-height: 16px; }
+
+  /* Page image with evidence boxes (Detalle). Field.boxes are 0..1 of the page:
+     style="left:{x0*100}%; top:{y0*100}%; width:{(x1-x0)*100}%; height:{(y1-y0)*100}%" */
+  .ak-page { position: relative; margin: 0; background: var(--doc-paper); border: 1px solid var(--line); border-radius: var(--radius-sheet); }
+  .ak-page img { display: block; width: 100%; height: auto; }
+  .ak-box { position: absolute; border-radius: 2px; box-shadow: 0 0 0 2px var(--doc-ink); pointer-events: none; }
+  .ak-box.is-active { box-shadow: 0 0 0 3px var(--doc-ink); background: rgba(28, 37, 58, 0.10); }
+
+  /* Dialog (style Base UI Dialog.Backdrop and Dialog.Popup with these) */
+  .ak-backdrop { position: fixed; inset: 0; background: var(--overlay); }
+  .ak-dialog { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); display: grid; gap: var(--space-4); width: min(440px, calc(100vw - 32px)); padding: var(--space-6); background: var(--surface); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-container); box-shadow: var(--shadow-overlay); }
+
+  /* Text input for names (the kit's .ak-input is sized for numbers) */
+  .ak-input--text { width: 100%; font-weight: 500; }
+
+  /* Charts (Evaluación): series use ink, never the decision colours */
+  .ak-chart { color: var(--ink-muted); font: 500 12px/16px var(--font-sans); }
+  .ak-chart .series-a { stroke: var(--ink); fill: none; stroke-width: 2; }
+  .ak-chart .series-b { stroke: var(--ink-muted); fill: none; stroke-width: 2; stroke-dasharray: 4 3; }
+  .ak-chart .grid { stroke: var(--line); }
+
+  /* Responsive: the kit's grids are desktop-first */
+  @media (max-width: 1024px) {
+    .ak-board, .ak-detail { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .ak-counts, .ak-grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ak-field, .ak-extract { grid-template-columns: minmax(0, 1fr); }
+    .ak-header { flex-wrap: wrap; padding: var(--space-3) var(--space-4); }
+  }
+}

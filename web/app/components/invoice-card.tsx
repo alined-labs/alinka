@@ -1,50 +1,68 @@
 import type { Card } from "~/api/client";
-import { formatMoney, formatUsd } from "~/lib/format";
+import { amountParts, formatDay, formatUsd } from "~/lib/format";
 
-import { AlertBadge, ChannelIcon, DocText, STATE_STYLE, StateBadge } from "./badges";
+import { CHANNEL, ChannelIcon, DecisionChip, DocSlip, ReasonText, RuleChip, SecurityTag } from "./badges";
 
 /** The beneficiary on the list, or the name as printed (document text) when it matches none. */
-export function BeneficiaryName({ card }: { card: Card }) {
+export function BeneficiaryName({ card, inline = true }: { card: Card; inline?: boolean }) {
   if (card.beneficiary_id) return <span>{card.beneficiary_name}</span>;
-  if (card.beneficiary_name) return <DocText label="Nombre en el documento">{card.beneficiary_name}</DocText>;
-  return <span className="text-muted">Beneficiario no identificado</span>;
+  if (card.beneficiary_name)
+    return (
+      <DocSlip caption="Nombre en el documento" inline={inline}>
+        {card.beneficiary_name}
+      </DocSlip>
+    );
+  return <span className="ak-muted">Beneficiario no identificado</span>;
 }
 
-export function InvoiceCard({ card }: { card: Card }) {
-  const alerted = card.alerts.length > 0;
+export function Amount({ minor, currency }: { minor: number | null | undefined; currency: string | null | undefined }) {
+  const parts = amountParts(minor, currency);
+  if (!parts) return <span className="ak-muted">—</span>;
   return (
-    <li
-      className={`rounded-md border bg-surface p-3 shadow-card ${alerted ? "border-2 border-alert" : "border-border"}`}
-      aria-label={`Factura ${card.invoice_id}`}
-    >
-      <div className="flex items-center justify-between gap-2">
-        <span className="inline-flex items-center gap-2 font-mono text-sm font-semibold">
-          <ChannelIcon channel={card.channel} />
-          {card.invoice_id}
+    <>
+      {parts.number}
+      <small>{parts.currency}</small>
+    </>
+  );
+}
+
+export function InvoiceCard({ card, moved = false }: { card: Card; moved?: boolean }) {
+  const decided = card.state !== "inbox";
+  return (
+    <li className={`ak-card ${moved ? "ak-moved" : ""}`} aria-label={`Factura ${card.invoice_id}`}>
+      <div className="ak-card__top">
+        <span className="ak-card__who min-w-0">
+          <BeneficiaryName card={card} />
         </span>
-        <StateBadge state={card.state} />
+        <span className="ak-card__amount">
+          <Amount minor={card.amount_minor} currency={card.currency} />
+        </span>
       </div>
-      <p className="mt-1 text-sm">
-        <BeneficiaryName card={card} />
-      </p>
-      <p className="mt-1 text-sm font-medium">
-        {formatMoney(card.amount_minor, card.currency)}
+      <p className="ak-card__meta">
+        <ChannelIcon channel={card.channel} />
+        <span>
+          {card.invoice_id} · {CHANNEL[card.channel].label} · {formatDay(card.received_at)}
+        </span>
         {card.currency !== "USD" && card.usd_minor != null && (
-          <span className="ml-2 text-xs font-normal text-muted">≈ {formatUsd(card.usd_minor)}</span>
+          <span>· ≈ {formatUsd(card.usd_minor)}</span>
         )}
       </p>
-      {(alerted || card.technical_error) && (
-        <p className="mt-2 flex flex-wrap gap-1">
-          <AlertBadge rules={card.alerts} />
-          {card.technical_error && (
-            <span className={`rounded-pill px-2 py-0.5 text-xs ${STATE_STYLE.ESCALATE.bg} ${STATE_STYLE.ESCALATE.text}`}>
-              error técnico
-            </span>
+      {card.reason_es && <ReasonText text={card.reason_es} className="ak-card__reason" />}
+      {(decided || card.alerts.length > 0) && (
+        <div className="ak-card__tags">
+          <SecurityTag rules={card.alerts} />
+          {decided && <DecisionChip decision={card.state as Exclude<Card["state"], "inbox">} />}
+          {card.determining_rule && (
+            <RuleChip
+              rule={card.determining_rule}
+              name={card.determining_rule_es}
+              decision={card.state === "inbox" ? undefined : card.state}
+            />
           )}
-        </p>
+          {card.technical_error && <span className="ak-rule ak-rule--escala">error técnico</span>}
+        </div>
       )}
-      {card.reason_es && <p className="mt-2 text-sm text-muted">{card.reason_es}</p>}
-      {card.approver && <p className="mt-1 text-xs text-muted">Decidida por {card.approver}</p>}
+      {card.approver && <p className="ak-note">Decidida por {card.approver}</p>}
     </li>
   );
 }
