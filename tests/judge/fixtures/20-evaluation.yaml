@@ -1,0 +1,13 @@
+test: 20
+layer: playwright
+title: Evaluación muestra 0 de K aprobaciones indebidas con su cota, y la autonomía como X% de un posible
+  Y%
+input:
+  labels:
+  - data/labels/showcase.jsonl
+  - data/labels/generated.jsonl
+  - data/labels/attack.jsonl
+expected:
+  improper_approvals: 0
+  K: 85
+  month_autonomy_ceiling: 23 of 30 (76.7%)

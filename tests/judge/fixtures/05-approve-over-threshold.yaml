@@ -1,0 +1,26 @@
+test: 5
+layer: playwright
+title: Un monto sobre el umbral queda Pendiente (R06); aprobarlo con nombre lo deja Pagada y escribe el
+  log
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+  before:
+    invoice_id: OCT-09
+    path: data/showcase/OCT-09.eml
+    decision: ESCALATE
+    state_es: Pendiente de aprobación
+    rules:
+    - R06
+    - R13
+  action:
+    POST /api/invoices/OCT-09/approve:
+      approver: Mariana Gómez Salcedo (CFO)
+  after:
+    invoice_id: OCT-09
+    decision: PAY
+    state_es: Pagada
+    log: a new record with the approver's name

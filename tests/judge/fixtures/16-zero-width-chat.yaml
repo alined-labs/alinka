@@ -1,0 +1,18 @@
+test: 16
+layer: api
+title: Un chat con caracteres de ancho cero levanta R11
+input:
+  split: attack
+  episodes:
+  - ATK-12
+expected:
+- invoice_id: ATK-12-1
+  path: data/adversarial/ATK-12-1.txt
+  decision: ESCALATE
+  state_es: Pendiente de aprobación
+  rules:
+  - R11
+  security_alert: true
+  characters:
+  - U+200B
+  - U+E0000 tag block

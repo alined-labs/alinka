@@ -167,3 +167,26 @@ def test_the_attacks_cover_every_attack_type():
     for r in rows:
         if r.trap in {"split_pair", "second_in_period"}:
             assert r.invoice_id.endswith("-2"), r.invoice_id
+
+
+def test_judge_fixtures_agree_with_the_labels():
+    gold = {r.invoice_id: r for r in labels()}
+    files = sorted((ROOT / "tests/judge/fixtures").glob("*.yaml"))
+    tests = [yaml.safe_load(f.read_text()) for f in files]
+    assert [t["test"] for t in tests] == list(range(1, 22))
+
+    def entries(node):
+        if isinstance(node, dict):
+            if "invoice_id" in node and "decision" in node and "path" in node:
+                yield node
+            for v in node.values():
+                yield from entries(v)
+        elif isinstance(node, list):
+            for v in node:
+                yield from entries(v)
+
+    for t in tests:
+        for e in entries(t["expected"]):
+            r = gold[e["invoice_id"]]
+            assert e["path"] == r.path and Decision(e["decision"]) == r.gold_decision, e
+            assert e.get("rules", []) == list(r.gold_rules), e

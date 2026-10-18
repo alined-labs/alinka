@@ -1,0 +1,15 @@
+test: 15
+layer: api
+title: Un correo cuyo HTML difiere del texto plano levanta R11
+input:
+  split: attack
+  episodes:
+  - ATK-13
+expected:
+- invoice_id: ATK-13-1
+  path: data/adversarial/ATK-13-1.eml
+  decision: ESCALATE
+  state_es: Pendiente de aprobación
+  rules:
+  - R11
+  security_alert: true

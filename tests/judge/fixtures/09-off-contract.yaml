@@ -1,0 +1,23 @@
+test: 9
+layer: api
+title: Una factura que no coincide con lo pactado queda Frenada (R04)
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+- invoice_id: OCT-21
+  path: data/showcase/OCT-21.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R04
+  reason: 5.800.000,00 COP over 5.200.000,00 COP plus 5%
+- invoice_id: OCT-22
+  path: data/showcase/OCT-22.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R04
+  reason: backend development is outside CTR-13's scope

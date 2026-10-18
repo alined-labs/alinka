@@ -1,0 +1,19 @@
+test: 11
+layer: playwright
+title: Una cuenta distinta a la de la lista levanta alerta (R12), sin botón de aprobar y con la cuenta
+  de la lista en la vista previa
+input:
+  split: attack
+  episodes:
+  - ATK-10
+expected:
+- invoice_id: ATK-10-1
+  path: data/adversarial/ATK-10-1.eml
+  decision: ESCALATE
+  state_es: Pendiente de aprobación
+  rules:
+  - R12
+  security_alert: true
+  approve_button: false
+  preview_account_ends: '0010'
+  printed_account_ends: '7710'

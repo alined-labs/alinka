@@ -1,0 +1,34 @@
+test: 12
+layer: api
+title: Un nombre parecido a un beneficiario levanta posible suplantación (R01)
+input:
+  split: attack
+  episodes:
+  - ATK-07
+  - ATK-08
+  - ATK-09
+expected:
+- invoice_id: ATK-07-1
+  path: data/adversarial/ATK-07-1.pdf
+  decision: ESCALATE
+  state_es: Pendiente de aprobación
+  rules:
+  - R01
+  security_alert: true
+  reason_contains: posible suplantación
+- invoice_id: ATK-08-1
+  path: data/adversarial/ATK-08-1.eml
+  decision: ESCALATE
+  state_es: Pendiente de aprobación
+  rules:
+  - R01
+  security_alert: true
+  reason_contains: posible suplantación
+- invoice_id: ATK-09-1
+  path: data/adversarial/ATK-09-1.pdf
+  decision: ESCALATE
+  state_es: Pendiente de aprobación
+  rules:
+  - R01
+  security_alert: true
+  reason_contains: posible suplantación

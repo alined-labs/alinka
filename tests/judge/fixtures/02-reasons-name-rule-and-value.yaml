@@ -1,0 +1,67 @@
+test: 2
+layer: playwright
+title: Cada motivo nombra su regla en palabras y el valor usado
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+  every_card: reason_es names the determining rule in words and at least one value it used
+  non_pay:
+  - invoice_id: OCT-08
+    decision: ESCALATE
+    rule: R15
+    rule_name_es: Monto en letras
+  - invoice_id: OCT-09
+    decision: ESCALATE
+    rule: R06
+    rule_name_es: Umbral de aprobación
+  - invoice_id: OCT-11
+    decision: ESCALATE
+    rule: R01
+    rule_name_es: Beneficiario autorizado
+  - invoice_id: OCT-12
+    decision: HOLD
+    rule: R03
+    rule_name_es: Duplicado
+  - invoice_id: OCT-14
+    decision: ESCALATE
+    rule: R06
+    rule_name_es: Umbral de aprobación
+  - invoice_id: OCT-15
+    decision: ESCALATE
+    rule: R09
+    rule_name_es: Fecha de pago
+  - invoice_id: OCT-16
+    decision: ESCALATE
+    rule: R06
+    rule_name_es: Umbral de aprobación
+  - invoice_id: OCT-19
+    decision: ESCALATE
+    rule: R01
+    rule_name_es: Beneficiario autorizado
+  - invoice_id: OCT-20
+    decision: HOLD
+    rule: R03
+    rule_name_es: Duplicado
+  - invoice_id: OCT-21
+    decision: HOLD
+    rule: R04
+    rule_name_es: Lo pactado
+  - invoice_id: OCT-22
+    decision: HOLD
+    rule: R04
+    rule_name_es: Lo pactado
+  - invoice_id: OCT-24
+    decision: HOLD
+    rule: R08
+    rule_name_es: Saldo y presupuesto
+  - invoice_id: OCT-25
+    decision: HOLD
+    rule: R08
+    rule_name_es: Saldo y presupuesto
+  - invoice_id: OCT-30
+    decision: HOLD
+    rule: R02
+    rule_name_es: Moneda y país

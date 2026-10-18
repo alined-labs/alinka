@@ -1,0 +1,16 @@
+test: 14
+layer: api
+title: Letras distintas a los dígitos dejan la factura Frenada (R15)
+input:
+  split: attack
+  episodes:
+  - ATK-17
+expected:
+- invoice_id: ATK-17-1
+  path: data/adversarial/ATK-17-1.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R15
+  words: (OCHO MIL NOVECIENTOS PESOS 00/100 M.N.)
+  digits: 9,800.00

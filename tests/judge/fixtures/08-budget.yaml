@@ -1,0 +1,22 @@
+test: 8
+layer: api
+title: Saldo o presupuesto insuficiente queda Frenada (R08)
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+- invoice_id: OCT-24
+  path: data/showcase/OCT-24.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R08
+- invoice_id: OCT-25
+  path: data/showcase/OCT-25.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R08
+note: Operaciones has 2,200 USD; OCT-06, OCT-07 and OCT-17 spend 2,181.47
