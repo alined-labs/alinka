@@ -1,63 +1,22 @@
 import { Progress } from "@base-ui/react/progress";
-import { Toggle } from "@base-ui/react/toggle";
-import { ToggleGroup } from "@base-ui/react/toggle-group";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Columns3, Play, Table2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 
-import { api, type Board, unwrap, type View } from "~/api/client";
-import { STATE_STYLE } from "~/components/badges";
+import { api, type Board, type Card, unwrap, type View } from "~/api/client";
+import { DECISION_STYLE } from "~/components/badges";
 import { BoardTable } from "~/components/board-table";
 import { InvoiceCard } from "~/components/invoice-card";
-import { allCards, COLUMN_TITLE, projectRun, type RunResult, stepDelay } from "~/lib/board";
+import { Segmented } from "~/components/segmented";
+import { allCards, COLUMN_TITLE, type CardState, projectRun, type RunResult, stepDelay } from "~/lib/board";
+import { useView } from "~/lib/view";
 
 export function meta() {
   return [{ title: "Tablero · Alinka" }];
 }
 
 export const boardKey = (view: View) => ["board", view] as const;
-
-function useBoard(view: View) {
-  return useQuery({
-    queryKey: boardKey(view),
-    queryFn: () => unwrap(api.GET("/api/board", { params: { query: { view } } })),
-  });
-}
-
-const toggleClass =
-  "inline-flex items-center gap-1 px-3 py-1.5 text-sm first:rounded-l-md last:rounded-r-md border border-border bg-surface data-[pressed]:bg-primary data-[pressed]:text-primary-text";
-
-function Segmented<T extends string>({
-  label,
-  value,
-  options,
-  onChange,
-}: {
-  label: string;
-  value: T;
-  options: { value: T; label: string; icon?: React.ReactNode }[];
-  onChange: (value: T) => void;
-}) {
-  return (
-    <ToggleGroup
-      aria-label={label}
-      value={[value]}
-      onValueChange={(v) => {
-        const next = v[0] as T | undefined;
-        if (next) onChange(next);
-      }}
-      className="inline-flex"
-    >
-      {options.map((o) => (
-        <Toggle key={o.value} value={o.value} className={toggleClass} aria-label={o.label}>
-          {o.icon}
-          {o.label}
-        </Toggle>
-      ))}
-    </ToggleGroup>
-  );
-}
 
 const prefersReducedMotion = () =>
   typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -95,131 +54,214 @@ function useRun(onDone: (board: Board) => void) {
   return { mutation, progress, shownBoard };
 }
 
+/** "Octubre 2026", from the invoices on the board. */
+function monthTitle(board: Board | undefined): string {
+  const first = board && allCards(board)[0];
+  if (!first) return "Tablero";
+  const label = new Intl.DateTimeFormat("es", { month: "long", year: "numeric", timeZone: "UTC" }).format(
+    new Date(first.received_at),
+  );
+  return label.charAt(0).toUpperCase() + label.slice(1).replace(" de ", " ");
+}
+
+const COUNT_LABEL: Record<CardState, string> = {
+  inbox: "Bandeja",
+  PAY: COLUMN_TITLE.PAY,
+  HOLD: COLUMN_TITLE.HOLD,
+  ESCALATE: COLUMN_TITLE.ESCALATE,
+};
+
+/** ak-counts: one tile per state; pressing one shows only that state, pressing it again shows all. */
+function Counts({ board, focus, onFocus }: { board: Board; focus: CardState | null; onFocus: (s: CardState | null) => void }) {
+  const tiles: { state: CardState; count: number }[] = [
+    { state: "inbox", count: board.inbox.length },
+    ...board.columns.map((c) => ({ state: c.decision as CardState, count: c.count })),
+  ];
+  return (
+    <div className="ak-counts" role="group" aria-label="Filtrar por estado">
+      {tiles.map(({ state, count }) => (
+        <button
+          key={state}
+          type="button"
+          className="ak-count"
+          aria-pressed={focus === state}
+          onClick={() => onFocus(focus === state ? null : state)}
+        >
+          <span className={`ak-count__label ${state === "inbox" ? "" : DECISION_STYLE[state].text}`}>
+            {COUNT_LABEL[state]}
+          </span>
+          <strong data-testid={`count-${state}`}>{count}</strong>
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function EmptyBoard() {
+  return (
+    <div className="ak-empty">
+      <div className="ak-schema" aria-hidden>
+        {["bg-pagada", "bg-frenada", "bg-pendiente"].map((dot) => (
+          <div key={dot}>
+            <i className={dot} />
+            <span />
+            <span />
+          </div>
+        ))}
+      </div>
+      <strong>No hay facturas en este tablero</strong>
+      <p>Cuando lleguen facturas por correo, PDF, imagen o chat, aparecerán en la bandeja de entrada.</p>
+    </div>
+  );
+}
+
 export default function Tablero() {
+  const [view] = useView();
   const [params, setParams] = useSearchParams();
-  const view: View = params.get("vista") === "canonica" ? "canonical" : "sandbox";
   const mode = params.get("modo") === "tabla" ? "tabla" : "columnas";
-  const setParam = (key: string, value: string | null) =>
+  const setMode = (m: string) =>
     setParams(
       (p) => {
-        if (value) p.set(key, value);
-        else p.delete(key);
+        if (m === "tabla") p.set("modo", "tabla");
+        else p.delete("modo");
         return p;
       },
       { replace: true },
     );
+  const [focus, setFocus] = useState<CardState | null>(null);
 
   const qc = useQueryClient();
-  const board = useBoard(view);
+  const board = useQuery({
+    queryKey: boardKey(view),
+    queryFn: () => unwrap(api.GET("/api/board", { params: { query: { view } } })),
+  });
   const onDone = useRef((b: Board) => qc.setQueryData(boardKey("sandbox"), b)).current;
   const { mutation: run, progress, shownBoard } = useRun(onDone);
 
   const data = shownBoard ?? board.data;
   const running = run.isPending || progress !== null;
+  const empty = data !== undefined && allCards(data).length === 0;
 
   return (
-    <div className="mx-auto max-w-content space-y-6">
-      <header className="flex flex-wrap items-center justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Tablero</h1>
-        <div className="flex flex-wrap items-center gap-3">
-          <Segmented
-            label="Ejecución"
-            value={view}
-            onChange={(v) => setParam("vista", v === "canonical" ? "canonica" : null)}
-            options={[
-              { value: "sandbox", label: "Mi sandbox" },
-              { value: "canonical", label: "Ejecución canónica" },
-            ]}
-          />
-          <Segmented
-            label="Vista"
-            value={mode}
-            onChange={(v) => setParam("modo", v === "tabla" ? "tabla" : null)}
-            options={[
-              { value: "columnas", label: "Columnas", icon: <Columns3 aria-hidden size={16} /> },
-              { value: "tabla", label: "Tabla", icon: <Table2 aria-hidden size={16} /> },
-            ]}
-          />
-          {view === "sandbox" && (
-            <button
-              type="button"
-              onClick={() => board.data && run.mutate(board.data)}
-              disabled={running || !board.data || board.data.inbox.length === 0}
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-text hover:bg-primary-hover disabled:opacity-50"
-            >
-              <Play aria-hidden size={16} /> Ejecutar agente
-            </button>
-          )}
-        </div>
-      </header>
+    <div className="space-y-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <h1 className="ak-h1">{monthTitle(data)}</h1>
+        {view === "sandbox" && (
+          <button
+            type="button"
+            className="ak-btn ak-btn--primary"
+            onClick={() => board.data && run.mutate(board.data)}
+            disabled={running || !board.data || board.data.inbox.length === 0}
+          >
+            <Play aria-hidden className="ak-icon" />
+            Ejecutar agente
+          </button>
+        )}
+      </div>
 
-      {view === "canonical" && (
-        <p className="text-sm text-muted">
-          La ejecución canónica es de solo lectura: es la misma para todos. Tus cambios viven en «Mi sandbox».
-        </p>
-      )}
-      {run.isError && <p role="alert" className="text-hold">No se pudo ejecutar el agente: {run.error.message}</p>}
-      {progress && (
-        <Progress.Root value={progress.shown} max={progress.result.steps.length} className="space-y-1">
-          <Progress.Label className="text-sm">
-            Decidiendo {progress.shown} de {progress.result.steps.length} facturas…
+      {running && (
+        <Progress.Root
+          value={progress?.shown ?? null}
+          max={progress?.result.steps.length ?? 100}
+          className="space-y-1"
+          aria-label="Progreso del agente"
+        >
+          <div className="ak-progress">
+            <i />
+          </div>
+          <Progress.Label className="text-small text-ink-muted">
+            {progress
+              ? `Decidiendo ${progress.shown} de ${progress.result.steps.length} facturas…`
+              : "Leyendo y verificando las facturas…"}
           </Progress.Label>
-          <Progress.Track className="h-2 overflow-hidden rounded-pill bg-surface-muted">
-            <Progress.Indicator className="h-full bg-primary transition-all" />
-          </Progress.Track>
         </Progress.Root>
       )}
+      {run.isError && (
+        <p role="alert" className="ak-banner ak-banner--error">
+          No se pudo ejecutar el agente: {run.error.message}
+        </p>
+      )}
+      {board.isPending && (
+        <div className="ak-skel" aria-label="Cargando el tablero">
+          <span />
+          <span />
+          <span />
+        </div>
+      )}
+      {board.isError && (
+        <p role="alert" className="ak-banner ak-banner--error">
+          No se pudo cargar el tablero: {board.error.message}
+        </p>
+      )}
 
-      {board.isPending && <p className="text-muted">Cargando el tablero…</p>}
-      {board.isError && <p role="alert">No se pudo cargar el tablero: {board.error.message}</p>}
-      {data && (mode === "tabla" ? <BoardTable cards={allCards(data)} /> : <Columns board={data} />)}
+      {data && !empty && (
+        <>
+          <Counts board={data} focus={focus} onFocus={setFocus} />
+          <div className="flex justify-end">
+            <Segmented
+              label="Vista"
+              value={mode}
+              onChange={setMode}
+              options={[
+                { value: "columnas", label: "Columnas", icon: <Columns3 aria-hidden className="ak-icon" /> },
+                { value: "tabla", label: "Tabla", icon: <Table2 aria-hidden className="ak-icon" /> },
+              ]}
+            />
+          </div>
+          {mode === "tabla" ? (
+            <BoardTable cards={allCards(data).filter((c) => focus === null || c.state === focus)} />
+          ) : (
+            <Columns board={data} focus={focus} moving={progress !== null} />
+          )}
+        </>
+      )}
+      {empty && <EmptyBoard />}
     </div>
   );
 }
 
-function Columns({ board }: { board: Board }) {
+function CardList({ cards, moved }: { cards: Card[]; moved: boolean }) {
+  if (cards.length === 0) return <p className="px-1 text-small text-ink-muted">Ninguna factura.</p>;
+  return (
+    <ul className="ak-column" aria-live="polite">
+      {cards.map((card) => (
+        <InvoiceCard key={card.invoice_id} card={card} moved={moved} />
+      ))}
+    </ul>
+  );
+}
+
+function Columns({ board, focus, moving }: { board: Board; focus: CardState | null; moving: boolean }) {
+  const showInbox = board.inbox.length > 0 && (focus === null || focus === "inbox");
+  const columns = board.columns.filter((c) => focus === null || focus === c.decision);
   return (
     <>
-      <section aria-labelledby="bandeja">
-        <h2 id="bandeja" className="mb-2 text-lg font-semibold">
-          Bandeja de entrada <span className="text-muted">({board.inbox.length})</span>
-        </h2>
-        {board.inbox.length === 0 ? (
-          <p className="text-sm text-muted">La bandeja está vacía.</p>
-        ) : (
-          <ul className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+      {showInbox && (
+        <section aria-labelledby="col-inbox" className="ak-column">
+          <h2 id="col-inbox" className="ak-column__head">
+            <span>Bandeja de entrada</span>
+            <span>{board.inbox.length}</span>
+          </h2>
+          <ul className="ak-board">
             {board.inbox.map((card) => (
               <InvoiceCard key={card.invoice_id} card={card} />
             ))}
           </ul>
-        )}
-      </section>
-      <div className="grid gap-4 lg:grid-cols-3">
-        {board.columns.map((col) => {
-          const s = STATE_STYLE[col.decision];
-          const Icon = s.icon;
-          return (
-            <section
-              key={col.decision}
-              aria-labelledby={`col-${col.decision}`}
-              className={`min-w-0 rounded-lg border-t-4 p-3 ${s.border} ${s.bg}`}
-            >
-              <h2 id={`col-${col.decision}`} className={`mb-2 flex items-center gap-2 font-semibold ${s.text}`}>
-                <Icon aria-hidden size={18} />
-                {COLUMN_TITLE[col.decision]}
-                <span data-testid={`count-${col.decision}`} className="ml-auto rounded-pill bg-surface px-2 text-sm">
-                  {col.count}
-                </span>
+        </section>
+      )}
+      {columns.length > 0 && (
+        <div className="ak-board">
+          {columns.map((col) => (
+            <section key={col.decision} aria-labelledby={`col-${col.decision}`} className="ak-column">
+              <h2 id={`col-${col.decision}`} className="ak-column__head">
+                <span>{COLUMN_TITLE[col.decision]}</span>
+                <span>{col.count}</span>
               </h2>
-              <ul className="space-y-2" aria-live="polite">
-                {col.cards.map((card) => (
-                  <InvoiceCard key={card.invoice_id} card={card} />
-                ))}
-              </ul>
+              <CardList cards={col.cards} moved={moving} />
             </section>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

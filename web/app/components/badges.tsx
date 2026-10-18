@@ -1,63 +1,113 @@
-import { CircleCheck, Clock, FileText, Image, Inbox, Mail, MessageSquare, OctagonX, ShieldAlert } from "lucide-react";
+import { CircleCheck, CirclePause, Clock, FileText, Image, Mail, MessageSquare, ShieldAlert } from "lucide-react";
 
 import type { Card } from "~/api/client";
-import { type CardState, STATE_LABEL } from "~/lib/board";
+import { type Decision, STATE_LABEL } from "~/lib/board";
 
-const CHANNEL = {
+export const CHANNEL = {
   email: { icon: Mail, label: "Correo" },
   pdf: { icon: FileText, label: "PDF" },
   image: { icon: Image, label: "Imagen" },
   chat: { icon: MessageSquare, label: "Chat" },
 } as const satisfies Record<Card["channel"], { icon: unknown; label: string }>;
 
-export function ChannelIcon({ channel, withLabel = false }: { channel: Card["channel"]; withLabel?: boolean }) {
-  const { icon: Icon, label } = CHANNEL[channel];
-  return (
-    <span className="inline-flex items-center gap-1 text-muted" title={`Canal: ${label}`}>
-      <Icon aria-hidden size={16} />
-      <span className={withLabel ? "text-xs" : "sr-only"}>{withLabel ? label : `Canal: ${label}`}</span>
-    </span>
-  );
+export function ChannelIcon({ channel }: { channel: Card["channel"] }) {
+  const Icon = CHANNEL[channel].icon;
+  return <Icon aria-hidden className="ak-icon" />;
 }
 
-export const STATE_STYLE: Record<CardState, { icon: typeof Inbox; text: string; bg: string; border: string }> = {
-  inbox: { icon: Inbox, text: "text-inbox", bg: "bg-inbox-bg", border: "border-inbox" },
-  PAY: { icon: CircleCheck, text: "text-pay", bg: "bg-pay-bg", border: "border-pay" },
-  HOLD: { icon: OctagonX, text: "text-hold", bg: "bg-hold-bg", border: "border-hold" },
-  ESCALATE: { icon: Clock, text: "text-escalate", bg: "bg-escalate-bg", border: "border-escalate" },
+/** The design system's token names: --retenida is the colour of "Frenada". */
+export const DECISION_STYLE: Record<Decision, { icon: typeof CircleCheck; chip: string; text: string; rule: string }> = {
+  PAY: { icon: CircleCheck, chip: "ak-chip--pagada", text: "ak-c-pagada", rule: "ak-rule--pasa" },
+  HOLD: { icon: CirclePause, chip: "ak-chip--retenida", text: "ak-c-retenida", rule: "ak-rule--retiene" },
+  ESCALATE: { icon: Clock, chip: "ak-chip--pendiente", text: "ak-c-pendiente", rule: "ak-rule--escala" },
 };
 
 /** The decision as icon plus word, so colour is never the only signal. */
-export function StateBadge({ state }: { state: CardState }) {
-  const s = STATE_STYLE[state];
+export function DecisionChip({ decision }: { decision: Decision }) {
+  const s = DECISION_STYLE[decision];
   const Icon = s.icon;
   return (
-    <span className={`inline-flex items-center gap-1 rounded-pill px-2 py-0.5 text-xs font-medium ${s.text} ${s.bg}`}>
-      <Icon aria-hidden size={14} />
-      {STATE_LABEL[state]}
+    <span className={`ak-chip ${s.chip}`}>
+      <Icon aria-hidden className="ak-icon" />
+      {STATE_LABEL[decision]}
     </span>
   );
 }
 
-/** A security alert has its own icon and outline. */
-export function AlertBadge({ rules }: { rules: readonly string[] }) {
+/** The determining rule, outlined in its decision's colour. */
+export function RuleChip({ rule, name, decision }: { rule: string; name?: string | null; decision?: Decision }) {
+  return (
+    <span className={`ak-rule ${decision ? DECISION_STYLE[decision].rule : ""}`}>
+      <b>{rule}</b>
+      {name}
+    </span>
+  );
+}
+
+/** A security alert: outlined in ink with a shield, no colour of its own. */
+export function SecurityTag({ rules }: { rules: readonly string[] }) {
   if (rules.length === 0) return null;
   return (
-    <span className="inline-flex items-center gap-1 rounded-pill border-2 border-alert bg-alert-bg px-2 py-0.5 text-xs font-semibold text-alert">
-      <ShieldAlert aria-hidden size={14} />
-      Alerta de seguridad <span className="font-mono">{rules.join(", ")}</span>
+    <span className="ak-sec" title={`Reglas: ${rules.join(", ")}`}>
+      <ShieldAlert aria-hidden className="ak-icon" />
+      Alerta de seguridad
+      <span className="ak-sr"> ({rules.join(", ")})</span>
     </span>
   );
 }
 
 /**
- * "Texto del documento": text that came from a document. React escapes it; the style marks it
- * as a quotation so it never reads as part of the interface.
+ * "Texto del documento": anything read from a document crosses the trust boundary visibly.
+ * React escapes it; ak-slip marks it as a quotation, never styled like the interface.
  */
-export function DocText({ children, label = "Texto del documento" }: { children: string; label?: string }) {
+export function DocSlip({ children, caption = "Texto del documento", inline = false }: {
+  children: string;
+  caption?: string;
+  inline?: boolean;
+}) {
   return (
-    <q className="doc-text inline-block" aria-label={`${label}: ${children}`}>
-      {children}
-    </q>
+    <figure className={`ak-slip ${inline ? "ak-slip--inline" : ""}`}>
+      <figcaption>
+        <FileText aria-hidden className="ak-icon" />
+        {caption}
+      </figcaption>
+      <blockquote>{children}</blockquote>
+    </figure>
+  );
+}
+
+/** Splits a reason at its «…» quotes: the quotes are document text, the rest is the rule's sentence. */
+export function splitQuotes(text: string): { kind: "text" | "quote"; value: string }[] {
+  const parts: { kind: "text" | "quote"; value: string }[] = [];
+  const re = /«([^»]*)»/g;
+  let last = 0;
+  for (const m of text.matchAll(re)) {
+    if (m.index > last) parts.push({ kind: "text", value: text.slice(last, m.index) });
+    parts.push({ kind: "quote", value: m[1] ?? "" });
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push({ kind: "text", value: text.slice(last) });
+  // Drop punctuation left alone after a quote, such as the closing "." of the sentence.
+  return parts.filter((p) => p.kind === "quote" || /[\p{L}\p{N}]/u.test(p.value));
+}
+
+/** A reason sentence with any quoted document text moved into ak-slip. */
+export function ReasonText({ text, className }: { text: string; className: string }) {
+  const parts = splitQuotes(text);
+  if (parts.every((p) => p.kind === "text")) return <p className={className}>{text}</p>;
+  return (
+    <div className="grid gap-1.5">
+      {parts.map((p, i) =>
+        p.kind === "quote" ? (
+          <DocSlip key={i} inline>
+            {p.value}
+          </DocSlip>
+        ) : (
+          <p key={i} className={className}>
+            {p.value.trim()}
+          </p>
+        ),
+      )}
+    </div>
   );
 }

@@ -1,0 +1,47 @@
+/*
+  Tailwind CSS 4 theme mapped to the Alinka tokens. Gives utilities such as
+  bg-paper, bg-surface, bg-desk, text-ink, text-ink-muted, border-line,
+  border-line-strong, text-pagada, bg-pagada-tint, text-frenada, bg-frenada-tint,
+  text-pendiente, bg-pendiente-tint, plus text-caption/small/body/lead/title/stat/h1/display.
+  The colours follow the light and dark tokens automatically.
+  Radii: rounded-lg = 8px (controls), rounded-xl = 12px (containers), rounded-full (pills),
+  rounded-none (document sheets). Spacing: Tailwind's default 4px scale matches --space-*.
+  Fonts: tokens.css sets --font-sans (Manrope) and --font-mono (JetBrains Mono), so
+  font-sans and font-mono already use them.
+*/
+@theme inline {
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-desk: var(--desk);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-on-ink: var(--on-ink);
+  --color-pagada: var(--pagada);
+  --color-pagada-tint: var(--pagada-tint);
+  --color-frenada: var(--retenida);
+  --color-frenada-tint: var(--retenida-tint);
+  --color-pendiente: var(--pendiente);
+  --color-pendiente-tint: var(--pendiente-tint);
+}
+
+@theme {
+  --text-caption: 12px;
+  --text-caption--line-height: 16px;
+  --text-small: 13px;
+  --text-small--line-height: 18px;
+  --text-body: 15px;
+  --text-body--line-height: 22px;
+  --text-lead: 17px;
+  --text-lead--line-height: 24px;
+  --text-title: 20px;
+  --text-title--line-height: 26px;
+  --text-stat: 24px;
+  --text-stat--line-height: 30px;
+  --text-h1: 28px;
+  --text-h1--line-height: 34px;
+  --text-display: 40px;
+  --text-display--line-height: 44px;
+}

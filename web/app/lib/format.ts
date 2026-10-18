@@ -11,9 +11,12 @@ export function exponent(currency: string): number {
   return EXPONENT[currency] ?? 2;
 }
 
-/** 310000000, "COP" -> "COP 3.100.000,00" */
-export function formatMoney(minor: number | null | undefined, currency: string | null | undefined): string {
-  if (minor == null || !currency) return "—";
+/** 310000000, "COP" -> { number: "3.100.000,00", currency: "COP" }; null when unknown. */
+export function amountParts(
+  minor: number | null | undefined,
+  currency: string | null | undefined,
+): { number: string; currency: string } | null {
+  if (minor == null || !currency) return null;
   const digits = exponent(currency);
   const sign = minor < 0 ? "-" : "";
   const abs = Math.abs(minor);
@@ -22,22 +25,23 @@ export function formatMoney(minor: number | null | undefined, currency: string |
   const fraction = abs % scale;
   const grouped = whole.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
   const tail = digits > 0 ? `,${fraction.toString().padStart(digits, "0")}` : "";
-  return `${sign}${currency} ${grouped}${tail}`;
+  return { number: `${sign}${grouped}${tail}`, currency };
 }
 
-/** usd_minor -> "USD 1.180,00" */
+/** 310000000, "COP" -> "3.100.000,00 COP" */
+export function formatMoney(minor: number | null | undefined, currency: string | null | undefined): string {
+  const parts = amountParts(minor, currency);
+  return parts ? `${parts.number} ${parts.currency}` : "—";
+}
+
+/** usd_minor -> "1.180,00 USD" */
 export function formatUsd(minor: number | null | undefined): string {
   return formatMoney(minor, "USD");
 }
 
-const dateTime = new Intl.DateTimeFormat("es-CO", {
-  day: "2-digit",
-  month: "short",
-  hour: "2-digit",
-  minute: "2-digit",
-  timeZone: "UTC",
-});
+const day = new Intl.DateTimeFormat("es", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
 
-export function formatReceived(iso: string): string {
-  return `${dateTime.format(new Date(iso))} UTC`;
+/** "2026-10-03T09:30:00Z" -> "3 oct 2026" */
+export function formatDay(iso: string): string {
+  return day.format(new Date(iso));
 }
