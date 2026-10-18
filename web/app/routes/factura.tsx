@@ -20,12 +20,14 @@ import { queryClient } from "~/api/query";
 import { ApprovalDialog } from "~/components/approval-dialog";
 import { CHANNEL, DecisionChip, DocSlip, MarkedQuote, ReasonText, RuleChip, SecurityTag } from "~/components/badges";
 import { Amount, BeneficiaryName } from "~/components/invoice-card";
+import { TraceItems } from "~/components/decision-trace";
 import { PageViewer } from "~/components/page-viewer";
 import { STATE_LABEL } from "~/lib/board";
 import { type Detail, fieldChecks, type FieldView, orderRules, type RuleView } from "~/lib/detail";
 import { formatDateTime, formatMoney, formatUsd } from "~/lib/format";
 import { invoiceTransitionName, useMotionOK, useTransitionedValue } from "~/lib/motion";
 import { seo } from "~/lib/seo";
+import { fetchTrace } from "~/lib/trace-data";
 import { useView } from "~/lib/view";
 
 import type { Route } from "./+types/factura";
@@ -220,7 +222,7 @@ function DetailView({ detail, view, onChange }: { detail: Detail; view: View; on
           </section>
         )}
 
-        <Timeline detail={detail} />
+        <Timeline detail={detail} view={view} />
       </div>
 
       <div className="ak-detail__doc">
@@ -386,68 +388,85 @@ function HiddenContent({ detail }: { detail: Detail }) {
   );
 }
 
-function Timeline({ detail }: { detail: Detail }) {
+function Timeline({ detail, view }: { detail: Detail; view: View }) {
   const { card, record } = detail;
   const facts = record?.facts;
   const reader = facts?.calls.filter((c) => c.role === "reader") ?? [];
   const grounded = detail.fields.filter((f) => f.grounded).length;
+  // The record's stage changes with each decision, so the trace refetches with the record.
+  const trace = useQuery({
+    queryKey: ["trace", view, card.invoice_id, record?.record_id ?? null],
+    queryFn: () => fetchTrace(card.invoice_id, view),
+    enabled: record != null,
+  });
+  const steps = trace.data?.steps;
+  const label = (name: string) => detail.fields.find((f) => f.name === name)?.label_es ?? name;
   return (
     <section aria-labelledby="historia" className="ak-stack">
       <h2 id="historia" className="ak-h2">
-        Historia
+        Cómo se decidió
       </h2>
+      {trace.data?.example && (
+        <p className="ak-note">Ejemplo con el recorrido de OCT-14: la API aún no sirve el de cada factura.</p>
+      )}
+      {trace.isError && <p className="ak-note">No se pudo cargar el recorrido paso a paso: {trace.error.message}</p>}
       <ol className="ak-timeline">
-        <li>
-          <Inbox aria-hidden className="ak-icon" />
-          <div>
-            <strong>Recibida por {CHANNEL[card.channel].label.toLowerCase()}</strong>
-            <time dateTime={card.received_at}>{formatDateTime(card.received_at)}</time>
-          </div>
-        </li>
-        {facts && (
-          <li>
-            <ScanText aria-hidden className="ak-icon" />
-            <div>
-              <strong>Leída por la IA</strong>
-              <small>
-                {facts.source.pages} {facts.source.pages === 1 ? "página" : "páginas"} · {grounded} de {detail.fields.length}{" "}
-                datos con cita en la página{reader[0] ? ` · ${reader[0].model}` : ""}
-              </small>
-            </div>
-          </li>
-        )}
-        {facts?.verification && (
-          <li>
-            <FileCheck aria-hidden className="ak-icon" />
-            <div>
-              <strong>Verificada en código</strong>
-              <small>
-                Riesgo {facts.verification.risk.toFixed(2).replace(".", ",")}
-                {facts.verification.disagreements.length > 0 &&
-                  ` · lecturas distintas en ${facts.verification.disagreements.length} campos`}
-                {facts.verification.jev.length > 0 && " · JEV consultado"}
-              </small>
-            </div>
-          </li>
-        )}
-        {record && (
-          <li>
-            <Gavel aria-hidden className="ak-icon" />
-            <div>
-              <strong>
-                Decidida: {STATE_LABEL[record.decision]}
-                {record.determining_rule ? ` (${record.determining_rule})` : ""}
-              </strong>
-              <time dateTime={record.created_at}>{formatDateTime(record.created_at)}</time>
-              <small>
-                Registro n.º {record.seq} de la cadena ·{" "}
-                <span className="ak-hash">
-                  <Link2 aria-hidden className="ak-icon" />
-                  {record.hash.slice(0, 12)}
-                </span>
-              </small>
-            </div>
-          </li>
+        {steps && <TraceItems steps={steps} label={label} />}
+        {!steps && (
+          <>
+            <li>
+              <Inbox aria-hidden className="ak-icon" />
+              <div>
+                <strong>Recibida por {CHANNEL[card.channel].label.toLowerCase()}</strong>
+                <time dateTime={card.received_at}>{formatDateTime(card.received_at)}</time>
+              </div>
+            </li>
+            {facts && (
+              <li>
+                <ScanText aria-hidden className="ak-icon" />
+                <div>
+                  <strong>Leída por la IA</strong>
+                  <small>
+                    {facts.source.pages} {facts.source.pages === 1 ? "página" : "páginas"} · {grounded} de {detail.fields.length}{" "}
+                    datos con cita en la página{reader[0] ? ` · ${reader[0].model}` : ""}
+                  </small>
+                </div>
+              </li>
+            )}
+            {facts?.verification && (
+              <li>
+                <FileCheck aria-hidden className="ak-icon" />
+                <div>
+                  <strong>Verificada en código</strong>
+                  <small>
+                    Riesgo {facts.verification.risk.toFixed(2).replace(".", ",")}
+                    {facts.verification.disagreements.length > 0 &&
+                      ` · lecturas distintas en ${facts.verification.disagreements.length} campos`}
+                    {facts.verification.jev.length > 0 && " · JEV consultado"}
+                  </small>
+                </div>
+              </li>
+            )}
+            {record && (
+              <li>
+                <Gavel aria-hidden className="ak-icon" />
+                <div>
+                  <strong>
+                    Decidida: {STATE_LABEL[record.decision]}
+                    {record.determining_rule ? ` (${record.determining_rule})` : ""}
+                  </strong>
+                  <time dateTime={record.created_at}>{formatDateTime(record.created_at)}</time>
+                  <small>
+                    Registro n.º {record.seq} de la cadena ·{" "}
+                    <span className="ak-hash">
+                      <Link2 aria-hidden className="ak-icon" />
+                      {record.hash.slice(0, 12)}
+                    </span>
+                  </small>
+                </div>
+              </li>
+            )}
+          </>
         )}
         {record?.human && (
           <li>
