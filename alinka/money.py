@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 from decimal import ROUND_CEILING, Decimal
 
 # ISO 4217 minor-unit digits: the world's currencies, plus ones a document may claim.
@@ -77,3 +78,67 @@ def format_minor(amount_minor: int, currency: str) -> str:
 
 def usd_whole_to_minor(usd: int) -> int:
     return usd * 100
+
+
+# --- Amounts in words (R15) --------------------------------------------------------
+
+_UNITS = {
+    # English
+    "zero": 0, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "six": 6, "seven": 7,
+    "eight": 8, "nine": 9, "ten": 10, "eleven": 11, "twelve": 12, "thirteen": 13,
+    "fourteen": 14, "fifteen": 15, "sixteen": 16, "seventeen": 17, "eighteen": 18,
+    "nineteen": 19, "twenty": 20, "thirty": 30, "forty": 40, "fifty": 50, "sixty": 60,
+    "seventy": 70, "eighty": 80, "ninety": 90,
+    # Spanish, accents removed
+    "cero": 0, "un": 1, "uno": 1, "una": 1, "dos": 2, "tres": 3, "cuatro": 4, "cinco": 5,
+    "seis": 6, "siete": 7, "ocho": 8, "nueve": 9, "diez": 10, "once": 11, "doce": 12,
+    "trece": 13, "catorce": 14, "quince": 15, "dieciseis": 16, "diecisiete": 17,
+    "dieciocho": 18, "diecinueve": 19, "veinte": 20, "veintiun": 21, "veintiuno": 21,
+    "veintiuna": 21, "veintidos": 22, "veintitres": 23, "veinticuatro": 24, "veinticinco": 25,
+    "veintiseis": 26, "veintisiete": 27, "veintiocho": 28, "veintinueve": 29, "treinta": 30,
+    "cuarenta": 40, "cincuenta": 50, "sesenta": 60, "setenta": 70, "ochenta": 80, "noventa": 90,
+    "cien": 100, "ciento": 100, "doscientos": 200, "doscientas": 200, "trescientos": 300,
+    "trescientas": 300, "cuatrocientos": 400, "cuatrocientas": 400, "quinientos": 500,
+    "quinientas": 500, "seiscientos": 600, "seiscientas": 600, "setecientos": 700,
+    "setecientas": 700, "ochocientos": 800, "ochocientas": 800, "novecientos": 900,
+    "novecientas": 900,
+}  # fmt: skip
+_SCALES = {"thousand": 1000, "mil": 1000, "million": 10**6, "millon": 10**6, "millones": 10**6}
+_FILLER = {
+    "son", "and", "y", "con", "de", "only", "pesos", "peso", "m", "cte", "mcte", "n", "mn",
+    "dolares", "dolar", "estadounidenses", "americanos", "us", "usd", "dollars", "dollar",
+    "euros", "euro", "eur", "reales", "real", "reais", "brazilian", "brl", "mexicanos",
+    "colombianos", "cop", "mxn", "moneda", "corriente", "nacional", "cents", "centavos",
+}  # fmt: skip
+
+
+def words_to_minor(text: str | None, currency: str = "USD") -> int | None:
+    """'SON: TRES MILLONES CIEN MIL PESOS M/CTE' or 'One thousand ... and 00/100 US Dollars'.
+
+    None when anything is not understood: R15 then escalates instead of guessing.
+    """
+    if not text or "?" in text or "�" in text:
+        return None
+    s = unicodedata.normalize("NFKD", text.casefold())
+    s = "".join(c for c in s if not unicodedata.combining(c))
+    cents = 0
+    if m := re.search(r"(\d{1,2})\s*/\s*100", s):
+        cents = int(m.group(1).ljust(2, "0"))
+        s = s[: m.start()] + " " + s[m.end() :]
+    total = current = 0
+    seen = False
+    for tok in re.findall(r"[a-z]+|\d+", s.replace("-", " ")):
+        if tok in _UNITS:
+            current += _UNITS[tok]
+            seen = True
+        elif tok == "hundred":
+            current = (current or 1) * 100
+        elif tok in _SCALES:
+            total += (current or 1) * _SCALES[tok]
+            current = 0
+            seen = True
+        elif tok not in _FILLER:
+            return None
+    if not seen:
+        return None
+    return (total + current) * 10 ** minor_digits(currency) + cents

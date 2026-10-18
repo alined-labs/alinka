@@ -1,0 +1,276 @@
+{
+ "source": "gold facts from data/labels",
+ "gold_facts": true,
+ "generated_at": "2026-10-18T08:24:58+00:00",
+ "rules_version": "2026-10-18.1",
+ "as_of": "2026-10-17",
+ "simulated_traps": [
+  "low_quality_scan",
+  "off_contract_scope",
+  "other_buyer",
+  "proforma",
+  "service_outside_validity",
+  "stamp_anulada"
+ ],
+ "invoices": 150,
+ "missing_facts": [],
+ "improper_approvals": {
+  "k": 0,
+  "K": 62,
+  "upper_95": 0.0472,
+  "invoices": []
+ },
+ "autonomy": {
+  "autonomous": 127,
+  "correct": 126,
+  "paid": 87,
+  "total": 150,
+  "rate": 0.8467,
+  "ceiling_count": 127,
+  "ceiling": 0.8467
+ },
+ "confusion": {
+  "PAY": {
+   "PAY": 87,
+   "HOLD": 1,
+   "ESCALATE": 0
+  },
+  "HOLD": {
+   "PAY": 0,
+   "HOLD": 39,
+   "ESCALATE": 0
+  },
+  "ESCALATE": {
+   "PAY": 0,
+   "HOLD": 0,
+   "ESCALATE": 23
+  }
+ },
+ "quality": {
+  "decision_accuracy": 0.9933,
+  "escalation_precision": 1.0,
+  "security_recall": {
+   "attack": null,
+   "attack_n": 0,
+   "all": null,
+   "all_n": 0
+  },
+  "rule_accuracy": {
+   "determining_in_gold": 0.9677,
+   "gold_rules_fired": 1.0,
+   "n": 62
+  }
+ },
+ "by_split": {
+  "generated": {
+   "invoices": 120,
+   "improper_approvals": {
+    "k": 0,
+    "K": 48,
+    "upper_95": 0.0605,
+    "invoices": []
+   },
+   "autonomy": {
+    "autonomous": 104,
+    "correct": 104,
+    "paid": 72,
+    "total": 120,
+    "rate": 0.8667,
+    "ceiling_count": 104,
+    "ceiling": 0.8667
+   },
+   "confusion": {
+    "PAY": {
+     "PAY": 72,
+     "HOLD": 0,
+     "ESCALATE": 0
+    },
+    "HOLD": {
+     "PAY": 0,
+     "HOLD": 32,
+     "ESCALATE": 0
+    },
+    "ESCALATE": {
+     "PAY": 0,
+     "HOLD": 0,
+     "ESCALATE": 16
+    }
+   }
+  },
+  "showcase": {
+   "invoices": 30,
+   "improper_approvals": {
+    "k": 0,
+    "K": 14,
+    "upper_95": 0.1926,
+    "invoices": []
+   },
+   "autonomy": {
+    "autonomous": 23,
+    "correct": 22,
+    "paid": 15,
+    "total": 30,
+    "rate": 0.7667,
+    "ceiling_count": 23,
+    "ceiling": 0.7667
+   },
+   "confusion": {
+    "PAY": {
+     "PAY": 15,
+     "HOLD": 1,
+     "ESCALATE": 0
+    },
+    "HOLD": {
+     "PAY": 0,
+     "HOLD": 7,
+     "ESCALATE": 0
+    },
+    "ESCALATE": {
+     "PAY": 0,
+     "HOLD": 0,
+     "ESCALATE": 7
+    }
+   }
+  }
+ },
+ "verifier_risk_max": {
+  "chosen": null,
+  "chosen_jev_off": null,
+  "default": 0.7
+ },
+ "risk_coverage": {
+  "jev_on": [
+   {
+    "threshold": 0.05,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.1,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.15,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.2,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.25,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.3,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.35,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.4,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.45,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.5,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.55,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.6,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.65,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.7,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.75,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.8,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.85,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.9,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 0.95,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   },
+   {
+    "threshold": 1.0,
+    "coverage": 0.8467,
+    "error": 0.0079,
+    "improper": 0
+   }
+  ],
+  "jev_off": null,
+  "jev_off_note": "no data/runs/<run>-nojev recorded; JEV-off curve not drawn"
+ },
+ "field_accuracy": null,
+ "latency_ms": {
+  "p50": null,
+  "p95": null,
+  "n": 0
+ },
+ "cost_usd_per_invoice": null,
+ "disagreements": 1,
+ "unexplained_disagreements": 0
+}
