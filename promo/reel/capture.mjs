@@ -4,6 +4,7 @@
  *   node promo/reel/capture.mjs                 # 1080x1920 -> promo/reel/out/alinka-reel.mp4
  *   node promo/reel/capture.mjs --landscape     # 1920x1080 -> promo/reel/out/alinka-reel-16x9.mp4
  *   node promo/reel/capture.mjs --still 31      # one PNG at t = 31 s, to check a frame
+ *   node promo/reel/capture.mjs --pitch 02-flujo  # a pitch segment -> promo/reel/out/pitch/02-flujo.mp4
  *
  * Serves the repository root on a local port (the page loads the app's tokens from web/), drives
  * the system Chrome through the repo's Playwright, calls window.setTime(t) for each frame at
@@ -22,11 +23,12 @@ const ROOT = resolve(fileURLToPath(new URL("../..", import.meta.url)));
 const OUT = join(ROOT, "promo", "reel", "out");
 const FPS = 30;
 const args = process.argv.slice(2);
-const landscape = args.includes("--landscape");
+const pitch = args.includes("--pitch") ? args[args.indexOf("--pitch") + 1] : null;
+const landscape = args.includes("--landscape") || pitch !== null;
 const stillAt = args.includes("--still") ? Number(args[args.indexOf("--still") + 1]) : null;
 const [W, H] = landscape ? [1920, 1080] : [1080, 1920];
 
-const TYPES = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml" };
+const TYPES = { ".json": "application/json", ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml" };
 
 // Static files from the repository root only, GET only.
 const server = createServer((req, res) => {
@@ -54,20 +56,22 @@ const page = await browser.newPage({ viewport: { width: W, height: H }, deviceSc
 const problems = [];
 page.on("console", (m) => m.type() === "error" && problems.push(m.text()));
 page.on("pageerror", (e) => problems.push(e.message));
-await page.goto(`http://127.0.0.1:${port}/promo/reel/index.html${landscape ? "?format=landscape" : ""}`, { waitUntil: "networkidle" });
+const target = pitch ? `pitch.html?seg=${encodeURIComponent(pitch)}` : `index.html${landscape ? "?format=landscape" : ""}`;
+await page.goto(`http://127.0.0.1:${port}/promo/reel/${target}`, { waitUntil: "networkidle" });
 await page.evaluate(() => window.reelReady);
 const frame = page.locator("#frame");
 
 try {
   if (stillAt !== null) {
-    const file = join(OUT, `still-${landscape ? "16x9" : "9x16"}-${stillAt}.png`);
+    const file = join(OUT, `still-${pitch ?? (landscape ? "16x9" : "9x16")}-${stillAt}.png`);
     await page.evaluate((t) => window.setTime(t), stillAt);
     await frame.screenshot({ path: file });
     console.log(file);
   } else {
     const duration = await page.evaluate(() => window.DURATION);
     const frames = Math.round(duration * FPS);
-    const file = join(OUT, landscape ? "alinka-reel-16x9.mp4" : "alinka-reel.mp4");
+    if (pitch) mkdirSync(join(OUT, "pitch"), { recursive: true });
+    const file = pitch ? join(OUT, "pitch", `${pitch}.mp4`) : join(OUT, landscape ? "alinka-reel-16x9.mp4" : "alinka-reel.mp4");
     const ffmpeg = spawn(
       "ffmpeg",
       ["-y", "-loglevel", "error", "-f", "image2pipe", "-framerate", String(FPS), "-c:v", "png", "-i", "-",
