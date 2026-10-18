@@ -1,0 +1,23 @@
+{% extends "base.html.j2" %}
+{% block extra_css %}
+body { font-family: "Liberation Sans", "DejaVu Sans", sans-serif; }
+.head { border-bottom: none; }
+.docbox { border: none; text-align: right; }
+.docbox .kind { font-size: 22pt; letter-spacing: .08em; color: var(--accent); }
+table.lines th { background: #f1f3f6; color: #222; border-bottom: 2px solid var(--accent); }
+{% endblock %}
+{% block parties %}
+<div class="parties">
+  <div class="party">
+    <div class="lbl">Bill to</div>
+    <b>{{ buyer.name }}</b>
+    <div class="ficticia">{{ buyer_marker }}</div>
+    <div>{{ buyer.tax_label }}: {{ buyer.tax_id }}</div>
+    {% for l in buyer.lines %}<div class="small">{{ l }}</div>{% endfor %}
+  </div>
+  <div class="party">
+    <div class="lbl">Remit to</div>
+    <table class="kv">{% for k, v in info_kv %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}</table>
+  </div>
+</div>
+{% endblock %}

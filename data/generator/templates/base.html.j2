@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="{{ lang }}">
+<head>
+<meta charset="utf-8">
+<title>{{ title }}</title>
+<meta name="author" content="{{ seller.name }}">
+<meta name="generator" content="Alinka dataset (fictional)">
+<meta name="dcterms.created" content="{{ created }}">
+<meta name="dcterms.modified" content="{{ created }}">
+<style>
+{% include "style.css" %}
+:root { --accent: {{ accent }}; }
+@page { @bottom-center { content: "{{ footer }}"; } }
+{% block extra_css %}{% endblock %}
+</style>
+</head>
+<body>
+{% for s in stamps %}<div class="stamp">{{ s }}</div>{% endfor %}
+<div class="head">
+  <div class="seller">
+    {% block seller %}
+    <div class="name">{{ seller.name }}</div>
+    <div class="ficticia">{{ marker }}</div>
+    <div>{{ seller.tax_label }}: {{ seller.tax_id }}</div>
+    {% for l in seller.lines %}<div class="small">{{ l }}</div>{% endfor %}
+    {% endblock %}
+  </div>
+  <div class="docbox">
+    {% block docbox %}
+    <div class="kind">{{ doc_label }}</div>
+    <div class="num">{{ number_label }} {{ number }}</div>
+    <table class="kv" style="margin-left:auto">
+      {% for k, v in head_kv %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}
+    </table>
+    {% endblock %}
+  </div>
+</div>
+
+{% block parties %}
+<div class="parties">
+  <div class="party">
+    <div class="lbl">{{ buyer_label }}</div>
+    <b>{{ buyer.name }}</b>
+    <div class="ficticia">{{ buyer_marker }}</div>
+    <div>{{ buyer.tax_label }}: {{ buyer.tax_id }}</div>
+    {% for l in buyer.lines %}<div class="small">{{ l }}</div>{% endfor %}
+  </div>
+  {% if info_kv %}
+  <div class="party">
+    <div class="lbl">{{ info_label }}</div>
+    <table class="kv">{% for k, v in info_kv %}<tr><td>{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}</table>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+
+{% block intro %}{% endblock %}
+
+<table class="lines">
+  <tr>{% for h in line_heads %}<th{% if loop.index > 2 %} class="r"{% endif %}>{{ h }}</th>{% endfor %}</tr>
+  {% for row in lines %}
+  <tr>{% for c in row %}<td{% if loop.index > 2 %} class="r"{% endif %}>{{ c }}</td>{% endfor %}</tr>
+  {% endfor %}
+</table>
+
+<div class="below">
+  <div class="words">
+    {% block words %}
+    {% if words %}<span class="small">{{ words_label }}</span><b>{{ words }}</b>{% endif %}
+    {% endblock %}
+    {% if tax_note %}<p class="small">{{ tax_note }}</p>{% endif %}
+  </div>
+  <table class="totals">
+    {% for k, v in totals %}<tr><td>{{ k }}</td><td class="r">{{ v }}</td></tr>{% endfor %}
+    <tr class="grand"><td>{{ total_label }}</td><td class="r">{{ total_display }}</td></tr>
+  </table>
+</div>
+
+{% block notes %}
+{% if notes %}<div class="notes">{% for n in notes %}<p>{{ n }}</p>{% endfor %}</div>{% endif %}
+{% endblock %}
+
+{% block fiscal %}
+{% if qr or fiscal_kv %}
+<div class="fiscal">
+  {% if qr %}<div class="qr">{{ qr | safe }}</div>{% endif %}
+  <div style="flex:1">
+    <table class="kv">{% for k, v in fiscal_kv %}<tr><td>{{ k }}</td><td class="mono">{{ v }}</td></tr>{% endfor %}</table>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+<div class="footer-note">{{ footer_note }}</div>
+</body>
+</html>

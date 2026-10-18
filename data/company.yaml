@@ -14,7 +14,7 @@ cost_centers:
     budget_usd_minor: 1000000        # 10,000.00
   - id: operations
     name_es: "Operaciones"
-    budget_usd_minor: 260000         # 2,600.00, tight on purpose: the month's R08 traps land here
+    budget_usd_minor: 220000         # 2,200.00, tight on purpose: the month's R08 traps land here
   - id: software
     name_es: "Software"
     budget_usd_minor: 500000         # 5,000.00
