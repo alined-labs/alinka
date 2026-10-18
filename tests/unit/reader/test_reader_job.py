@@ -38,3 +38,24 @@ def test_run_resumes_and_publishes(tmp_path, capsys):
 
 def test_cli_parses_shards():
     assert extract._shard("2/4") == (2, 4)
+
+
+def test_staged_pipeline_reports_an_unreadable_file_and_a_failed_stage():
+    from datetime import UTC, datetime
+
+    from alinka.cache import ResponseCache
+    from alinka.verify.facts import Staged
+
+    staged = Staged(
+        b"not a pdf", ".pdf", invoice_id="TRY-X-1", received_at=datetime(2026, 10, 18, tzinfo=UTC),
+        cache=ResponseCache("replay"),
+    )  # fmt: skip
+    staged.ingest()
+    staged.read()
+    staged.check()
+    facts = staged.facts()
+    assert facts.flags.extraction_error.startswith("ingest:")
+    assert facts.source.pages == 0 and facts.source.channel == "pdf"
+    staged.error = None
+    staged.fail("read", RuntimeError("boom"))
+    assert staged.facts().flags.extraction_error == "read: RuntimeError: boom"
