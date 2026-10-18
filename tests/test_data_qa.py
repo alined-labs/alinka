@@ -108,3 +108,28 @@ def test_labels_validate_and_point_at_documents():
         t = doc["traps"][r.trap] if r.trap else doc["routine"]
         assert r.gold_decision == Decision(t["decision"]), r.invoice_id
         assert list(r.gold_rules) == t["rules"] and r.gold_security == t["security"], r.invoice_id
+
+
+def test_the_month_follows_the_plan_table():
+    rows = [r for r in labels() if r.split == Split.SHOWCASE]
+    assert [r.invoice_id for r in rows] == [f"OCT-{i:02d}" for i in range(1, 31)]
+    assert [r.received_at for r in rows] == sorted(r.received_at for r in rows)
+    assert Counter(r.trap for r in rows) == {
+        None: 16,
+        "duplicate_number": 1,
+        "duplicate_fiscal_id": 1,
+        "new_beneficiary": 2,
+        "off_contract_amount": 1,
+        "off_contract_scope": 1,
+        "over_threshold": 2,
+        "insufficient_budget": 2,
+        "near_threshold": 1,
+        "due_past_grace": 1,
+        "words_unparseable": 1,
+        "currency_mismatch": 1,
+    }
+    assert {r.channel.value for r in rows} == {"pdf", "image", "email", "chat"}
+    for r in rows:
+        if r.path.endswith((".eml", ".txt")):
+            text = (ROOT / r.path).read_text(encoding="utf-8")
+            assert "(empresa ficticia)" in text or "(fictitious company)" in text, r.path

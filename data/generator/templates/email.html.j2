@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="{{ lang }}"><head><meta charset="utf-8"><title>{{ title }}</title></head>
+<body style="font-family: Arial, sans-serif; font-size: 14px; color: #1d1d1f;">
+<p>{{ intro }}</p>
+<table cellpadding="6" style="border: 1px solid {{ accent }}; border-collapse: collapse; width: 100%; max-width: 680px;">
+  <tr><td colspan="2" style="background: {{ accent }}; color: #fff;"><b>{{ doc_label }}</b><br>{{ number_label }} {{ number }}</td></tr>
+  <tr><td valign="top"><b>{{ seller.name }}</b><br><i>{{ marker }}</i><br>{{ seller.tax_label }}: {{ seller.tax_id }}{% for l in seller.lines %}<br>{{ l }}{% endfor %}</td>
+      <td valign="top">{% for k, v in head_kv %}{{ k }}: {{ v }}<br>{% endfor %}</td></tr>
+  <tr><td valign="top">{{ buyer_label or "Bill to" }}: <b>{{ buyer.name }}</b><br><i>{{ buyer_marker }}</i><br>{{ buyer.tax_label }}: {{ buyer.tax_id }}</td>
+      <td valign="top">{% for k, v in info_kv %}{{ k }}: {{ v }}<br>{% endfor %}</td></tr>
+</table>
+<table cellpadding="5" style="border-collapse: collapse; width: 100%; max-width: 680px; margin-top: 8px;">
+  <tr>{% for h in line_heads %}<th align="left" style="border-bottom: 2px solid {{ accent }};">{{ h }}</th>{% endfor %}</tr>
+  {% for row in lines %}<tr>{% for c in row %}<td style="border-bottom: 1px solid #ddd;">{{ c }}</td>{% endfor %}</tr>{% endfor %}
+  {% for k, v in totals %}<tr><td colspan="{{ line_heads | length - 1 }}" align="right">{{ k }}</td><td>{{ v }}</td></tr>{% endfor %}
+  <tr><td colspan="{{ line_heads | length - 1 }}" align="right"><b>{{ total_label }}</b></td><td><b>{{ total_display }}</b></td></tr>
+</table>
+{% if words %}<p>{{ words_label }}: <b>{{ words }}</b></p>{% endif %}
+{% if tax_note %}<p>{{ tax_note }}</p>{% endif %}
+{% if fiscal_kv %}<p style="font-family: monospace; font-size: 11px;">{% for k, v in fiscal_kv %}{{ k }}: {{ v }}<br>{% endfor %}</p>{% endif %}
+{% for n in notes %}<p style="font-size: 12px;">{{ n }}</p>{% endfor %}
+<p style="font-size: 11px; color: #777;">{{ footer_note }}</p>
+</body></html>
