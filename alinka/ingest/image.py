@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import hashlib
 import io
+import os
 import shutil
 from collections import defaultdict
 
@@ -23,6 +24,8 @@ from alinka.types import Box, Channel
 LANG = "spa+eng"
 MAX_EDGE = 1568
 OCR_TIMEOUT_S = 60
+# One thread per Tesseract process: parallel jobs oversubscribe the CPU and time out otherwise.
+os.environ.setdefault("OMP_THREAD_LIMIT", "1")
 OCR_MODEL = f"tesseract-{LANG}"
 OCR_FIELDS = ("text", "conf", "left", "top", "width", "height", "block_num", "par_num", "line_num")
 EXIF_TEXT_TAGS = (0x010E, 0x013B, 0x9286, 0x9C9C, 0x9C9F)  # description, artist, comment, XP*

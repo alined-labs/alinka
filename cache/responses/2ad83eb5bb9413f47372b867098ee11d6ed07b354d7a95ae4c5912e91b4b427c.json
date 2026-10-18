@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.00171,
+ "input_hash": "bffe9a9f5c20da5e78ceeb438c65a697d405d8c9e74f5bd28a90418a69cc3808",
+ "input_tokens": 6173,
+ "key": "2ad83eb5bb9413f47372b867098ee11d6ed07b354d7a95ae4c5912e91b4b427c",
+ "latency_ms": 7675,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 2185,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:40:38Z",
+ "request": {
+  "doc_sha256": "b274faf4fbaf3958dcbdcb7db59c1650f4c12bc22cbf70d03cb5035c4b215285",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1178,
+  "visible_text_sha256": "7fdbac16dba516f5402b30d45c156d9349656a6d87b9c5969f8c77fdc1b956cf"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: DOS MILLONES SEISCIENTOS MIL PESOS M/CTE",
+    "value": "SON: DOS MILLONES SEISCIENTOS MIL PESOS M/CTE"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Consignar a: Banco Ficticio Andino · Ahorros DEMO-0012-5561-05",
+    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "DEBE A: Julián Herrera Mejía (empresa ficticia)",
+    "value": "Julián Herrera Mejía"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "DEBE A: Julián Herrera Mejía (empresa ficticia), C.C. DEMO-CC-1152034567",
+    "value": "DEMO-CC-1152034567"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc. (empresa ficticia)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc. (empresa ficticia), EIN DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda: COP",
+    "value": "COP"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º CC-2026-48",
+    "value": "CUENTA DE COBRO"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago: 18/10/2026",
+    "value": "18/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º CC-2026-48",
+    "value": "CC-2026-48"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión: 08/10/2026",
+    "value": "08/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período: 02/10/2026 al 08/10/2026",
+    "value": "02/10/2026 al 08/10/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Por concepto de: Ilustración: piezas gráficas para el módulo de configuración, octubre de 2026.",
+    "value": "Ilustración: piezas gráficas para el módulo de configuración, octubre de 2026."
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "LA SUMA DE: $ 2.600.000,00 COP",
+    "value": "2.600.000,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

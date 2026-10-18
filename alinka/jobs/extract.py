@@ -6,7 +6,8 @@
 
 Writes runs/<run_id>/facts-<i>of<N>.jsonl (one InvoiceFacts per line, in finishing
 order) and summary-<i>of<N>.json (flags, latency and cost). Invoices already in the
-shard's facts file are skipped, so an interrupted run resumes. `--publish NAME` merges
+shard's facts file without an extraction error are skipped, so an interrupted run
+resumes and failed invoices are retried (the last line for an invoice wins). `--publish NAME` merges
 every shard of the run into data/runs/NAME/, which the API and the evaluation load.
 """
 
@@ -53,11 +54,12 @@ def shard_of(labels: list[Label], i: int, n: int) -> list[Label]:
 def _done(path: Path) -> set[str]:
     if not path.exists():
         return set()
-    done = set()
+    done: dict[str, bool] = {}  # invoice -> finished without an extraction error
     for line in path.read_text(encoding="utf-8").splitlines():
         if line.strip():
-            done.add(json.loads(line)["source"]["invoice_id"])
-    return done
+            raw = json.loads(line)
+            done[raw["source"]["invoice_id"]] = not raw["flags"]["extraction_error"]
+    return {invoice for invoice, ok in done.items() if ok}  # errors are retried
 
 
 def run(

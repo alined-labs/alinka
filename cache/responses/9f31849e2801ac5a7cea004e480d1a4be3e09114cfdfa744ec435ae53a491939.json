@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001501,
+ "input_hash": "380ee17b0a9c6d0688ee52086b94ae9af5aa4d8c11d297f1d2110293ce25f6eb",
+ "input_tokens": 5614,
+ "key": "9f31849e2801ac5a7cea004e480d1a4be3e09114cfdfa744ec435ae53a491939",
+ "latency_ms": 6650,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 1879,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:37:13Z",
+ "request": {
+  "doc_sha256": "3eb05476b8ca5031cce266f1b331a2e1189327119e4e2f0defe71e4dd2522825",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1231,
+  "visible_text_sha256": "5874305ae38620d09558fe746ddbbb3758b460d8114af589f34f748377f890f1"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "One thousand one hundred thirty and 00/100 US Dollars",
+    "value": "One thousand one hundred thirty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Demo Federal Bank - ABA DEMO-0210 - Acct DEMO-4421-0010",
+    "value": "Demo Federal Bank - ABA DEMO-0210 - Acct DEMO-4421-0010"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Cobalt Ridge Hosting, Inc.",
+    "value": "Cobalt Ridge Hosting, Inc."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-12-3456789",
+    "value": "DEMO-12-3456789"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Otra Empresa Demo LLC",
+    "value": "Otra Empresa Demo LLC"
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-77-1234567",
+    "value": "DEMO-77-1234567"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "INVOICE",
+    "value": "INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date October 30, 2026",
+    "value": "October 30, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # CR-2026-1105",
+    "value": "CR-2026-1105"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date September 30, 2026",
+    "value": "September 30, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period September 1, 2026 — September 30, 2026",
+    "value": "September 1, 2026 — September 30, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "1 Cloud hosting: compute nodes, September 2026",
+    "value": "Cloud hosting: compute nodes, September 2026"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 1,130.00",
+    "value": "1,130.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD) $1,130.00",
+    "value": "1,130.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

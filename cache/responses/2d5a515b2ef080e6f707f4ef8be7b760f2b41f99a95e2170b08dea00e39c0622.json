@@ -1,0 +1,95 @@
+{
+ "cost_usd": 0.000113736,
+ "input_hash": "ecbd84c50d1b42275fe041b7a8b5c0836c0b9e4b1d041b1aa004dbb214aebe8a",
+ "input_tokens": 2708,
+ "key": "2d5a515b2ef080e6f707f4ef8be7b760f2b41f99a95e2170b08dea00e39c0622",
+ "latency_ms": 588,
+ "model": "typesafe/jev-1.13",
+ "output_tokens": 594,
+ "prompt_hash": "34b3dbf1dd80c9f2200402ed773dcbdef8bc4ba6820806d791d6222eb73cc924",
+ "recorded_at": "2026-10-18T08:36:49Z",
+ "request": {
+  "model": "typesafe/jev-1.13",
+  "questions": [
+   "J1a",
+   "J1b",
+   "J2.beneficiary_name",
+   "J2.beneficiary_tax_id",
+   "J2.currency",
+   "J2.due_date",
+   "J2.invoice_number",
+   "J2.total"
+  ],
+  "role": "jev"
+ },
+ "response": {
+  "answers": {
+   "J1a": {
+    "choice": "3.600.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "2.210,00": 0,
+     "2.359.664,00": 0,
+     "22.641.369,00": 0,
+     "3.025.210,00": 0,
+     "3.600.000,00": 1,
+     "4.417.302,00": 0,
+     "5.000,00": 0,
+     "574.790,00": 0,
+     "665.546,00": 0,
+     "900.765.432,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J1b": {
+    "choice": "3.600.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "2.210,00": 0,
+     "2.359.664,00": 0,
+     "22.641.369,00": 0,
+     "3.025.210,00": 0,
+     "3.600.000,00": 1,
+     "4.417.302,00": 0,
+     "5.000,00": 0,
+     "574.790,00": 0,
+     "665.546,00": 0,
+     "900.765.432,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J2.beneficiary_name": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.beneficiary_tax_id": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.currency": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.due_date": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.invoice_number": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.total": {
+    "noul": 0.05,
+    "type": "noul"
+   }
+  },
+  "model": "typesafe/jev-1.13-20260917"
+ },
+ "stop_reason": "end_turn"
+}
