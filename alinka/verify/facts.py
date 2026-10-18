@@ -19,16 +19,16 @@ from alinka.types import (
     Computed,
     Flags,
     InvoiceFacts,
-    Language,
     Printed,
     RulesConfig,
     Source,
     Verification,
 )
 from alinka.verify import checks
+from alinka.verify.dateorder import ambiguous_fields, date_order
 from alinka.verify.ground import ground
 from alinka.verify.jev import run_jev
-from alinka.verify.normalize import compute
+from alinka.verify.normalize import compute, detect_currency
 from alinka.world import load_rules, load_world
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -134,8 +134,12 @@ def verify(
 ) -> tuple[Printed, Computed, Verification]:
     if reader.error is not None:
         return reader.printed, Computed(), Verification(risk=1.0, notes=(reader.error,))
-    month_first = reader.language == Language.EN
-    computed = compute(reader.printed, cfg, _fx(), month_first)
+    currency = detect_currency(
+        reader.printed.currency.value, reader.printed.total.quote, reader.printed.total.value,
+        reader.printed.amount_in_words.value,
+    )  # fmt: skip
+    dates = date_order(reader.printed, reader.language, currency)
+    computed = compute(reader.printed, cfg, _fx(), dates.order)
 
     pdfs: dict[int, pymupdf.Document] = {}
     try:
@@ -143,10 +147,10 @@ def verify(
     finally:
         for pdf in pdfs.values():
             pdf.close()
-    notes: list[str] = []
+    notes: list[str] = [f"date order {dates.order or 'unknown'}: {dates.reason}"]
     checker_failed = checker is None or checker.error is not None
     if checker is not None and checker.error is None:
-        agreed = checks.compare(reader.printed, checker.printed, computed.currency, month_first)
+        agreed = checks.compare(reader.printed, checker.printed, computed.currency, dates.order)
         fields = {n: f.model_copy(update={"agreed": agreed[n]}) for n, f in fields.items()}
     elif checker is not None:
         notes.append(checker.error or "checker failed")
@@ -162,6 +166,7 @@ def verify(
     risk, why = checks.risk(
         printed, ungrounded=ungrounded, disagreements=disagreements, in_regex=in_regex,
         reconcile=reconcile, checker_failed=checker_failed, ocr_confidence=min(ocr) if ocr else None,
+        ambiguous_dates=ambiguous_fields(reader.printed, dates.order),
     )  # fmt: skip
     verification = Verification(
         disagreements=tuple(disagreements),

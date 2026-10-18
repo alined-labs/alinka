@@ -56,20 +56,20 @@ def test_garbled_words_are_unparseable(text):
 
 
 @pytest.mark.parametrize(
-    ("text", "month_first", "expected"),
+    ("text", "order", "expected"),
     [
-        ("October 30, 2026", True, date(2026, 10, 30)),
-        ("30/09/2026", False, date(2026, 9, 30)),
-        ("10/05/2026", True, date(2026, 10, 5)),
-        ("10/05/2026", False, date(2026, 5, 10)),
-        ("2026-10-02T16:30:12", False, date(2026, 10, 2)),
-        ("31 de julio de 2026", False, date(2026, 7, 31)),
-        ("15 oct. 2026", False, date(2026, 10, 15)),
-        ("Net 30", False, None),
+        ("October 30, 2026", "mdy", date(2026, 10, 30)),
+        ("30/09/2026", "dmy", date(2026, 9, 30)),
+        ("10/05/2026", "mdy", date(2026, 10, 5)),
+        ("10/05/2026", "dmy", date(2026, 5, 10)),
+        ("2026-10-02T16:30:12", None, date(2026, 10, 2)),
+        ("31 de julio de 2026", None, date(2026, 7, 31)),
+        ("15 oct. 2026", "dmy", date(2026, 10, 15)),
+        ("Net 30", "dmy", None),
     ],
 )
-def test_dates(text, month_first, expected):
-    assert parse_date(text, month_first) == expected
+def test_dates(text, order, expected):
+    assert parse_date(text, order) == expected
 
 
 def test_service_period_has_two_dates():
@@ -140,9 +140,10 @@ def test_compare_ignores_form_but_not_content():
     b = Printed(total=Field(value="1250.00"), due_date=Field(value="10/30/2026"))
     c = Printed(total=Field(value="1,520.00"), due_date=Field(value="October 30, 2026"))
     assert (
-        checks.compare(a, b, "USD", True)["total"] and checks.compare(a, b, "USD", True)["due_date"]
+        checks.compare(a, b, "USD", "mdy")["total"]
+        and checks.compare(a, b, "USD", "mdy")["due_date"]
     )
-    assert not checks.compare(a, c, "USD", True)["total"]
+    assert not checks.compare(a, c, "USD", "mdy")["total"]
 
 
 def test_risk_only_rises_with_doubts():

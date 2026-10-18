@@ -10,6 +10,7 @@ from alinka.fx import usd_of
 from alinka.money import MINOR_DIGITS, parse_amount
 from alinka.rules import digits, norm_id
 from alinka.types import Computed, Printed, RulesConfig
+from alinka.verify.dateorder import Order, is_ambiguous
 from alinka.verify.words import parse_words
 
 _MONTHS = {
@@ -47,8 +48,9 @@ def _fold(text: str) -> str:
     return "".join(c for c in s if not unicodedata.combining(c))
 
 
-def find_dates(text: str | None, month_first: bool = False) -> list[date]:
-    """Every date in `text`, in order of appearance."""
+def find_dates(text: str | None, order: Order | None = "dmy") -> list[date]:
+    """Every date in `text`, in order of appearance. With `order` None (unknown), a
+    numeric date whose day and month could swap, such as 01/09/2026, is left out."""
     if not text:
         return []
     s = _fold(text)
@@ -64,7 +66,10 @@ def find_dates(text: str | None, month_first: bool = False) -> list[date]:
                     d = date(int(a), int(b), int(c))
                 elif kind == "num":
                     day, month = int(a), int(b)
-                    if month > 12 or (month_first and day <= 12):
+                    if order is None and is_ambiguous(day, month):
+                        taken.append(range(m.start(), m.end()))
+                        continue
+                    if month > 12 or (order == "mdy" and day <= 12):
                         day, month = month, day
                     d = date(int(c), month, day)
                 elif kind == "mdy":
@@ -78,8 +83,8 @@ def find_dates(text: str | None, month_first: bool = False) -> list[date]:
     return [d for _, d in sorted(found, key=lambda x: x[0])]
 
 
-def parse_date(text: str | None, month_first: bool = False) -> date | None:
-    dates = find_dates(text, month_first)
+def parse_date(text: str | None, order: Order | None = "dmy") -> date | None:
+    dates = find_dates(text, order)
     return dates[0] if dates else None
 
 
@@ -103,7 +108,7 @@ def amount(text: str | None, currency: str | None) -> int | None:
     return parse_amount(text, currency)
 
 
-def compute(printed: Printed, cfg: RulesConfig, fx_table: tuple, month_first: bool) -> Computed:
+def compute(printed: Printed, cfg: RulesConfig, fx_table: tuple, order: Order | None) -> Computed:
     p = printed
     currency = detect_currency(
         p.currency.value, p.total.quote, p.total.value, p.amount_in_words.value
@@ -114,7 +119,7 @@ def compute(printed: Printed, cfg: RulesConfig, fx_table: tuple, month_first: bo
     if p.amount_in_words.value and currency:
         words_minor = parse_words(p.amount_in_words.value, MINOR_DIGITS[currency])
         words_unparseable = words_minor is None
-    period = find_dates(p.service_period.value, month_first)
+    period = find_dates(p.service_period.value, order)
     usd_minor, fx = None, None
     if total is not None and currency:
         got = usd_of(total, currency, cfg.as_of, cfg.fx_max_age_days, fx_table)
@@ -128,8 +133,8 @@ def compute(printed: Printed, cfg: RulesConfig, fx_table: tuple, month_first: bo
         tax_minor=amount(p.tax_total.value, currency),
         words_minor=words_minor,
         words_unparseable=words_unparseable,
-        issue_date=parse_date(p.issue_date.value, month_first),
-        due_date=parse_date(p.due_date.value, month_first),
+        issue_date=parse_date(p.issue_date.value, order),
+        due_date=parse_date(p.due_date.value, order),
         period_start=period[0] if period else None,
         period_end=period[-1] if len(period) > 1 else None,
         invoice_number_norm=norm_id(p.invoice_number.value),
