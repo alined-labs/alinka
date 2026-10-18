@@ -133,3 +133,25 @@ def test_the_month_follows_the_plan_table():
         if r.path.endswith((".eml", ".txt")):
             text = (ROOT / r.path).read_text(encoding="utf-8")
             assert "(empresa ficticia)" in text or "(fictitious company)" in text, r.path
+
+
+def test_the_generated_set_follows_the_plan_mix():
+    rows = [r for r in labels() if r.split == Split.GENERATED]
+    assert len(rows) == 120 and sum(r.trap is None for r in rows) == 72
+    assert Counter(r.language.value for r in rows) == {"es": 72, "en": 48}
+    assert Counter(r.channel.value for r in rows) == {
+        "pdf": 72,
+        "image": 12,
+        "email": 18,
+        "chat": 18,
+    }
+    generated = {k for k, t in traps()["traps"].items() if "generated" in t["splits"]}
+    assert {r.trap for r in rows if r.trap} == generated
+    # Episodes (GEN-<episode>-<n>) run as their own batch: numbered from 1, in received order.
+    episodes: dict[str, list[Label]] = {}
+    for r in rows:
+        episodes.setdefault(r.invoice_id.rsplit("-", 1)[0], []).append(r)
+    for key, ep in episodes.items():
+        assert [r.invoice_id for r in ep] == [f"{key}-{n}" for n in range(1, len(ep) + 1)]
+        assert [r.received_at for r in ep] == sorted(r.received_at for r in ep), key
+        assert all(r.trap is None for r in ep[:-1]), key  # priors are routine

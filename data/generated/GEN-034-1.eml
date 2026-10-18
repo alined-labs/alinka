@@ -1,0 +1,107 @@
+From:
+ Andes =?utf-8?q?Dise=C3=B1o_S=2EA=2ES=2E?= <facturacion@andes-diseno.invalid>
+To: "Ceiba Demo Labs, Inc." <ap@ceiba-demo.invalid>
+Subject: Factura =?utf-8?q?electr=C3=B3nica_de_venta_DEMO-FAC-0511_=C2=B7?=
+ Andes =?utf-8?q?Dise=C3=B1o?= S.A.S.
+Date: Sat, 03 Oct 2026 08:35:00 -0500
+Message-ID: <GEN-034-1.DEMO-FAC-0511@mail.alinka.invalid>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="=_alinka_d56c5cf40a7591eb"
+
+--=_alinka_d56c5cf40a7591eb
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Buen d=C3=ADa. Adjuntamos en este correo los datos del comprobante.
+
+Factura electr=C3=B3nica de venta
+N.=C2=BA DEMO-FAC-0511
+Andes Dise=C3=B1o S.A.S. (empresa ficticia)
+NIT: DEMO-901234567-7
+Calle Ficticia 12 # 34-56, Medell=C3=ADn, Antioquia
+facturacion@andes-diseno.invalid
+Responsable de IVA =C2=B7 R=C3=A9gimen ordinario
+Fecha de emisi=C3=B3n: 01/10/2026
+Fecha de vencimiento: 31/10/2026
+Moneda: COP
+Forma de pago: Cr=C3=A9dito 30 d=C3=ADas
+Adquiriente: Ceiba Demo Labs, Inc. (empresa ficticia)
+Tax ID (EIN): DEMO-88-4417302
+Per=C3=ADodo: 01/09/2026 al 30/09/2026
+1 | Dise=C3=B1o de interfaz: pantallas del m=C3=B3dulo de configuraci=C3=B3n =
+| 1 | servicio | 3.277.311,00 | 3.277.311,00
+2 | Actualizaci=C3=B3n del sistema de dise=C3=B1o (componentes) | 1 | servici=
+o | 1.092.437,00 | 1.092.437,00
+Subtotal: 4.369.748,00
+IVA 19%: 830.252,00
+Total a pagar (COP): $ 5.200.000,00
+Valor en letras: SON: CINCO MILLONES DOSCIENTOS MIL PESOS M/CTE
+CUFE: 01b46e3968edb6e30810b609dc9fa2168d320d943595d2f71a5e56e39d83e33b85b1169=
+56da56cb3c518d29d1945df28
+Autorizaci=C3=B3n: Resoluci=C3=B3n de facturaci=C3=B3n DEMO-12512187 (fictici=
+a) del 01/01/2026, rango DEMO-FAC-0001 a 5000
+Cuenta para pago: Banco Ficticio Andino =C2=B7 Corriente DEMO-0012-4471-01
+--
+Todos los nombres, identificadores y cuentas son ficticios.
+
+--=_alinka_d56c5cf40a7591eb
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<!doctype html>
+<html lang=3D"es"><head><meta charset=3D"utf-8"><title>Factura electr=C3=B3ni=
+ca de venta DEMO-FAC-0511</title></head>
+<body style=3D"font-family: Arial, sans-serif; font-size: 14px; color: #1d1d1=
+f;">
+<p>Buen d=C3=ADa. Adjuntamos en este correo los datos del comprobante.</p>
+<table cellpadding=3D"6" style=3D"border: 1px solid #0b5d63; border-collapse:=
+ collapse; width: 100%; max-width: 680px;">
+  <tr><td colspan=3D"2" style=3D"background: #0b5d63; color: #fff;"><b>Factur=
+a electr=C3=B3nica de venta</b><br>N.=C2=BA DEMO-FAC-0511</td></tr>
+  <tr><td valign=3D"top"><b>Andes Dise=C3=B1o S.A.S.</b><br><i>(empresa ficti=
+cia)</i><br>NIT: DEMO-901234567-7<br>Calle Ficticia 12 # 34-56, Medell=C3=ADn=
+, Antioquia<br>facturacion@andes-diseno.invalid<br>Responsable de IVA =C2=B7 =
+R=C3=A9gimen ordinario</td>
+      <td valign=3D"top">Fecha de emisi=C3=B3n: 01/10/2026<br>Fecha de vencim=
+iento: 31/10/2026<br>Moneda: COP<br>Forma de pago: Cr=C3=A9dito 30 d=C3=ADas<=
+br></td></tr>
+  <tr><td valign=3D"top">Adquiriente: <b>Ceiba Demo Labs, Inc.</b><br><i>(emp=
+resa ficticia)</i><br>Tax ID (EIN): DEMO-88-4417302</td>
+      <td valign=3D"top">Per=C3=ADodo: 01/09/2026 al 30/09/2026<br></td></tr>
+</table>
+<table cellpadding=3D"5" style=3D"border-collapse: collapse; width: 100%; max=
+-width: 680px; margin-top: 8px;">
+  <tr><th align=3D"left" style=3D"border-bottom: 2px solid #0b5d63;">#</th><t=
+h align=3D"left" style=3D"border-bottom: 2px solid #0b5d63;">Descripci=C3=B3n=
+</th><th align=3D"left" style=3D"border-bottom: 2px solid #0b5d63;">Cant.</th=
+><th align=3D"left" style=3D"border-bottom: 2px solid #0b5d63;">Unidad</th><t=
+h align=3D"left" style=3D"border-bottom: 2px solid #0b5d63;">Vr. unitario</th=
+><th align=3D"left" style=3D"border-bottom: 2px solid #0b5d63;">Vr. total</th=
+></tr>
+<tr><td style=3D"border-bottom: 1px solid #ddd;">1</td><td style=3D"border-bo=
+ttom: 1px solid #ddd;">Dise=C3=B1o de interfaz: pantallas del m=C3=B3dulo de =
+configuraci=C3=B3n</td><td style=3D"border-bottom: 1px solid #ddd;">1</td><td=
+ style=3D"border-bottom: 1px solid #ddd;">servicio</td><td style=3D"border-bo=
+ttom: 1px solid #ddd;">3.277.311,00</td><td style=3D"border-bottom: 1px solid=
+ #ddd;">3.277.311,00</td></tr><tr><td style=3D"border-bottom: 1px solid #ddd;=
+">2</td><td style=3D"border-bottom: 1px solid #ddd;">Actualizaci=C3=B3n del s=
+istema de dise=C3=B1o (componentes)</td><td style=3D"border-bottom: 1px solid=
+ #ddd;">1</td><td style=3D"border-bottom: 1px solid #ddd;">servicio</td><td s=
+tyle=3D"border-bottom: 1px solid #ddd;">1.092.437,00</td><td style=3D"border-=
+bottom: 1px solid #ddd;">1.092.437,00</td></tr><tr><td colspan=3D"5" align=3D=
+"right">Subtotal</td><td>4.369.748,00</td></tr><tr><td colspan=3D"5" align=3D=
+"right">IVA 19%</td><td>830.252,00</td></tr>  <tr><td colspan=3D"5" align=3D"=
+right"><b>Total a pagar (COP)</b></td><td><b>$ 5.200.000,00</b></td></tr>
+</table>
+<p>Valor en letras: <b>SON: CINCO MILLONES DOSCIENTOS MIL PESOS M/CTE</b></p>=
+<p style=3D"font-family: monospace; font-size: 11px;">CUFE: 01b46e3968edb6e30=
+810b609dc9fa2168d320d943595d2f71a5e56e39d83e33b85b116956da56cb3c518d29d1945df=
+28<br>Autorizaci=C3=B3n: Resoluci=C3=B3n de facturaci=C3=B3n DEMO-12512187 (f=
+icticia) del 01/01/2026, rango DEMO-FAC-0001 a 5000<br>Cuenta para pago: Banc=
+o Ficticio Andino =C2=B7 Corriente DEMO-0012-4471-01<br></p><p style=3D"font-=
+size: 11px; color: #777;">Todos los nombres, identificadores y cuentas son fi=
+cticios.</p>
+</body></html>
+
+--=_alinka_d56c5cf40a7591eb--

@@ -11,15 +11,13 @@ import sys
 from datetime import date, datetime, timedelta, timezone
 
 import yaml
-from channels import chat, email
-from common import DATA, HERE, write_image, write_jsonl, write_pdf
+from channels import EXT, write_doc
+from common import DATA, HERE, write_jsonl
 from forms import Line, Spec, build
 
 COT = timezone(timedelta(hours=-5))
 TRAPS = yaml.safe_load((HERE / "traps.yaml").read_text())
 OUT = DATA / "showcase"
-EXT = {"pdf": "pdf", "image": "jpg", "email": "eml", "chat": "txt"}
-LANG = {"en": {"us_invoice"}, "es": set()}
 
 
 def at(day: int, hh: int, mm: int) -> datetime:
@@ -570,17 +568,7 @@ def render(s: Spec, force: bool) -> dict:
     template, ctx, facts = build(s)
     out = OUT / f"{s.id}.{EXT[s.channel]}"
     if force or not out.exists():
-        if s.channel == "pdf":
-            write_pdf(template, ctx, out)
-        elif s.channel == "image":
-            tmp = OUT / f".{s.id}.pdf"
-            write_pdf(template, ctx, tmp)
-            write_image(tmp, out, seed=s.id)
-            tmp.unlink()
-        elif s.channel == "email":
-            email(out, s, ctx)
-        else:
-            chat(out, s, ctx)
+        write_doc(s, template, ctx, out)
     return label(s, str(out.relative_to(DATA.parent)), facts)
 
 

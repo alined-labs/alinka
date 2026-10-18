@@ -30,6 +30,8 @@ from common import (
 )
 
 COMPANY = company()
+# Seller tax-ID labels on the English invoice, by country.
+TAX_LABEL_EN = {"US": "EIN", "CO": "C.C.", "AR": "CUIT", "ES": "NIF", "MX": "RFC", "BR": "CNPJ"}
 VENDORS = vendors()
 
 BUYER_LINES = ["500 Demo Avenue, Suite 210", "Wilmington, DE 19801, USA", "ap@ceiba-demo.invalid"]
@@ -90,6 +92,8 @@ class Spec:
     print_account: bool = True
     account: str | None = None  # an account printed instead of the one on file (R12)
     message: str = ""  # email intro or first chat message
+    kind: str | None = None  # document title override, e.g. a proforma (R16)
+    scan: str = "normal"  # image channel: "normal" phone scan or "low" quality (R10)
     subject: str = ""  # email subject
 
 
@@ -183,7 +187,7 @@ def co_factura(s: Spec) -> tuple[str, dict, dict]:
         title=f"Factura electrónica de venta {s.number}",
         accent="#0b5d63",
         seller={**ctx["seller"], "lines": seller_lines},
-        doc_label="Factura electrónica de venta",
+        doc_label=s.kind or "Factura electrónica de venta",
         number_label="N.º",
         number=s.number,
         head_kv=[
@@ -393,11 +397,11 @@ def us_invoice(s: Spec) -> tuple[str, dict, dict]:
     cur = s.currency or seller["currency"]
     loc = "en-US"
     total = sum(li.amount_minor for li in s.lines)
-    ctx = _common(s, {**seller, "tax_label": "EIN"}, "en")
+    ctx = _common(s, {**seller, "tax_label": TAX_LABEL_EN.get(seller["country"], "EIN")}, "en")
     ctx.update(
         title=f"Invoice {s.number}",
         accent="#1f4e8c",
-        doc_label="Invoice",
+        doc_label=s.kind or "Invoice",
         number_label="Invoice #",
         number=s.number,
         head_kv=[
@@ -430,7 +434,9 @@ def us_invoice(s: Spec) -> tuple[str, dict, dict]:
         total_display=f"${money(total, loc)}",
         words_label="Amount in words",
         words=s.words or amount_words_en(total, cur),
-        tax_note="Services delivered to a business customer; no sales tax applies.",
+        tax_note="Services delivered to a business customer; no sales tax applies."
+        if seller["country"] == "US"
+        else "Export of services to a US business customer; no VAT or sales tax charged.",
         qr=None,
         fiscal_kv=[],
     )
@@ -470,7 +476,7 @@ def br_nfse(s: Spec) -> tuple[str, dict, dict]:
         title=f"NFS-e {s.number}",
         accent="#2d6a2e",
         seller={**ctx["seller"], "lines": [*seller["lines"], "Inscrição municipal DEMO-0441"]},
-        doc_label="NFS-e · Nota Fiscal de Serviço Eletrônica (fictícia)",
+        doc_label="NFS-e · Nota Fiscal de Serviço Eletrônica · Service invoice (fictícia)",
         number_label="Número / Number",
         number=s.number,
         head_kv=[
@@ -620,7 +626,7 @@ def es_factura(s: Spec) -> tuple[str, dict, dict]:
     ctx.update(
         title=f"Factura {s.number}",
         accent="#5b3a8c",
-        doc_label="Factura",
+        doc_label=s.kind or "Factura",
         number_label="N.º",
         number=s.number,
         head_kv=[
