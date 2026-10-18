@@ -4,7 +4,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import type { Board } from "~/api/client";
-import { allCards, projectRun, type RunResult, stepDelay } from "./board";
+import { allCards, diffBoards, impactSentence, projectRun, type RunResult, stepDelay } from "./board";
 
 const DIR = join(import.meta.dirname, "../../../alinka/api/fixtures/samples");
 const load = <T>(name: string): T => JSON.parse(readFileSync(join(DIR, `${name}.json`), "utf8")) as T;
@@ -45,5 +45,29 @@ describe("stepDelay", () => {
     expect(stepDelay(6)).toBe(250);
     expect(stepDelay(30)).toBe(100);
     expect(stepDelay(175)).toBe(60);
+  });
+});
+
+describe("diffBoards and impactSentence", () => {
+  it("lists the invoices that changed state, grouped by their new state", () => {
+    const after = structuredClone(run.board);
+    const pay = after.columns[0]!;
+    const esc = after.columns[2]!;
+    const movedCard = { ...pay.cards[0]!, state: "ESCALATE" as const };
+    esc.cards = [...esc.cards, movedCard];
+    pay.cards = pay.cards.slice(1);
+    const diff = diffBoards(run.board, after);
+    expect(diff).toEqual([{ state: "ESCALATE", ids: [movedCard.invoice_id] }]);
+    expect(impactSentence(diff)).toBe("Con este cambio, 1 factura pasa a Pendientes de aprobación.");
+  });
+
+  it("says when nothing changes, and joins several moves", () => {
+    expect(impactSentence([])).toBe("Con este cambio, ninguna factura cambia de decisión.");
+    expect(
+      impactSentence([
+        { state: "PAY", ids: ["A"] },
+        { state: "ESCALATE", ids: ["B", "C", "D"] },
+      ]),
+    ).toBe("Con este cambio, 1 factura pasa a Pagadas y 3 facturas pasan a Pendientes de aprobación.");
   });
 });
