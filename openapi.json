@@ -6,6 +6,192 @@
     "version": "0.1.0"
   },
   "paths": {
+    "/api/try/samples": {
+      "get": {
+        "summary": "Get Samples",
+        "operationId": "get_samples_api_try_samples_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Samples"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/try": {
+      "post": {
+        "summary": "Start Try",
+        "description": "Run a sample (JSON {\"sample_id\"}) or, while live uploads are on, an uploaded file.",
+        "operationId": "start_try_api_try_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TryIn"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "type": "object",
+                "required": [
+                  "file"
+                ]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TryStarted"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Request Entity Too Large",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported Media Type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too Many Requests",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/try/{job_id}/events": {
+      "get": {
+        "summary": "Try Events",
+        "description": "step events (each step running, then its result), then done, or error. Every\nsubscriber gets all of them from the start; a \": ping\" comment every 10 s.",
+        "operationId": "try_events_api_try__job_id__events_get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "text/event-stream": {
+                "itemSchema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "string"
+                    },
+                    "event": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "retry": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorOut"
+                }
+              }
+            },
+            "description": "Not Found"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/health": {
       "get": {
         "summary": "Health",
@@ -3016,6 +3202,86 @@
         ],
         "title": "RunStep"
       },
+      "Sample": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title_es": {
+            "type": "string",
+            "title": "Title Es"
+          },
+          "channel": {
+            "$ref": "#/components/schemas/Channel"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "routine",
+              "trap",
+              "attack"
+            ],
+            "title": "Kind"
+          },
+          "hint_es": {
+            "type": "string",
+            "title": "Hint Es"
+          },
+          "pages": {
+            "type": "integer",
+            "title": "Pages"
+          },
+          "preview_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preview Url"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "title_es",
+          "channel",
+          "kind",
+          "hint_es",
+          "pages"
+        ],
+        "title": "Sample"
+      },
+      "Samples": {
+        "properties": {
+          "live_uploads": {
+            "type": "boolean",
+            "title": "Live Uploads"
+          },
+          "upload_limits": {
+            "$ref": "#/components/schemas/UploadLimits"
+          },
+          "samples": {
+            "items": {
+              "$ref": "#/components/schemas/Sample"
+            },
+            "type": "array",
+            "title": "Samples"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "live_uploads",
+          "upload_limits",
+          "samples"
+        ],
+        "title": "Samples"
+      },
       "Source": {
         "properties": {
           "invoice_id": {
@@ -3070,6 +3336,69 @@
           "received_at"
         ],
         "title": "Source"
+      },
+      "TryStarted": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "events_url": {
+            "type": "string",
+            "title": "Events Url"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "job_id",
+          "events_url"
+        ],
+        "title": "TryStarted"
+      },
+      "UploadLimits": {
+        "properties": {
+          "types": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Types",
+            "default": [
+              "pdf",
+              "png",
+              "jpg"
+            ]
+          },
+          "max_mb": {
+            "type": "integer",
+            "title": "Max Mb",
+            "default": 4
+          },
+          "max_pages": {
+            "type": "integer",
+            "title": "Max Pages",
+            "default": 3
+          },
+          "per_10_min": {
+            "type": "integer",
+            "title": "Per 10 Min",
+            "default": 5
+          },
+          "per_day": {
+            "type": "integer",
+            "title": "Per Day",
+            "default": 30
+          },
+          "keep_hours": {
+            "type": "integer",
+            "title": "Keep Hours",
+            "default": 24
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "UploadLimits"
       },
       "ValidationError": {
         "properties": {
