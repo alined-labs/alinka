@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
 
 import { api, unwrap } from "~/api/client";
 import { cents, type EvalView, pct, type Point, readReport, seconds, threshold } from "~/lib/eval";
@@ -143,11 +144,26 @@ function Report({ v }: { v: EvalView }) {
   );
 }
 
-const W = 640;
-const H = 300;
-const PAD = { l: 56, r: 16, t: 16, b: 44 };
+const PAD = { l: 66, r: 16, t: 16, b: 44 };
+
+/** The figure's width in CSS pixels, so the viewBox matches it and labels stay 12 px. */
+function useWidth<T extends Element>(fallback: number) {
+  const ref = useRef<T>(null);
+  const [width, setWidth] = useState(fallback);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const ro = new ResizeObserver(([entry]) => entry && setWidth(Math.round(entry.contentRect.width)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+  return [ref, width] as const;
+}
 
 function RiskCoverage({ on, off, inUse }: { on: Point[]; off: Point[]; inUse: number | null }) {
+  const [ref, measured] = useWidth<HTMLElement>(640);
+  const W = Math.max(280, measured);
+  const H = W < 480 ? 240 : 300;
   const all = [...on, ...off];
   if (all.length === 0) return <p className="ak-muted">El informe no trae la curva.</p>;
   const step = 0.05;
@@ -158,6 +174,8 @@ function RiskCoverage({ on, off, inUse }: { on: Point[]; off: Point[]; inUse: nu
   const sx = (c: number) => PAD.l + ((c - x0) / (x1 - x0)) * (W - PAD.l - PAD.r);
   const sy = (e: number) => H - PAD.b - (e / y1) * (H - PAD.t - PAD.b);
   const path = (ps: Point[]) => ps.map((p, i) => `${i ? "L" : "M"}${sx(p.coverage).toFixed(1)},${sy(p.error).toFixed(1)}`).join(" ");
+  // On narrow screens label every other tick, so the percentages don't touch.
+  const every = W < 480 ? 2 : 1;
   const xs = Array.from({ length: Math.round((x1 - x0) / step) + 1 }, (_, i) => x0 + i * step);
   const ys = Array.from({ length: 5 }, (_, i) => (y1 * i) / 4);
   const mark = inUse !== null ? on.find((p) => Math.abs(p.threshold - inUse) < 1e-9) : undefined;
@@ -167,19 +185,21 @@ function RiskCoverage({ on, off, inUse }: { on: Point[]; off: Point[]; inUse: nu
   const offPts = distinct(off);
 
   return (
-    <figure className="ak-stack m-0">
+    <figure ref={ref} className="ak-stack m-0">
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="ak-chart w-full max-w-3xl"
+        className="ak-chart block h-auto w-full"
         role="img"
         aria-label="Curva de riesgo y cobertura con JEV y sin JEV"
       >
-        {xs.map((x) => (
+        {xs.map((x, i) => (
           <g key={`x${x}`}>
             <line className="grid" x1={sx(x)} x2={sx(x)} y1={PAD.t} y2={H - PAD.b} />
-            <text x={sx(x)} y={H - PAD.b + 16} textAnchor="middle" fill="currentColor">
-              {pct(x, 0)}
-            </text>
+            {i % every === 0 && (
+              <text x={sx(x)} y={H - PAD.b + 16} textAnchor={i === 0 ? "start" : "middle"} fill="currentColor">
+                {pct(x, 0)}
+              </text>
+            )}
           </g>
         ))}
         {ys.map((y) => (
@@ -191,9 +211,9 @@ function RiskCoverage({ on, off, inUse }: { on: Point[]; off: Point[]; inUse: nu
           </g>
         ))}
         <text x={(PAD.l + W - PAD.r) / 2} y={H - 6} textAnchor="middle" fill="currentColor">
-          Cobertura: facturas decididas sin una persona
+          {W < 480 ? "Cobertura sin una persona" : "Cobertura: facturas decididas sin una persona"}
         </text>
-        <text x={14} y={(PAD.t + H - PAD.b) / 2} textAnchor="middle" fill="currentColor" transform={`rotate(-90 14 ${(PAD.t + H - PAD.b) / 2})`}>
+        <text x={12} y={(PAD.t + H - PAD.b) / 2} textAnchor="middle" fill="currentColor" transform={`rotate(-90 12 ${(PAD.t + H - PAD.b) / 2})`}>
           Error
         </text>
         {off.length > 0 && <path className="series-b" d={path(off)} />}
