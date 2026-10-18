@@ -1,32 +1,19 @@
-"""The data behind the routes. D1 serves hand-written fixtures; D3 swaps in Postgres."""
+"""Helpers behind the routes: rule bounds, the chain check, the CSV and the eval report."""
 
 from __future__ import annotations
 
 import csv
-import hashlib
 import io
 import json
-from dataclasses import dataclass, field
-from functools import lru_cache
 from pathlib import Path
 
-import rfc8785
-import yaml
-
-from alinka.api.models import Bound, ChainCheck, View
-from alinka.types import (
-    DECISION_ES,
-    Beneficiary,
-    Company,
-    DecisionRecord,
-    InvoiceFacts,
-    Outcome,
-    RulesConfig,
-)
+from alinka.api.models import Bound, ChainCheck
+from alinka.db import ZERO_HASH, chain_hash
+from alinka.types import DECISION_ES, DecisionRecord, Outcome
+from alinka.world import rules_hash  # noqa: F401 - re-exported for the routes
 
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
-ZERO_HASH = "0" * 64
 
 # Editable rule parameters and their allowed ranges (PUT /api/rules refuses the rest).
 RULE_BOUNDS: dict[str, Bound] = {
@@ -39,37 +26,6 @@ RULE_BOUNDS: dict[str, Bound] = {
     "split_window_days": Bound(min=1, max=31),
     "split_threshold_usd": Bound(min=100, max=100_000),
 }
-
-
-@lru_cache
-def load_rules() -> RulesConfig:
-    return RulesConfig.model_validate(yaml.safe_load((ROOT / "data/rules.yaml").read_text()))
-
-
-@lru_cache
-def load_company() -> Company:
-    return Company.model_validate(yaml.safe_load((ROOT / "data/company.yaml").read_text()))
-
-
-@lru_cache
-def load_beneficiaries() -> tuple[Beneficiary, ...]:
-    raw = yaml.safe_load((ROOT / "data/vendors.yaml").read_text())
-    return tuple(Beneficiary.model_validate(b) for b in raw["beneficiaries"])
-
-
-def rules_hash(rules: RulesConfig) -> str:
-    return hashlib.sha256(rfc8785.dumps(rules.model_dump(mode="json"))).hexdigest()
-
-
-def record_bytes(record: DecisionRecord) -> bytes:
-    """RFC 8785 bytes of the record without its hash: what the chain signs."""
-    body = record.model_dump(mode="json")
-    body.pop("hash")
-    return rfc8785.dumps(body)
-
-
-def chain_hash(prev_hash: str, canonical: bytes) -> str:
-    return hashlib.sha256(prev_hash.encode() + canonical).hexdigest()
 
 
 def verify_chain(items: list[tuple[int, str, str, bytes]]) -> ChainCheck:
@@ -128,33 +84,6 @@ def export_csv(records: list[DecisionRecord], names: dict[str, str | None]) -> s
     return buf.getvalue()
 
 
-@dataclass
-class FixtureSession:
-    session_id: str
-    view: View
-    records: list[DecisionRecord] = field(default_factory=list)
-    facts: list[InvoiceFacts] = field(default_factory=list)  # every invoice, received order
-    decided: bool = True
-
-
-@lru_cache
-def fixture_records() -> tuple[DecisionRecord, ...]:
-    lines = (FIXTURES / "records.jsonl").read_text().splitlines()
-    return tuple(DecisionRecord.model_validate(json.loads(x)) for x in lines if x.strip())
-
-
-def fixture_session(session_id: str, view: View, decided: bool) -> FixtureSession:
-    records = list(fixture_records())
-    return FixtureSession(
-        session_id=session_id,
-        view=view,
-        records=records if decided else [],
-        facts=[r.facts for r in records],
-        decided=decided,
-    )
-
-
-@lru_cache
 def eval_report() -> dict | None:
     path = ROOT / "evals/report.json"
     if path.is_file():

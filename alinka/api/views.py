@@ -111,7 +111,8 @@ def record_card(record: DecisionRecord, ben: Beneficiary | None, view: View) -> 
         reason_es=short_reason(record.reason_es),
         approvable=can_approve(record, view),
         approver=record.human.approver if record.human else None,
-        technical_error=record.facts.flags.extraction_error is not None,
+        technical_error=record.facts.flags.extraction_error is not None
+        or (record.decision == Decision.ESCALATE and det is None),
     )
 
 

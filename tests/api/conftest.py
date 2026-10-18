@@ -15,6 +15,7 @@ from psycopg_pool import ConnectionPool
 
 from alinka import db
 from alinka.settings import get_settings
+from alinka.types import Decision
 
 
 def _admin_url() -> str:
@@ -46,3 +47,49 @@ def pool(db_url) -> Iterator[ConnectionPool]:
     p = ConnectionPool(db_url, min_size=1, max_size=4, kwargs={"row_factory": dict_row}, open=True)
     yield p
     p.close()
+
+
+class FixtureCore:
+    """Stands in for alinka.decide.core in API tests: replays the hand-written fixture records."""
+
+    def __init__(self) -> None:
+        from alinka.api import runs
+        from alinka.types import DecisionRecord
+
+        lines = runs.FIXTURE_RECORDS.read_text().splitlines()
+        self.records = {
+            r.invoice_id: r for r in (DecisionRecord.model_validate_json(x) for x in lines if x)
+        }
+
+    def decide(self, facts, world, ledger, rules):
+        rec = self.records[facts.source.invoice_id]
+        if rules.approval_threshold_usd < 1000 and rec.decision.value == "PAY":
+            return rec.model_copy(
+                update={
+                    "decision": Decision.ESCALATE,
+                    "determining_rule": "R06",
+                    "payment": None,
+                    "reason_es": "Pendiente (R06).",
+                }
+            )
+        return rec.model_copy(update={"facts": facts, "rules_version": rules.version})
+
+    def approve(self, record, human, world, ledger, rules):
+        decision = Decision.PAY if human.action == "approve" else Decision.HOLD
+        return record.model_copy(update={"decision": decision, "human": human})
+
+
+@pytest.fixture
+def client(pool, monkeypatch):
+    """A TestClient on the module's throwaway database, with the fixture core."""
+    from fastapi.testclient import TestClient
+
+    from alinka.api import engine
+    from alinka.api.app import app
+
+    core = FixtureCore()
+    monkeypatch.setattr(db, "_pool", pool)
+    monkeypatch.setattr(engine, "_core", lambda: core)
+    with pool.connection() as conn:
+        conn.execute("DELETE FROM sessions")
+    return TestClient(app)
