@@ -19,6 +19,7 @@ import pymupdf
 from PIL import Image
 
 from alinka.ingest.base import Ingested, PageData, TextSpan, clip, find_instructions
+from alinka.ingest.text import strip_controls
 from alinka.types import Box, Channel
 
 DPI = 150
@@ -60,6 +61,9 @@ def ingest_pdf(data: bytes) -> Ingested:
             traced.close()
         doc.close()
     for page in out.pages:
+        page.source_pdf, page.source_page = data, page.number - 1
+        page.text, controls = strip_controls(page.text)
+        out.unicode_controls.extend(f"p{page.number}: {flag}" for flag in controls)
         for snippet in find_instructions(page.text):
             out.instructions.append(f"p{page.number}: {snippet}")
     return out
