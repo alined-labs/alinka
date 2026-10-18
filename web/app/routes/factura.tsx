@@ -144,7 +144,7 @@ function DetailView({ detail, view, onChange }: { detail: Detail; view: View; on
           <ReasonText text={card.reason_es} className="text-lead" />
         )}
 
-        <Payment detail={detail} />
+        <Payment detail={detail} view={view} />
 
         {canAct && (
           <section aria-label="Decisión humana" className="ak-stack">
@@ -275,15 +275,39 @@ function FieldRow({
   );
 }
 
-/** What would be paid, always to the account on file in the beneficiary list. */
-function Payment({ detail }: { detail: Detail }) {
-  const p = detail.payment;
+/**
+ * What would be paid, always to the account on file in the beneficiary list. The API sends
+ * `payment` for a paid invoice; for one held or escalated, the account comes from the same
+ * list (GET /api/rules), so an alert shows which account a payment could ever go to.
+ */
+function Payment({ detail, view }: { detail: Detail; view: View }) {
+  const { card } = detail;
+  const listed = card.beneficiary_id ?? null;
+  const rules = useQuery({
+    queryKey: ["rules", view],
+    queryFn: () => unwrap(api.GET("/api/rules", { params: { query: { view } } })),
+    enabled: !detail.payment && listed !== null && card.state !== "inbox",
+  });
+  const onFile = rules.data?.beneficiaries.find((b) => b.id === listed);
+  const p = detail.payment
+    ? detail.payment
+    : onFile && card.amount_minor != null && card.currency && card.usd_minor != null
+      ? {
+          beneficiary_id: onFile.id,
+          beneficiary_name: onFile.name,
+          account_masked: onFile.account_masked,
+          amount_minor: card.amount_minor,
+          currency: card.currency,
+          usd_minor: card.usd_minor,
+        }
+      : null;
   if (!p) return null;
-  const paid = detail.card.state === "PAY";
+  const title =
+    card.state === "PAY" ? "Pago" : card.state === "HOLD" ? "No se pagará; la cuenta registrada es esta" : "Si se aprobara, se pagaría así";
   return (
     <section aria-labelledby="pago" className="ak-stack">
       <h2 id="pago" className="ak-h2">
-        {paid ? "Pago" : "Si se aprobara, se pagaría así"}
+        {title}
       </h2>
       <div className="ak-account">
         <Landmark aria-hidden className="ak-icon" />
