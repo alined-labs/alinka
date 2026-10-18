@@ -12,6 +12,7 @@ import { seo } from "./lib/seo";
 import { useView } from "./lib/view";
 import "./app.css";
 import "./styles/motion.css";
+import "./styles/responsive.css";
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
