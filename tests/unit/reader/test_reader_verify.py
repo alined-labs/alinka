@@ -174,7 +174,8 @@ def _facts(label):
 
 def test_pipeline_replays_oct_01_with_grounded_boxes_and_agreement():
     facts = _facts(MONTH[0])
-    assert facts.flags.extraction_error is None and len(facts.calls) == 2
+    assert facts.flags.extraction_error is None
+    assert [c.role for c in facts.calls][:2] == ["reader", "checker"]
     for name in CRITICAL_FIELDS:
         field = getattr(facts.printed, name)
         assert field.grounded and field.agreed and field.boxes, name

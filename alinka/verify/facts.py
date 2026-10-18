@@ -27,6 +27,7 @@ from alinka.types import (
 )
 from alinka.verify import checks
 from alinka.verify.ground import ground
+from alinka.verify.jev import run_jev
 from alinka.verify.normalize import compute
 from alinka.world import load_rules, load_world
 
@@ -81,6 +82,18 @@ def facts_for_bytes(
     reader = read(doc, role="reader", cache=cache)
     checker = read(doc, role="checker", cache=cache) if reader.error is None else None
     printed, computed, verification = verify(doc, reader, checker, cfg)
+    jev = None
+    if reader.error is None:
+        money = checks.money_spans(doc, computed.currency)
+        jev = run_jev(doc, printed, computed, money, cache=cache)
+    if jev is not None:  # JEV can only raise the risk
+        verification = verification.model_copy(
+            update={
+                "jev": jev.answers,
+                "risk": round(1 - (1 - verification.risk) * (1 - jev.risk), 4),
+                "notes": verification.notes + jev.notes,
+            }
+        )
     flags = Flags(
         hidden_content=tuple(doc.hidden_content),
         unicode_controls=tuple(doc.unicode_controls),
@@ -99,6 +112,7 @@ def facts_for_bytes(
         pages=len(doc.pages),
     )
     calls = tuple(r.call for r in (reader, checker) if r is not None and r.call is not None)
+    calls += jev.calls if jev is not None else ()
     facts = InvoiceFacts(
         source=source, as_of=cfg.as_of, printed=printed, computed=computed, flags=flags,
         verification=verification, calls=calls,
