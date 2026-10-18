@@ -7,6 +7,7 @@ import { useSearchParams } from "react-router";
 import { api, type Board, type Card, unwrap, type View } from "~/api/client";
 import { DECISION_STYLE } from "~/components/badges";
 import { BoardTable } from "~/components/board-table";
+import { IntroBand } from "~/components/intro-band";
 import { InvoiceCard } from "~/components/invoice-card";
 import { Segmented } from "~/components/segmented";
 import { allCards, COLUMN_TITLE, type CardState, projectRun, type RunResult, stepDelay } from "~/lib/board";
@@ -151,6 +152,7 @@ export default function Tablero() {
 
   return (
     <div className="space-y-4">
+      <IntroBand />
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="ak-h1">{monthTitle(data)}</h1>
         {view === "sandbox" && (
