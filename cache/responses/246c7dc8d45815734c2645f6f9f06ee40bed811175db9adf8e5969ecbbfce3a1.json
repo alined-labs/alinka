@@ -1,13 +1,13 @@
 {
- "cost_usd": 0.02256,
+ "cost_usd": 0.023074,
  "input_hash": "6d8e28afb9c12e74bb52c30338f930c53d89f618d29fddd126536202c44436e3",
- "input_tokens": 6135,
- "key": "d361470168bec192195f346ee360b3b8f9b613ef54febea271bf60f759ec725c",
- "latency_ms": 6433,
+ "input_tokens": 6332,
+ "key": "246c7dc8d45815734c2645f6f9f06ee40bed811175db9adf8e5969ecbbfce3a1",
+ "latency_ms": 6180,
  "model": "claude-sonnet-5-5",
- "output_tokens": 1029,
- "prompt_hash": "38d85f12f3e54bcb58574858a612ea813c4e633b07cdab700636f7752cf37375",
- "recorded_at": "2026-10-18T08:07:02Z",
+ "output_tokens": 1041,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:22:06Z",
  "request": {
   "doc_sha256": "fea86ed42c4a0786f8e3d4826dc22bcb9a0294b77b3b71e7f804c2221938e7ac",
   "max_tokens": 4096,
@@ -66,8 +66,8 @@
     "value": "31/10/2026"
    },
    "fiscal_id": {
-    "confidence": "medium",
-    "quote": "45286131314f5284db4abc20f8b079dbaad2b4646714a57f25daf616ae5c453bcac1fe4793d631aa4",
+    "confidence": "high",
+    "quote": "45286131314f5284db4abc20f8b079dbaad2b4646714a57f25daf616ae5c453bcac1fe4793d631aa4 ca5d4f13bc20e07",
     "value": "45286131314f5284db4abc20f8b079dbaad2b4646714a57f25daf616ae5c453bcac1fe4793d631aa4ca5d4f13bc20e07"
    },
    "instructions_seen": [],

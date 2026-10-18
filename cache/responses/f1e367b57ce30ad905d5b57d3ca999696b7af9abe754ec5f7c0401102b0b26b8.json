@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.021102,
+ "input_hash": "b7f27c201f3ccccfc8ec845263217196b2f6b73983f4d8b2d877ba4cc62d99fc",
+ "input_tokens": 6241,
+ "key": "f1e367b57ce30ad905d5b57d3ca999696b7af9abe754ec5f7c0401102b0b26b8",
+ "latency_ms": 6141,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 862,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:23:16Z",
+ "request": {
+  "doc_sha256": "904e997158390dfdd5f2de451590bd82f0c375ed20172f53fcfe72526f8b9bf9",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1256,
+  "visible_text_sha256": "9b8c44aa4a3f389b844cf4e5178b27457e285092da898bce56a8151a6fd0119a"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: MIL DOSCIENTOS EUROS",
+    "value": "SON: MIL DOSCIENTOS EUROS"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "IBAN ES00 DEMO 0000 0000 0000 0013",
+    "value": "IBAN ES00 DEMO 0000 0000 0000 0013"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L.",
+    "value": "Estudio Albahaca S.L."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIF: DEMO-B12345678",
+    "value": "DEMO-B12345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Tax ID (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda\nEUR",
+    "value": "EUR"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "FACTURA",
+    "value": "FACTURA"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "12/11/2026",
+    "value": "12/11/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "N.º A-2026-091",
+    "value": "A-2026-091"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "13/10/2026",
+    "value": "13/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Fecha de la operación 05/10/2026 al 09/10/2026",
+    "value": "05/10/2026 al 09/10/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Desarrollo backend: migración de base de datos y API de exportación",
+    "value": "Desarrollo backend: migración de base de datos y API de exportación"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Base imponible\n1.200,00",
+    "value": "1.200,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA (no sujeto)\n0,00",
+    "value": "0,00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Total factura (EUR)\n1.200,00 €",
+    "value": "1.200,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

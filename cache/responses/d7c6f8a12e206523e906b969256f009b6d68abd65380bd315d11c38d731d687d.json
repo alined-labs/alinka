@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.02228,
+ "input_hash": "b93f80f1615d8a5f7daf9da079a2d03658f18f9d0a20a63e9b86517e69d4bd0e",
+ "input_tokens": 6310,
+ "key": "d7c6f8a12e206523e906b969256f009b6d68abd65380bd315d11c38d731d687d",
+ "latency_ms": 5815,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 966,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:23:49Z",
+ "request": {
+  "doc_sha256": "7886a6e1ea5a0bbe610689864069bd4d5d4060342bf13c4b717bc04dd89a0376",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1385,
+  "visible_text_sha256": "b007ac1690be49241c52e00a4c3e0366048c81e1a8f6fee49e7fbeed02550c20"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Importe en letra: SON: MIL TRESCIENTOS DÓLARES ESTADOUNIDENSES",
+    "value": "SON: MIL TRESCIENTOS DÓLARES ESTADOUNIDENSES"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Pago por transferencia: IBAN ES00 DEMO 0000 0000 0000 0013",
+    "value": "IBAN ES00 DEMO 0000 0000 0000 0013"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L. (empresa ficticia)",
+    "value": "Estudio Albahaca S.L."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIF: DEMO-B12345678",
+    "value": "DEMO-B12345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Destinatario: Ceiba Demo Labs, Inc. (empresa ficticia)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Tax ID (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda: USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Factura",
+    "value": "Factura"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha de vencimiento: 15/11/2026",
+    "value": "15/11/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "N.º A-2026-095",
+    "value": "A-2026-095"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de expedición: 16/10/2026",
+    "value": "16/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Fecha de la operación: 13/10/2026 al 16/10/2026",
+    "value": "13/10/2026 al 16/10/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "1 | Pruebas de usabilidad remotas, 5 participantes | 5 | sesión | 260,00 | 1.300,00",
+    "value": "Pruebas de usabilidad remotas, 5 participantes"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Base imponible: 1.300,00",
+    "value": "1.300,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA (no sujeto): 0,00",
+    "value": "0,00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Total factura (USD): 1.300,00 USD",
+    "value": "1.300,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

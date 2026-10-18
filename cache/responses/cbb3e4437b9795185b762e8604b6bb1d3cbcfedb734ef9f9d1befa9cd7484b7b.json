@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.0218,
+ "input_hash": "204dbad96eb8913e45bff5afb5951aaf3b5b8b5699b2f8c4b64eecee2d64f399",
+ "input_tokens": 6205,
+ "key": "cbb3e4437b9795185b762e8604b6bb1d3cbcfedb734ef9f9d1befa9cd7484b7b",
+ "latency_ms": 5085,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 939,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:22:25Z",
+ "request": {
+  "doc_sha256": "146bc86584a3674214120a9386d26018c77349243abca95e3aaaa201f61eaa8f",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1358,
+  "visible_text_sha256": "36c460d00ce2b7240dbb57c72583b88dd99ed7a3000a4229ded3d05e7e758c59"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Amount in words: Two thousand four hundred and 00/100 US Dollars",
+    "value": "Two thousand four hundred and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Account: Demo Pacific Bank · ABA DEMO-1220 · Acct DEMO-9012-0012",
+    "value": "Demo Pacific Bank · ABA DEMO-1220 · Acct DEMO-9012-0012"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Harborlight Security, Inc. (fictitious company)",
+    "value": "Harborlight Security, Inc."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-46-2219870",
+    "value": "DEMO-46-2219870"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Bill to: Ceiba Demo Labs, Inc. (fictitious company)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency: USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Invoice\nInvoice # HLS-2026-09",
+    "value": "Invoice"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date: October 30, 2026",
+    "value": "October 30, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # HLS-2026-09",
+    "value": "HLS-2026-09"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date: September 30, 2026",
+    "value": "September 30, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period: September 1, 2026 – September 30, 2026",
+    "value": "September 1, 2026 – September 30, 2026"
+   },
+   "service_text": {
+    "confidence": "medium",
+    "quote": "1 | 24/7 security monitoring (security operations center) | 1 | month | 1,800.00 | 1,800.00",
+    "value": "24/7 security monitoring (security operations center)"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal: 2,400.00",
+    "value": "2,400.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax: 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD): $2,400.00",
+    "value": "2,400.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001742,
+ "input_hash": "5684b268a3472557b3de9f650890837dee744bbf40cb5edb8578e70eae0281c6",
+ "input_tokens": 6219,
+ "key": "9e2c6e069edde032a2e7b2ed3a0a469f27e9479621d580107c38177cea5d3525",
+ "latency_ms": 7925,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 2241,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:22:40Z",
+ "request": {
+  "doc_sha256": "a5a148142829370076aac2a18108b73258932d7500d6249299b1af81de19df82",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1260,
+  "visible_text_sha256": "70ad59cedd4db8b78e0fdfc285650a781b37b187e6eae6b95eaad01f88e8130d"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: DOS MILLONES CUATROCIENTOS MIL PESOS M/CTE",
+    "value": "SON: DOS MILLONES CUATROCIENTOS MIL PESOS M/CTE"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Consignar a: Banco Ficticio Andino · Ahorros DEMO-0012-9904-77",
+    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-9904-77"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "DEBE A: Laura Cifuentes Rojas (empresa ficticia)",
+    "value": "Laura Cifuentes Rojas"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C. DEMO-CC-1098765432",
+    "value": "DEMO-CC-1098765432"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc. (empresa ficticia), EIN DEMO-88-4417302",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda: COP",
+    "value": "COP"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º 001",
+    "value": "CUENTA DE COBRO"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago: 17/10/2026",
+    "value": "17/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º 001",
+    "value": "001"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión: 07/10/2026",
+    "value": "07/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período: 01/10/2026 al 07/10/2026",
+    "value": "01/10/2026 al 07/10/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Por concepto de: Redacción de 8 artículos para el centro de ayuda, octubre de 2026.",
+    "value": "Redacción de 8 artículos para el centro de ayuda, octubre de 2026."
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "LA SUMA DE: $ 2.400.000,00 COP",
+    "value": "2.400.000,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

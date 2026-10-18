@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.02034,
+ "input_hash": "4cb8942dbaaac1ca302bea9847c37fb6c8bb834193004237ac6ae70f92864c05",
+ "input_tokens": 5685,
+ "key": "7e4db66453a3bbcb42a9f716313a0c6c25650f291bb049dc3cc6e3dfbd4ced8b",
+ "latency_ms": 5599,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 897,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:23:48Z",
+ "request": {
+  "doc_sha256": "e2ba6d5b5b43c0e9f0a4b98d956fc104572fa1093448272c34a09ed97ebefb52",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1239,
+  "visible_text_sha256": "876c709286fdcfd2e751e76253b39cb95db82c1eb80592ed1800ea2b747b0b46"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: MIL CIENTO OCHENTA EUROS",
+    "value": "SON: MIL CIENTO OCHENTA EUROS"
+   },
+   "bank_account": {
+    "confidence": "medium",
+    "quote": "IBAN ESOO DEMO 0009 0090 0900 0013",
+    "value": "IBAN ES00 DEMO 0000 0000 0000 0013"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L. FACTURA",
+    "value": "Estudio Albahaca S.L."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIF: DEMO-B12345678",
+    "value": "DEMO-B12345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "Tax ID (EIN): DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda EUR",
+    "value": "EUR"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L. FACTURA",
+    "value": "FACTURA"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha de vencimiento 14/11/2026",
+    "value": "14/11/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "N.2 A-2026-094",
+    "value": "A-2026-094"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de expedición 15/10/2026",
+    "value": "15/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Fecha de la operación 12/10/2026 al 15/10/2026",
+    "value": "12/10/2026 al 15/10/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Entrevistas con usuarios e informe de hallazgos",
+    "value": "Entrevistas con usuarios e informe de hallazgos"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Base imponible 1.180,00",
+    "value": "1.180,00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "IVA (no sujeto) 0,00",
+    "value": "0,00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Total factura (EUR) 1.180,00 €",
+    "value": "1.180,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

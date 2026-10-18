@@ -56,8 +56,13 @@ TASK = """Fill every field from this document.
   its digits, separators and decimals, but without currency symbols or codes; the quote
   keeps them. The amount in words is copied whole, as printed, including any lead-in
   such as "SON:".
-- `quote`: a short excerpt copied character for character from the VISIBLE TEXT block,
-  from a single line, that contains the value. Null when the value is null.
+- Names: the name only, without notes such as "(empresa ficticia)" or "(fictitious
+  company)". Tax IDs: the identifier only, without its label (NIT, RFC, EIN, C.C.).
+- `quote`: a short excerpt copied character for character from the VISIBLE TEXT block
+  that contains the value; when the value wraps onto the next line, join the lines with
+  one space. Null when the value is null.
+- For a photo, the VISIBLE TEXT comes from OCR and may misread characters: take each
+  value from the image, and copy the quote from the VISIBLE TEXT as it appears.
 - `confidence`: "high" only when the value is clearly printed and unambiguous; "medium"
   when you had to choose between candidates or the print is unclear; "low" otherwise.
 - `stamps`: stamps or watermarks such as ANULADA, PAGADA, BORRADOR, PROFORMA, COPIA.
