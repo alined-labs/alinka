@@ -201,9 +201,6 @@ def test_missing_and_unsure_fields_flag_verification(records):
     assert step.status == "flagged" and "la IA no está segura de total" in step.summary_es
     empty = facts.model_copy(update={"printed": Printed()})
     assert trace.read(empty).summary_es == "La IA no encontró ningún dato en el documento"
-    step = trace.verify(empty, risk_max=0.7)
-    assert step.status == "flagged" and "faltan beneficiario, moneda y total" in step.summary_es
-    assert "segunda lectura" not in step.summary_es
 
 
 def test_build_trace_never_raises(records, monkeypatch):
@@ -215,3 +212,14 @@ def test_build_trace_never_raises(records, monkeypatch):
     assert tuple(s.step for s in steps) == STEPS
     assert (steps[3].status, steps[3].data) == ("error", {})
     assert all(s.status == "done" for s in steps if s.step != "verify")
+
+
+def test_verify_has_nothing_to_check_when_the_reading_failed_or_found_nothing(records):
+    facts = records["OCT-01"].facts
+    failed = facts.model_copy(update={"flags": Flags(extraction_error="timeout")})
+    empty = facts.model_copy(update={"printed": Printed()})
+    for case, why in ((failed, "la lectura falló"), (empty, "la IA no encontró ningún dato")):
+        step = trace.verify(case, risk_max=0.7)
+        assert step.status == "flagged"
+        assert step.summary_es == f"Verificación: no hubo nada que verificar porque {why}"
+        assert "cita" not in step.summary_es and set(step.data) == KEYS["verify"]
