@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001056,
+ "input_hash": "abde50d117d30c1ce3ddfde313b5eb649c31f80bfa9c13e850217c3db18f873c",
+ "input_tokens": 6172,
+ "key": "8d5247bb70c0c385edb6a53f2abeeae74f4592405108f91c0470ae4aecd4b75c",
+ "latency_ms": 3674,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 877,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:34:27Z",
+ "request": {
+  "doc_sha256": "5ec78dd8a2da0980a052dbd7fe3bf88f58638d88adfaf27ac614751569f9eb2e",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1194,
+  "visible_text_sha256": "19adc2cc2c8a179d4275813b85b857a6649afb24051d51474fe855901591f34c"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: TRES MILLONES CIEN MIL PESOS M/CTE",
+    "value": "SON: TRES MILLONES CIEN MIL PESOS M/CTE"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio Andino · Ahorros DEMO-0012-8830-02",
+    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-8830-02"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "DEBE A: Mateo Quintero Ríos",
+    "value": "Mateo Quintero Ríos"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C.: DEMO-CC-1020345678",
+    "value": "DEMO-CC-1020345678"
+   },
+   "buyer_name": {
+    "confidence": "medium",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Moneda COP",
+    "value": "COP"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º 121",
+    "value": "CUENTA DE COBRO"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago 25/07/2026",
+    "value": "25/07/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.º 121",
+    "value": "121"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión 15/07/2026",
+    "value": "15/07/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período 01/07/2026 al 15/07/2026",
+    "value": "01/07/2026 al 15/07/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Desarrollo backend: API e integraciones del módulo de facturación",
+    "value": "Desarrollo backend: API e integraciones del módulo de facturación"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "LA SUMA DE: $ 3.100.000,00 COP",
+    "value": "3.100.000,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

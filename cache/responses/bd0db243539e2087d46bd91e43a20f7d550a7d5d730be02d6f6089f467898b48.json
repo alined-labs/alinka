@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.020484,
+ "input_hash": "41aa8e82e5157e6cb4636ea3d045b1e85d4b2721dcb126d3ff85d2bce8313955",
+ "input_tokens": 6127,
+ "key": "bd0db243539e2087d46bd91e43a20f7d550a7d5d730be02d6f6089f467898b48",
+ "latency_ms": 4995,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 823,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:34:33Z",
+ "request": {
+  "doc_sha256": "dfb6f82ef0241b695d10d5dc076b8606822d1258063873d62847c67e5706004a",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1175,
+  "visible_text_sha256": "e568712682019829ec4c239998d865ee7ebde4500912fdb482e114bd30cf3a1b"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "One thousand one hundred ninety-five and 00/100 Euros",
+    "value": "One thousand one hundred ninety-five and 00/100 Euros"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "IBAN ES00 DEMO 0000 0000 0000 0013",
+    "value": "IBAN ES00 DEMO 0000 0000 0000 0013"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L.",
+    "value": "Estudio Albahaca S.L."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIF: DEMO-B12345678",
+    "value": "DEMO-B12345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "medium",
+    "quote": "Currency\nEUR",
+    "value": "EUR"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "INVOICE",
+    "value": "INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "October 24, 2026",
+    "value": "October 24, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # A-2026-302",
+    "value": "A-2026-302"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "September 24, 2026",
+    "value": "September 24, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period September 18, 2026 – September 23, 2026",
+    "value": "September 18, 2026 – September 23, 2026"
+   },
+   "service_text": {
+    "confidence": "medium",
+    "quote": "Design sprint with the product team",
+    "value": "Design sprint with the product team"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal\n1,195.00",
+    "value": "1,195.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax\n0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "medium",
+    "quote": "$1,195.00",
+    "value": "1,195.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

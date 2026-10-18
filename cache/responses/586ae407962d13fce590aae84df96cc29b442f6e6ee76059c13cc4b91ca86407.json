@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.000732,
+ "input_hash": "978490d50e2630b2a5a6bd8706b414accd97421febec2cbf0b3163ae5d8803ef",
+ "input_tokens": 3119,
+ "key": "586ae407962d13fce590aae84df96cc29b442f6e6ee76059c13cc4b91ca86407",
+ "latency_ms": 4012,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 841,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:34:00Z",
+ "request": {
+  "doc_sha256": "7aac7c5e580cdaebfe5f86b59533ca8de680de0fc3831b800d4c4fece01aff37",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 84,
+  "visible_text_sha256": "4391c67473c9d4ac0d8bbaa05513be05345e670436779e92cc9ed22f9527c8a7"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "bank_account": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "beneficiary_name": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "beneficiary_tax_id": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "buyer_name": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "buyer_tax_id": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "currency": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "doc_type": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "due_date": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "fiscal_id": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "issue_date": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "service_text": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "tax_total": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "low",
+    "quote": null,
+    "value": null
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

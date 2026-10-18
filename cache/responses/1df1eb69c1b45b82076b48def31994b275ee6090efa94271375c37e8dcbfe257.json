@@ -1,0 +1,95 @@
+{
+ "cost_usd": 0.000117558,
+ "input_hash": "9e30da6085e6e7cef8cb7dd54d1d86cc90fadd3b6fc95841f933615c5beedaed",
+ "input_tokens": 2799,
+ "key": "1df1eb69c1b45b82076b48def31994b275ee6090efa94271375c37e8dcbfe257",
+ "latency_ms": 555,
+ "model": "typesafe/jev-1.13",
+ "output_tokens": 630,
+ "prompt_hash": "34b3dbf1dd80c9f2200402ed773dcbdef8bc4ba6820806d791d6222eb73cc924",
+ "recorded_at": "2026-10-18T08:34:43Z",
+ "request": {
+  "model": "typesafe/jev-1.13",
+  "questions": [
+   "J1a",
+   "J1b",
+   "J2.beneficiary_name",
+   "J2.beneficiary_tax_id",
+   "J2.currency",
+   "J2.due_date",
+   "J2.invoice_number",
+   "J2.total"
+  ],
+  "role": "jev"
+ },
+ "response": {
+  "answers": {
+   "J1a": {
+    "choice": "9.900,00",
+    "confidence": 1,
+    "probabilities": {
+     "15.897.141.153.553.291.165.626.525.804.546.007.166.241.971,00": 0,
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "210,00": 0,
+     "25.450.554,00": 0,
+     "321,00": 0,
+     "4.417.302,00": 0,
+     "44.321,00": 0,
+     "441,00": 0,
+     "500,00": 0,
+     "890,00": 0,
+     "9.900,00": 1,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J1b": {
+    "choice": "9.900,00",
+    "confidence": 1,
+    "probabilities": {
+     "15.897.141.153.553.291.165.626.525.804.546.007.166.241.971,00": 0,
+     "19.801,00": 0,
+     "2.026,00": 0,
+     "210,00": 0,
+     "25.450.554,00": 0,
+     "321,00": 0,
+     "4.417.302,00": 0,
+     "44.321,00": 0,
+     "441,00": 0,
+     "500,00": 0,
+     "890,00": 0,
+     "9.900,00": 1,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J2.beneficiary_name": {
+    "noul": 0.08,
+    "type": "noul"
+   },
+   "J2.beneficiary_tax_id": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.currency": {
+    "noul": 0.02,
+    "type": "noul"
+   },
+   "J2.due_date": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.invoice_number": {
+    "noul": 0.03,
+    "type": "noul"
+   },
+   "J2.total": {
+    "noul": 0.05,
+    "type": "noul"
+   }
+  },
+  "model": "typesafe/jev-1.13-20260917"
+ },
+ "stop_reason": "end_turn"
+}

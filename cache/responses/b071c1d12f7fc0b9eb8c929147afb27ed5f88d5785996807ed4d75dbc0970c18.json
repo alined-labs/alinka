@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001472,
+ "input_hash": "8f87e70173a4eef2766e62d8a160a4cc7d924df5ab8c16ec118cb02da0ed88b1",
+ "input_tokens": 6141,
+ "key": "b071c1d12f7fc0b9eb8c929147afb27ed5f88d5785996807ed4d75dbc0970c18",
+ "latency_ms": 6220,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 1715,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:34:53Z",
+ "request": {
+  "doc_sha256": "4c0f1b4f4919ac89860e3f31d9c3ca0138d7abf78343bde4bca374e53b2481ea",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1216,
+  "visible_text_sha256": "bf5acd5fa37afb9f213e89185f3e8c23265a008c1958e231e099fc8b2281062f"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Six hundred fifty and 00/100 US Dollars",
+    "value": "Six hundred fifty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05",
+    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Julián Herrera Mejía",
+    "value": "Julián Herrera Mejía"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C.: DEMO-CC-1152034567",
+    "value": "DEMO-CC-1152034567"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "PROFORMA INVOICE",
+    "value": "PROFORMA INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date October 24, 2026",
+    "value": "October 24, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # Q-2026-892",
+    "value": "Q-2026-892"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date October 14, 2026",
+    "value": "October 14, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period October 14, 2026 – October 24, 2026",
+    "value": "October 14, 2026 – October 24, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Illustration: 6 graphic assets for the onboarding screens",
+    "value": "Illustration: 6 graphic assets for the onboarding screens"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 650.00",
+    "value": "650.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD) $650.00",
+    "value": "650.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

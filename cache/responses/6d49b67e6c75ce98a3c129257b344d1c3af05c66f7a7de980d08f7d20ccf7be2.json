@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.020458,
+ "input_hash": "f58ab6f44eb62bea36e192b2a6f192254906af20b35b72240e2640cd73d46cbb",
+ "input_tokens": 5599,
+ "key": "6d49b67e6c75ce98a3c129257b344d1c3af05c66f7a7de980d08f7d20ccf7be2",
+ "latency_ms": 6136,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 926,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:34:42Z",
+ "request": {
+  "doc_sha256": "420cc0eae55c66a1433c3803b65869bfea31dd14711a577651878793a3f83c91",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1129,
+  "visible_text_sha256": "46b2e6664d3dff1423d788139ec6b9850d7bdc110f533b2042a516b469c4330f"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "SON: TRES MILLONES CIEN MIL PESOS M/CTE",
+    "value": "SON: TRES MILLONES CIEN MIL PESOS M/CTE"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Consignar a Banco Ficticio Andino - Ahorros DEMO-0012-8830-02",
+    "value": "Banco Ficticio Andino - Ahorros DEMO-0012-8830-02"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Mateo Quintero Ríos",
+    "value": "Mateo Quintero Ríos"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C.: DEMO-CC-1020345678",
+    "value": "DEMO-CC-1020345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Otra Empresa LLC",
+    "value": "Otra Empresa LLC"
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-77-0000002",
+    "value": "DEMO-77-0000002"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "LA SUMA DE: $ 3.100.000,00 COP",
+    "value": "COP"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.° 891",
+    "value": "CUENTA DE COBRO"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Fecha límite de pago 11/10/2026",
+    "value": "11/10/2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "CUENTA DE COBRO N.° 891",
+    "value": "891"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Fecha de emisión 01/10/2026",
+    "value": "01/10/2026"
+   },
+   "language": "es",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Período 16/09/2026 al 30/09/2026",
+    "value": "16/09/2026 al 30/09/2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Por concepto de: Desarrollo backend: API e integraciones, segunda quincena de septiembre de 2026.",
+    "value": "Desarrollo backend: API e integraciones, segunda quincena de septiembre de 2026."
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "LA SUMA DE: $ 3.100.000,00 COP",
+    "value": "3.100.000,00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}
