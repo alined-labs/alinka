@@ -1,0 +1,117 @@
+/*
+ * The reel's look, from the app's tokens (web/app/styles/tokens.css, dark theme). Nothing here
+ * animates by itself: reel.js sets every style from the time, so a frame is the same however
+ * long it took to capture.
+ */
+
+*, *::before, *::after { box-sizing: border-box; animation: none !important; transition: none !important; }
+html, body { margin: 0; background: var(--desk); }
+body { font-family: var(--font-sans); color: var(--ink); font-variant-numeric: tabular-nums; -webkit-font-smoothing: antialiased; }
+
+#frame {
+  position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  background:
+    radial-gradient(circle at 1px 1px, var(--line) 1.5px, transparent 0) 0 0 / 40px 40px,
+    var(--paper);
+}
+.landscape #frame { width: 1920px; height: 1080px; }
+
+/* Instagram covers the top 14%, the bottom 35% and 6% at each side: everything that matters
+   lives in this 950x980 box, from y 269 to 1249. */
+#stage { position: absolute; left: 65px; top: 269px; width: 950px; height: 980px; }
+.landscape #stage { left: 485px; top: 50px; }
+
+.abs { position: absolute; }
+
+/* Pipeline strip: PipelineFlow's classes, bigger labels. */
+.strip { left: 0; top: 0; width: 950px; height: 170px; overflow: visible; }
+.strip .pf-label { font: 700 19px/1 var(--font-sans); }
+
+/* Captions */
+.caption {
+  left: 0; top: 196px; width: 950px; margin: 0;
+  font: 800 54px/62px var(--font-sans); letter-spacing: -0.01em; color: var(--ink); text-wrap: balance;
+}
+
+/* The invoice: paper-white in both themes, like every document sheet in the app. */
+.sheet {
+  left: 0; top: 410px; width: 560px; height: 560px; padding: 30px 32px;
+  transform-origin: 0 0; background: var(--doc-paper); color: var(--doc-ink);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45); overflow: hidden;
+}
+.sheet .who { font: 800 30px/36px var(--font-sans); }
+.sheet .small { font: 500 17px/24px var(--font-sans); color: #5B6272; }
+.sheet .title { margin-top: 18px; font: 800 22px/28px var(--font-sans); letter-spacing: 0.02em; }
+.sheet .rule { height: 2px; margin: 14px 0; background: var(--doc-ink); }
+.sheet .row { display: flex; justify-content: space-between; font: 500 19px/30px var(--font-sans); }
+.sheet .total { margin-top: 10px; font: 800 27px/36px var(--font-sans); }
+.sheet .foot { position: absolute; left: 32px; bottom: 22px; font: 500 14px/18px var(--font-sans); color: #5B6272; }
+.hidden-line {
+  position: relative; display: inline-block; margin: 6px 0; padding: 2px 8px;
+  font: 600 19px/28px var(--font-mono); color: var(--doc-paper); border-radius: 4px;
+}
+.hidden-line .strike { position: absolute; left: 6px; top: 50%; height: 3px; background: var(--doc-ink); }
+.beam {
+  left: 0; width: 100%; height: 70px;
+  background: linear-gradient(to bottom, transparent, rgba(28, 37, 58, 0.16) 70%, var(--doc-ink) 96%, transparent);
+}
+.evidence { border-radius: 3px; box-shadow: 0 0 0 3px var(--doc-ink); }
+
+/* Fields read by the AI, each with its quote */
+.field { left: 420px; width: 530px; height: 104px; }
+.field .label { font: 600 20px/26px var(--font-sans); color: var(--ink-muted); }
+.field .value { font: 800 32px/40px var(--font-sans); }
+.field .quote {
+  display: inline-block; margin-top: 2px; padding: 2px 10px; max-width: 470px; white-space: nowrap; overflow: hidden;
+  background: var(--desk); border: 1.5px dashed var(--line-strong);
+  font: 500 19px/28px var(--font-mono); color: var(--ink);
+}
+.field .quote mark { background: transparent; color: inherit; box-shadow: inset 0 -3px 0 var(--ink); }
+.check { right: 0; top: 30px; width: 44px; height: 44px; }
+
+/* Trust boundary */
+.boundary { left: 474px; top: 420px; width: 0; height: 540px; border-left: 4px dashed var(--ink); }
+.side { top: 412px; font: 700 24px/30px var(--font-sans); color: var(--ink-muted); }
+.chip {
+  left: 0; height: 66px; padding: 0 22px; display: flex; align-items: center; gap: 12px; white-space: nowrap;
+  border: 2px solid var(--ink); border-radius: 999px; background: var(--surface);
+  font: 700 28px/1 var(--font-sans);
+}
+.chip--doc { border-style: dashed; color: var(--ink-muted); font: 600 22px/1 var(--font-mono); text-decoration: line-through 3px; }
+
+/* The 16 rules */
+.cell {
+  width: 118px; height: 118px; border-radius: 16px; display: grid; place-items: center;
+  border: 3px solid var(--line); background: var(--surface); color: var(--ink-muted);
+  font: 800 30px/1 var(--font-sans);
+}
+.cell.pass { background: var(--ink-muted); border-color: var(--ink-muted); color: var(--paper); }
+.cell.trip { background: var(--pendiente); border-color: var(--ink); color: var(--on-ink); }
+
+/* Decision */
+.stamp {
+  left: 75px; top: 470px; width: 800px; height: 130px; display: grid; place-items: center;
+  border: 7px solid var(--pendiente); border-radius: 14px; color: var(--pendiente); background: var(--surface);
+  font: 800 52px/1 var(--font-sans); text-transform: uppercase; letter-spacing: 0.03em;
+}
+.sec {
+  left: 50%; top: 660px; display: inline-flex; align-items: center; gap: 14px; height: 76px; padding: 0 30px 0 22px; white-space: nowrap;
+  border: 3px solid var(--ink); border-radius: 999px; background: var(--surface); font: 800 32px/1 var(--font-sans);
+}
+.sec svg { width: 38px; height: 38px; fill: none; stroke: currentColor; stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+.account { left: 0; top: 780px; width: 950px; text-align: center; font: 600 32px/42px var(--font-sans); color: var(--ink-muted); }
+
+/* Hash chain */
+.link { top: 520px; width: 168px; height: 76px; border: 6px solid var(--line-strong); border-radius: 38px; }
+.link.new { border-color: var(--ink); border-width: 8px; }
+.hash { top: 618px; width: 168px; text-align: center; font: 500 24px/30px var(--font-mono); color: var(--ink-muted); }
+.hash.new { color: var(--ink); font-weight: 600; }
+.joint { top: 554px; height: 8px; width: 34px; background: var(--line-strong); border-radius: 4px; }
+.joint.new { background: var(--ink); }
+
+/* End card */
+.logo { left: 175px; top: 250px; width: 600px; }
+.logo svg { width: 100%; height: auto; display: block; }
+.tagline { left: 0; top: 520px; width: 950px; text-align: center; font: 800 58px/70px var(--font-sans); }
+.url { left: 0; top: 780px; width: 950px; text-align: center; font: 700 48px/56px var(--font-sans); color: var(--ink-muted); }
+.fict { left: 0; top: 860px; width: 950px; text-align: center; font: 600 26px/34px var(--font-sans); color: var(--ink-muted); }

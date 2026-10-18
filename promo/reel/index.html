@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Alinka · reel</title>
+    <link rel="icon" href="data:," />
+    <!--
+      A vertical reel (1080x1920) built from PipelineFlow's look, outside the app's build.
+      Served from the repository root by capture.mjs, so the app's tokens and PipelineFlow styles
+      load from web/. ?format=landscape lays the same timeline out at 1920x1080.
+      Every frame is render(t): window.setTime(t) draws the reel at t seconds.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=block"
+    />
+    <link rel="stylesheet" href="/web/app/styles/tokens.css" />
+    <link rel="stylesheet" href="/web/app/styles/pipeline.css" />
+    <link rel="stylesheet" href="./reel.css" />
+  </head>
+  <body>
+    <div id="frame"><div id="stage"></div></div>
+    <script type="module" src="./reel.js"></script>
+  </body>
+</html>
