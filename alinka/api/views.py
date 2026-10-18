@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import re
-from collections.abc import Iterable, Sequence
+from collections.abc import Sequence
 
 from alinka.api.models import Board, Card, Column, FieldView, LogEntry, RuleView, View
+from alinka.decide.core import approval_blockers
+from alinka.rules import claimed
 from alinka.types import (
     CRITICAL_FIELDS,
     DECISION_ES,
-    NEVER_APPROVABLE,
     RULE_NAMES_ES,
     Beneficiary,
     Decision,
@@ -18,6 +19,7 @@ from alinka.types import (
     Outcome,
     Printed,
 )
+from alinka.world import World
 
 INBOX_ES = "Bandeja de entrada"
 TECHNICAL_ERROR_ES = "error técnico"
@@ -48,21 +50,9 @@ def norm_id(value: str | None) -> str:
     return re.sub(r"[^0-9A-Z]", "", (value or "").upper())
 
 
-def mask_account(account: str) -> str:
-    """Keep the bank's name and the last four characters: "Banco X · ****4471"."""
-    parts = account.split(" · ")
-    tail = re.sub(r"[^0-9A-Za-z]", "", parts[-1])[-4:]
-    return f"{parts[0]} · ****{tail}" if len(parts) > 1 else f"****{tail}"
-
-
-def beneficiary_for(
-    facts: InvoiceFacts, beneficiaries: Iterable[Beneficiary]
-) -> Beneficiary | None:
-    """The listed beneficiary whose tax ID the document prints, for display only (R01 decides)."""
-    tax = facts.computed.beneficiary_tax_id_norm or norm_id(facts.printed.beneficiary_tax_id.value)
-    if not tax:
-        return None
-    return next((b for b in beneficiaries if norm_id(b.tax_id) == norm_id(tax)), None)
+def beneficiary_for(facts: InvoiceFacts, world: World) -> Beneficiary | None:
+    """The listed beneficiary the document claims to be, for display only (R01 decides)."""
+    return claimed(facts, world)
 
 
 def _base(facts: InvoiceFacts, ben: Beneficiary | None) -> dict:
@@ -89,13 +79,12 @@ def short_reason(reason_es: str) -> str:
 
 
 def can_approve(record: DecisionRecord, view: View) -> bool:
-    fired = {r.rule for r in record.results if r.outcome != Outcome.PASS}
+    """Whether to show the approve button; the core decides again when it is pressed."""
     return (
         view == "sandbox"
         and record.decision == Decision.ESCALATE
         and record.human is None
-        and not fired & NEVER_APPROVABLE
-        and all(r.approvable for r in record.results if r.outcome != Outcome.PASS)
+        and not approval_blockers(record)
     )
 
 
