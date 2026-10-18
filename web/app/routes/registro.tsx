@@ -114,9 +114,36 @@ export default function Registro() {
           <p className="text-small text-ink-muted">
             {log.data.entries.length} registros · último hash <Hash value={log.data.head_hash} label="Hash del último registro" />
           </p>
+          {/* Below 768 px each record is a card, so the reason gets the full width. */}
+          <ol className="grid gap-3 md:hidden" aria-label="Registro encadenado">
+            {log.data.entries.map((e) => (
+              <li key={e.record_id} className="grid gap-1.5 rounded-xl border border-line bg-surface p-3">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                  <Link
+                    to={{ pathname: `/facturas/${encodeURIComponent(e.invoice_id)}`, search }}
+                    className="font-mono underline underline-offset-2"
+                    viewTransition={motion}
+                  >
+                    n.º {e.seq} · {e.invoice_id}
+                  </Link>
+                  <span className="text-small text-ink-muted">{formatDateTime(e.created_at)}</span>
+                </div>
+                <div className="flex flex-wrap gap-1">
+                  <DecisionChip decision={e.decision} />
+                  {e.determining_rule && <RuleChip rule={e.determining_rule} decision={e.decision} />}
+                </div>
+                {/* Three lines here; the invoice's page has the full reason. */}
+                <p className="ak-muted line-clamp-3 text-small">{e.reason_es}</p>
+                {e.approver && <p className="text-small">Aprobó: {e.approver}</p>}
+                <p className="ak-note">
+                  <Hash value={e.hash} label="Hash" /> · anterior <Hash value={e.prev_hash} label="Hash anterior" />
+                </p>
+              </li>
+            ))}
+          </ol>
           {/* Below 1024 px the log scrolls in its own box; relative keeps the sr-only text inside it. */}
           <div
-            className="relative overflow-x-auto rounded-xl border border-line bg-surface max-lg:max-h-[70vh] max-lg:overflow-y-auto"
+            className="relative overflow-x-auto max-md:hidden rounded-xl border border-line bg-surface max-lg:max-h-[70vh] max-lg:overflow-y-auto"
             tabIndex={0}
             role="region"
             aria-label="Registro encadenado"
