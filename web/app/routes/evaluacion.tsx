@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { api, unwrap } from "~/api/client";
-import { cents, type EvalView, pct, type Point, readReport, seconds } from "~/lib/eval";
+import { cents, type EvalView, pct, type Point, readReport, seconds, threshold } from "~/lib/eval";
 import { formatDateTime } from "~/lib/format";
 
 export function meta() {
@@ -91,9 +91,13 @@ function Report({ v }: { v: EvalView }) {
         <p className="ak-muted">
           Cada punto es un umbral de riesgo del verificador (R10): a la derecha, el agente decide más facturas solo; hacia arriba,
           se equivoca más. Con JEV, cada lectura dudosa se escala.
-          {v.chosen !== null && ` Umbral elegido: ${v.chosen.toFixed(2).replace(".", ",")}.`}
+          {v.inUse !== null && ` Umbral en uso: ${threshold(v.inUse)}.`}
+          {v.inUse !== null &&
+            v.suggested !== null &&
+            v.suggested !== v.inUse &&
+            ` La curva sugiere ${threshold(v.suggested)}, pero las reglas lo mantienen hasta que más facturas lo respalden.`}
         </p>
-        <RiskCoverage on={v.jevOn} off={v.jevOff} chosen={v.chosen} />
+        <RiskCoverage on={v.jevOn} off={v.jevOff} inUse={v.inUse} />
         {v.jevOffNote && <p className="ak-note">{v.jevOffNote}</p>}
       </section>
 
@@ -143,7 +147,7 @@ const W = 640;
 const H = 300;
 const PAD = { l: 56, r: 16, t: 16, b: 44 };
 
-function RiskCoverage({ on, off, chosen }: { on: Point[]; off: Point[]; chosen: number | null }) {
+function RiskCoverage({ on, off, inUse }: { on: Point[]; off: Point[]; inUse: number | null }) {
   const all = [...on, ...off];
   if (all.length === 0) return <p className="ak-muted">El informe no trae la curva.</p>;
   const step = 0.05;
@@ -156,7 +160,7 @@ function RiskCoverage({ on, off, chosen }: { on: Point[]; off: Point[]; chosen: 
   const path = (ps: Point[]) => ps.map((p, i) => `${i ? "L" : "M"}${sx(p.coverage).toFixed(1)},${sy(p.error).toFixed(1)}`).join(" ");
   const xs = Array.from({ length: Math.round((x1 - x0) / step) + 1 }, (_, i) => x0 + i * step);
   const ys = Array.from({ length: 5 }, (_, i) => (y1 * i) / 4);
-  const mark = chosen !== null ? on.find((p) => Math.abs(p.threshold - chosen) < 1e-9) : undefined;
+  const mark = inUse !== null ? on.find((p) => Math.abs(p.threshold - inUse) < 1e-9) : undefined;
   // Several thresholds can land on the same point; draw each distinct point once.
   const distinct = (ps: Point[]) => [...new Map(ps.map((p) => [`${p.coverage}|${p.error}`, p])).values()];
   const onPts = distinct(on);
@@ -182,7 +186,7 @@ function RiskCoverage({ on, off, chosen }: { on: Point[]; off: Point[]; chosen: 
           <g key={`y${y}`}>
             <line className="grid" x1={PAD.l} x2={W - PAD.r} y1={sy(y)} y2={sy(y)} />
             <text x={PAD.l - 8} y={sy(y) + 4} textAnchor="end" fill="currentColor">
-              {pct(y, 1)}
+              {pct(y, 2)}
             </text>
           </g>
         ))}
@@ -211,7 +215,7 @@ function RiskCoverage({ on, off, chosen }: { on: Point[]; off: Point[]; chosen: 
           <line className="series-b" x1="0" x2="28" y1="4" y2="4" />
         </svg>
         Sin JEV
-        {mark && <span className="ml-4">○ umbral elegido</span>}
+        {mark && <span className="ml-4">○ umbral en uso ({threshold(mark.threshold)})</span>}
       </figcaption>
       {[
         { name: "Sin JEV", pts: offPts },
@@ -244,7 +248,7 @@ function RiskCoverage({ on, off, chosen }: { on: Point[]; off: Point[]; chosen: 
                   const b = off.find((p) => p.threshold === t);
                   return (
                     <tr key={t}>
-                      <td>{t.toFixed(2).replace(".", ",")}</td>
+                      <td>{threshold(t)}</td>
                       <td>{a ? pct(a.coverage, 1) : "—"}</td>
                       <td>{a ? pct(a.error, 2) : "—"}</td>
                       <td>{b ? pct(b.coverage, 1) : "—"}</td>

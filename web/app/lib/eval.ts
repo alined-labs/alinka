@@ -17,7 +17,10 @@ export type EvalView = {
   jevOn: Point[];
   jevOff: Point[];
   jevOffNote: string | null;
-  chosen: number | null;
+  /** verifier_risk_max in data/rules.yaml when the report ran: the threshold R10 uses. */
+  inUse: number | null;
+  /** The threshold the risk–coverage curve would pick; shown, not applied. */
+  suggested: number | null;
   costUsd: number | null;
   p50: number | null;
   p95: number | null;
@@ -90,7 +93,8 @@ export function readReport(report: unknown): EvalView | null {
     jevOn: points(rc?.jev_on),
     jevOff: points(rc?.jev_off),
     jevOffNote: str(rc?.jev_off_note),
-    chosen: num(obj(r.verifier_risk_max)?.chosen),
+    inUse: num(obj(r.verifier_risk_max)?.default),
+    suggested: num(obj(r.verifier_risk_max)?.chosen),
     costUsd: num(r.cost_usd_per_invoice),
     p50: num(lat?.p50),
     p95: num(lat?.p95),
@@ -99,6 +103,11 @@ export function readReport(report: unknown): EvalView | null {
     source: str(r.source),
     generatedAt: str(r.generated_at),
   };
+}
+
+/** 0.7 -> "0,70" */
+export function threshold(x: number): string {
+  return x.toFixed(2).replace(".", ",");
 }
 
 /** 0.0346 -> "3,5%"; 0.72 -> "72%" (the brief writes "X% de un máximo posible de Y%") */
