@@ -64,7 +64,7 @@ export default function Registro() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="ak-h1">Registro</h1>
         <div className="ak-row">
-          <button type="button" className="ak-btn ak-btn--primary" onClick={() => verify.mutate()} disabled={verify.isPending}>
+          <button type="button" className="ak-btn ak-btn--primary" onClick={() => verify.mutate()} disabled={verify.isPending || !log.data}>
             <ShieldCheck aria-hidden className="ak-icon" />
             Verificar cadena
           </button>
