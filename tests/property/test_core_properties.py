@@ -130,7 +130,10 @@ def test_payout_account_comes_from_the_list(make_facts, inv):
 # 4. Approvals never pass R01 or R12 and never break a cap ------------------------
 
 
-@given(invs=st.lists(invoice(), min_size=1, max_size=6), rows=prior_ledger())
+@given(
+    invs=st.lists(invoice(), min_size=1, max_size=6, unique_by=lambda i: i["invoice_id"]),
+    rows=prior_ledger(),
+)
 def test_approvals_respect_r01_r12_and_caps(make_facts, entry, invs, rows):
     session = Session("prop", WORLD, CFG, MemoryLedger(entry(**r) for r in rows))
     for rec in batch(session, [make_facts(**i) for i in invs]):

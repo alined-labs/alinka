@@ -142,3 +142,9 @@ def test_reject_records_the_person_and_frees_the_ledger(session, make_facts):
     out = reject(session, rec, "Samuel Okafor Price (COO)", note="No lo conocemos")
     assert out.decision == Decision.HOLD and out.human.action == "reject"
     assert session.ledger.entries()[0].status == Status.REJECTED
+
+
+def test_an_invoice_id_is_decided_once_per_session(session, make_facts):
+    batch(session, [make_facts("OCT-01")])
+    with pytest.raises(ValueError):
+        batch(session, [make_facts("OCT-01")])

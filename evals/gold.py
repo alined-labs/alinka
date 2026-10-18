@@ -36,6 +36,16 @@ SIMULATED = {
     "stamp_anulada": "stamps",
     "service_outside_validity": "service period",
     "low_quality_scan": "reading confidence",
+    "second_in_period": "service period",
+    "hidden_white_text": "hidden-content flag",
+    "hidden_render_mode_3": "hidden-content flag",
+    "hidden_opacity_0": "hidden-content flag",
+    "hidden_covered": "hidden-content flag",
+    "hidden_layer": "hidden-content flag",
+    "metadata_injection": "instructions flag",
+    "urgent_cfo_chat": "instructions flag",
+    "unicode_controls_chat": "Unicode-controls flag",
+    "html_text_mismatch": "HTML/text mismatch flag",
 }
 MONTHS = {
     m: i + 1
@@ -134,7 +144,7 @@ def gold_facts(label: Label, world: World, as_of: date) -> InvoiceFacts:
 
 def simulate(label: Label, facts: InvoiceFacts, world: World) -> InvoiceFacts:
     """Give the trap its declared feature where the label has no field for it."""
-    p, c = facts.printed, facts.computed
+    p, c, fl = facts.printed, facts.computed, facts.flags
     es = label.language.value == "es"
     ben = world.beneficiary(label.beneficiary_id) if label.beneficiary_id else None
     text = lambda f, v: f.model_copy(update={"value": v, "quote": v})  # noqa: E731
@@ -166,6 +176,17 @@ def simulate(label: Label, facts: InvoiceFacts, world: World) -> InvoiceFacts:
             weak = {k: getattr(p, k).model_copy(update={"confidence": Confidence.LOW, "grounded": False})
                     for k in ("total", "invoice_number", "due_date")}  # fmt: skip
             p = p.model_copy(update=weak)
+        case "second_in_period" if c.issue_date is not None:
+            end = c.issue_date.replace(day=1) - timedelta(days=1)  # the month already billed
+            c = c.model_copy(update={"period_start": end.replace(day=1), "period_end": end})
+        case trap if trap and trap.startswith("hidden_"):
+            fl = fl.model_copy(update={"hidden_content": (f"p1: {trap} (simulado)",)})
+        case "metadata_injection" | "urgent_cfo_chat":
+            fl = fl.model_copy(update={"instructions": (f"{label.trap} (simulado)",)})
+        case "unicode_controls_chat":
+            fl = fl.model_copy(update={"unicode_controls": ("U+200B (simulado)",)})
+        case "html_text_mismatch":
+            fl = fl.model_copy(update={"html_text_mismatch": True})
         case _:
             return facts
-    return facts.model_copy(update={"printed": p, "computed": c})
+    return facts.model_copy(update={"printed": p, "computed": c, "flags": fl})
