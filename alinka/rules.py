@@ -535,6 +535,10 @@ def r15(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
     return result("R15", PASS, "ok", digits=format_minor(total, cur))
 
 
+# Tax IDs a national e-invoice prints for any foreign buyer: Mexico's SAT generic RFC for
+# foreign residents (CFDI). With the payer's name, they still identify the payer.
+GENERIC_FOREIGN_BUYER_IDS = frozenset({"XEXX010101000"})
+
 PAYABLE = re.compile(r"\b(factura|cuenta de cobro|cuenta cobro|invoice|tax invoice|bill)\b")
 NOT_PAYABLE = re.compile(
     r"\b(proforma|pro forma|cotizacion|quotation|quote|estimate|presupuesto|nota credito|"
@@ -556,8 +560,13 @@ def r16(facts: InvoiceFacts, world: World, ledger: Ledger, cfg: RulesConfig) -> 
         if norm_text(company.name.split(",")[0]) not in norm_text(buyer):
             return result("R16", HOLD, "buyer", buyer=buyer, payer=company.name)
     buyer_tax = c.buyer_tax_id_norm or norm_id(p.buyer_tax_id.value)
-    if buyer_tax and buyer_tax != norm_id(company.tax_id):
-        return result("R16", HOLD, "buyer", buyer=buyer or p.buyer_tax_id.value, payer=company.name)
+    foreign_ok = buyer_tax in GENERIC_FOREIGN_BUYER_IDS and bool(buyer)  # name matched above
+    if buyer_tax and buyer_tax != norm_id(company.tax_id) and not foreign_ok:
+        return result(
+            "R16", HOLD, "buyer_tax_id",
+            buyer=buyer or "sin nombre", buyer_tax_id=p.buyer_tax_id.value or buyer_tax,
+            payer=company.name, payer_tax_id=company.tax_id,
+        )  # fmt: skip
     total = total_minor(facts)
     if total is not None and total <= 0:
         return result("R16", HOLD, "non_positive", total=p.total.value)

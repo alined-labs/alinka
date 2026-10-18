@@ -99,6 +99,7 @@ TEMPLATES: dict[str, str] = {
     "R16.doc_type": "documento no pagable: es «{doc_type}», no una factura ni una cuenta de cobro",
     "R16.stamp": "documento no pagable: tiene el sello {stamp}",
     "R16.buyer": "documento no pagable: está a nombre de {buyer}, no de {payer}",
+    "R16.buyer_tax_id": "documento no pagable: está a nombre de {buyer} con la identificación {buyer_tax_id}, que no es la de {payer} ({payer_tax_id})",
     "R16.non_positive": "documento no pagable: el total es {total}",
     "R16.future_issue": "documento no pagable: emitido el {issue_date}, después del {as_of}",
     "R16.unreadable": "documento pagable: no se pudo confirmar el tipo («{doc_type}») ni el comprador («{buyer}»)",
