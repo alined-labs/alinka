@@ -38,13 +38,11 @@ def load_facts(name: str) -> tuple[InvoiceFacts, ...]:
     return tuple(sorted(facts.values(), key=lambda f: (f.source.received_at, f.source.invoice_id)))
 
 
+PREFERRED_RUN = "showcase"  # the October month, the board the demo opens on
+
+
 def default_run() -> str:
-    """The newest recorded run, or the fixtures while Lane C has recorded none."""
-    if RUNS.is_dir():
-        runs = sorted(
-            (p for p in RUNS.iterdir() if p.is_dir() and any(p.glob("*.jsonl"))),
-            key=lambda p: p.stat().st_mtime,
-        )
-        if runs:
-            return runs[-1].name
+    """data/runs/showcase when recorded, else the fixtures. Other runs load only by name."""
+    if any((RUNS / PREFERRED_RUN).glob("*.jsonl")):
+        return PREFERRED_RUN
     return FIXTURE_RUN

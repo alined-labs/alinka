@@ -50,12 +50,14 @@ def pool(db_url) -> Iterator[ConnectionPool]:
 
 @pytest.fixture
 def client(pool, monkeypatch):
-    """A TestClient on the module's throwaway database, starting with no sessions."""
+    """A TestClient on the module's throwaway database, with no sessions and the fixture run."""
     from fastapi.testclient import TestClient
 
+    from alinka.api import runs
     from alinka.api.app import app
 
     monkeypatch.setattr(db, "_pool", pool)
+    monkeypatch.setattr(runs, "default_run", lambda: runs.FIXTURE_RUN)  # whatever data/runs holds
     with pool.connection() as conn:
         conn.execute("DELETE FROM sessions")
     return TestClient(app)
