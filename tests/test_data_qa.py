@@ -1,6 +1,7 @@
 """The dataset's quality gate: the fictional world loads and stays fictional (Lane B)."""
 
 import json
+import re
 from collections import Counter
 from pathlib import Path
 
@@ -190,3 +191,61 @@ def test_judge_fixtures_agree_with_the_labels():
             r = gold[e["invoice_id"]]
             assert e["path"] == r.path and Decision(e["decision"]) == r.gold_decision, e
             assert e.get("rules", []) == list(r.gold_rules), e
+
+
+MARKERS = ("(empresa ficticia)", "(fictitious company)")
+
+
+def visible_text(path: Path) -> str:
+    """The text a document carries: PDF text layer, or the raw email or chat."""
+    if path.suffix == ".pdf":
+        import pymupdf
+
+        with pymupdf.open(path) as doc:
+            return "".join(page.get_text() for page in doc)
+    return path.read_text(encoding="utf-8")
+
+
+def amount(printed: str) -> int:
+    """Minor units from a printed amount in either 1.234,56 or 1,234.56 style."""
+    digits = re.sub(r"[^\d,.\-]", "", printed)
+    sign = -1 if digits.startswith("-") else 1
+    units, cents = re.fullmatch(r"-?([\d.,]*?)[.,](\d{2})", digits).groups()
+    return sign * (int(re.sub(r"\D", "", units) or 0) * 100 + int(cents))
+
+
+def test_every_document_is_marked_fictional_and_points_nowhere_real():
+    for r in labels():
+        path = ROOT / r.path
+        if path.suffix == ".jpg":  # a raster of a PDF built from the same templates
+            continue
+        text = visible_text(path)
+        assert any(m in text for m in MARKERS), r.path
+        for url in re.findall(r"https?://([^/\s\"'<>]+)", text):
+            assert url.endswith(".invalid"), (r.path, url)
+        for domain in re.findall(r"@([\w.-]+\.\w+)", text):
+            assert domain.endswith(".invalid"), (r.path, domain)
+
+
+def test_printed_ids_are_fictional():
+    for r in labels():
+        tax_id = r.gold_facts.get("beneficiary_tax_id")
+        assert tax_id is None or tax_id.startswith("DEMO"), r.invoice_id
+        account = r.gold_facts.get("bank_account")
+        assert account is None or "DEMO" in account, r.invoice_id
+
+
+def test_totals_reconcile_where_printed():
+    for r in labels():
+        f = r.gold_facts
+        if f.get("subtotal") is None or f.get("tax_total") is None:
+            continue
+        assert amount(f["subtotal"]) + amount(f["tax_total"]) == amount(f["total"]), r.invoice_id
+
+
+def test_the_dataset_has_175_documents():
+    assert Counter(r.split.value for r in labels()) == {
+        "showcase": 30,
+        "generated": 120,
+        "attack": 25,
+    }
