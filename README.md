@@ -6,6 +6,231 @@ An accounts-payable agent for the Blinka challenge (HackRadar 30X). It reads inv
 
 **Live demo: <https://alinka.alinedlabs.co>** (Spanish interface, fictional data).
 
+## Architecture
+
+![Alinka's architecture: the reading side, the trust boundary, the rules and the chained log](docs/img/arquitectura.png)
+
+**The AI reads, the rules decide, the log explains.** A model reads each document on the untrusted side: it gets page images and code-built visible text, no tools, and never the rules, the beneficiary list or the ledger. Its reading is checked in code and by second readers, and only typed, verified `InvoiceFacts` cross the trust boundary. On the other side sixteen pure rules and one decision core decide, the payout account comes from the beneficiary list, and every decision is written to a hash-chained log with its reason in Spanish. A model mistake can cost a review, never a payment. The diagrams below are C4; [docs/architecture.md](docs/architecture.md) has the same four with notes.
+
+### Context
+
+Alinka sits between the suppliers who send invoices and the company's payment platform, which the demo simulates: it proposes payments to accounts already on file and moves no money. The only outside services are the models: Claude through the Anthropic API, and TypeSafe's JEV through OpenRouter.
+
+```mermaid
+flowchart TB
+  supplier["<b>Supplier or contractor</b><br/><i>[Person, external]</i><br/>Sends facturas, cuentas de cobro and invoices by email, PDF, image or chat"]
+  operator["<b>AP operator</b><br/><i>[Person]</i><br/>Reviews the board, runs the agent, tunes the rules, tries a document in Probar"]
+  approver["<b>Approver</b><br/><i>[Person]</i><br/>Approves or rejects escalations by name"]
+  alinka["<b>Alinka</b><br/><i>[Software system]</i><br/>Reads invoices, pays only what the company's rules allow, holds or escalates the rest, and logs why"]
+  blinka["<b>Blinka</b><br/><i>[Software system, external]</i><br/>Accounts, balance, beneficiaries on file and payouts. Simulated in the demo: no integration, no money moves"]
+  anthropic["<b>Anthropic API</b><br/><i>[External system]</i><br/>Claude Sonnet 5.5 reads; Claude Haiku 5.5 reads again"]
+  openrouter["<b>OpenRouter</b><br/><i>[External system]</i><br/>TypeSafe's JEV 1.13 answers escalate-only verification questions"]
+
+  supplier -- "Invoices" --> alinka
+  operator -- "Uses<br/>[HTTPS]" --> alinka
+  approver -- "Approves by name<br/>[HTTPS]" --> alinka
+  alinka -- "Beneficiary list, balance, budgets;<br/>payment previews (proposed)" --> blinka
+  alinka -- "Page images and visible text<br/>[HTTPS]" --> anthropic
+  alinka -- "Short text questions<br/>[HTTPS]" --> openrouter
+
+  classDef person fill:#08427b,stroke:#073b6f,color:#fff
+  classDef system fill:#1168bd,stroke:#0b4884,color:#fff
+  classDef external fill:#8a8a8a,stroke:#6b6b6b,color:#fff
+  class operator,approver person
+  class supplier external
+  class alinka system
+  class blinka,anthropic,openrouter external
+```
+
+### Containers
+
+One origin, `alinka.alinedlabs.co`: a Cloudflare Worker serves the prerendered web app and forwards `/api/*` to the FastAPI service, passing Probar's event stream through unbuffered. Reading runs as batch jobs whose recordings the API, the evaluation and the tests replay, so none of them needs model keys; only Probar uploads, behind the `live_uploads` switch, call the models from the API.
+
+```mermaid
+flowchart TB
+  user["<b>AP operator / approver</b><br/><i>[Person]</i>"]
+  supplier["<b>Supplier</b><br/><i>[Person, external]</i>"]
+
+  subgraph alinka["Alinka [Software system]"]
+    direction TB
+    edge["<b>Edge</b><br/><i>[Container: Cloudflare Worker]</i><br/>alinka.alinedlabs.co: serves the prerendered pages and the app, forwards /api/* with X-Edge-Secret and X-Client-IP, passes the event stream through unbuffered"]
+    web["<b>Web app</b><br/><i>[Container: React Router 7, prerendered public routes, TanStack Query and Table, Tailwind CSS 4, Base UI]</i><br/>Tablero, Probar, Detalle, Reglas, Registro, Evaluación, Cómo funciona"]
+    api["<b>API</b><br/><i>[Container: FastAPI, Python 3.12]</i><br/>Read-only canonical run and a 24-hour sandbox per visitor; board, Ejecutar agente, rules, approvals, log, trace; Probar jobs and their event stream; admin settings"]
+    reader["<b>Reader jobs</b><br/><i>[Container: Python, alinka.jobs.extract]</i><br/>Sanitize, read, verify; writes InvoiceFacts runs"]
+    evals["<b>Evaluation</b><br/><i>[Container: Python CLI, make eval]</i><br/>k of K with the 95% bound, autonomy, risk–coverage, cost and latency"]
+    db[("<b>Database</b><br/><i>[Container: PostgreSQL 17 on Neon]</i><br/>Sessions, rule versions, hash-chained decisions, ledger, Probar invoices and uploads, settings with the live_uploads switch")]
+    repo[("<b>Repository data</b><br/><i>[Container: files in git]</i><br/>175 fictional documents and labels, recorded runs, cached model responses, eval report")]
+  end
+
+  anthropic["<b>Anthropic API</b><br/><i>[External]</i>"]
+  openrouter["<b>OpenRouter · JEV</b><br/><i>[External]</i>"]
+
+  user -- "HTTPS" --> edge
+  edge -- "Delivers" --> web
+  web -- "JSON and server-sent events over /api/*" --> edge
+  edge -- "HTTPS + edge secret" --> api
+  api -- "SQL, one transaction per decision" --> db
+  api -- "Loads runs and recorded readings, renders pages, report" --> repo
+  api -- "Uploads only, while switched on: live reading" --> anthropic
+  api -- "Uploads only: live JEV questions" --> openrouter
+  supplier -- "Email, PDF, image, chat" --> reader
+  reader -- "Reads documents; writes runs and cache" --> repo
+  reader -- "Images + visible text" --> anthropic
+  reader -- "Choice and yes/no questions" --> openrouter
+  evals -- "Reads labels and runs; writes report" --> repo
+
+  classDef person fill:#08427b,stroke:#073b6f,color:#fff
+  classDef container fill:#438dd5,stroke:#2e6295,color:#fff
+  classDef external fill:#8a8a8a,stroke:#6b6b6b,color:#fff
+  class user person
+  class supplier,anthropic,openrouter external
+  class edge,web,api,reader,evals,db,repo container
+  style alinka fill:#ffffff00,stroke:#1168bd,stroke-width:2px,stroke-dasharray:6 4,color:#1168bd
+```
+
+### Components
+
+The pipeline of one invoice. Sanitizer, reader and verifier sit on the untrusted side, and every model call goes through the cache. Rules, decision core and audit log are code only. `alinka.trace` rebuilds the seven steps of any stored decision for Probar and "Cómo se decidió".
+
+```mermaid
+flowchart TB
+  doc["<b>Untrusted document</b><br/>dataset, Probar sample or upload"]
+
+  subgraph reading["Reading side (untrusted input)"]
+    ingest["<b>Sanitizer</b><br/><i>[alinka.ingest]</i><br/>PyMuPDF text trace, covered-text render test, Tesseract boxes, Unicode tag and bidi characters, HTML vs plain text"]
+    extract["<b>Reader</b><br/><i>[alinka.extract]</i><br/>Claude Sonnet 5.5, structured output, no tools: every field with a quote, plus instructions_seen"]
+    verify["<b>Verifier</b><br/><i>[alinka.verify]</i><br/>Normalize amounts and dates, parse words, grounding boxes, regex re-read, totals, Haiku second reading, JEV → risk"]
+    cache["<b>Model cache</b><br/><i>[alinka.cache]</i><br/>record / replay / live, pinned models, cost and latency"]
+  end
+
+  facts{{"<b>InvoiceFacts</b><br/>typed, verified<br/>the trust boundary"}}
+
+  subgraph deciding["Deciding side (code only)"]
+    world["<b>World</b><br/><i>[alinka.world]</i><br/>company, beneficiaries and contracts, rules.yaml, official FX"]
+    rules["<b>Rules R01–R16</b><br/><i>[alinka.rules]</i><br/>pure functions"]
+    core["<b>Decision core</b><br/><i>[alinka.decide.core]</i><br/>HOLD over ESCALATE over PAY; the only source of PAY; approvals re-check R03, R05, R07, R08"]
+    audit["<b>Audit log</b><br/><i>[alinka.audit]</i><br/>RFC 8785 + SHA-256 chain, Spanish reasons citing values, CSV"]
+    store["<b>Ledger and records</b><br/><i>[alinka.db]</i><br/>advisory lock per session; unique keys become R03"]
+  end
+
+  trace["<b>Trace</b><br/><i>[alinka.trace]</i><br/>seven TraceSteps from a record: Recepción to Registro"]
+  routes["<b>HTTP routes</b><br/><i>[alinka.api]</i><br/>sandboxes by cookie, edge-secret check, Ejecutar agente, approve by name, GET /api/invoices/{id}/trace"]
+  probar["<b>Probar jobs</b><br/><i>[alinka.api.try_routes]</i><br/>samples replay recorded readings; uploads read live behind live_uploads; limits; step events over SSE"]
+  person["<b>Operator or approver</b><br/><i>[Person]</i>"]
+  llm["<b>Anthropic · OpenRouter</b><br/><i>[External]</i>"]
+
+  doc --> ingest --> extract --> verify --> facts
+  extract <--> cache
+  verify <--> cache
+  cache <--> llm
+  facts --> rules
+  world --> rules --> core --> audit --> store
+  routes -- "decide / approve" --> core
+  routes -- "board, log, chain check" --> store
+  routes -- "trace of a stored record" --> trace
+  probar -- "runs one document step by step" --> ingest
+  probar -- "step events" --> trace
+  person -- "approve, reject, try a document" --> routes
+
+  classDef comp fill:#85bbf0,stroke:#5d9bd5,color:#0b2545
+  classDef boundary fill:#fff4d6,stroke:#c98a00,color:#5c3d00,stroke-width:2px
+  classDef external fill:#8a8a8a,stroke:#6b6b6b,color:#fff
+  classDef person fill:#08427b,stroke:#073b6f,color:#fff
+  class ingest,extract,verify,cache,world,rules,core,audit,store,routes,probar,trace comp
+  class facts boundary
+  class doc,llm external
+  class person person
+  style reading fill:#ffffff00,stroke:#8a8a8a,stroke-dasharray:6 4
+  style deciding fill:#ffffff00,stroke:#1168bd,stroke-width:2px
+```
+
+### Deployment
+
+CI checks every push in replay mode with no keys. The API image goes to GHCR and runs on Azure Container Apps in East US 2, with one replica always warm and its secrets held as secret references; the database is Neon, and Cloudflare serves the domain and the Worker.
+
+```mermaid
+flowchart LR
+  dev["<b>Developers</b><br/><i>[Person]</i><br/>one branch per task"]
+
+  subgraph github["GitHub"]
+    direction TB
+    repo["<b>Repository</b><br/><i>[git]</i><br/>main is merged through pull requests"]
+    ci["<b>Actions CI</b><br/><i>[ci.yml]</i><br/>make check-py on Postgres 17, make check-web; replay mode, no keys"]
+    ghcr[("<b>GHCR</b><br/><i>[Container registry]</i><br/>alinka-api image, tagged by commit")]
+  end
+
+  subgraph cloudflare["Cloudflare"]
+    direction TB
+    dns["<b>DNS</b><br/>alinka.alinedlabs.co"]
+    worker["<b>Worker alinka-edge</b><br/><i>[deploy/edge.sh]</i><br/>static assets from web/build/client, /api/* proxy, health ping every 4 minutes"]
+  end
+
+  subgraph azure["Azure · East US 2"]
+    aca["<b>Container Apps: alinka-api</b><br/><i>[deploy/azure.sh]</i><br/>1 to 2 replicas, one always warm; secrets as secret references"]
+  end
+
+  neon[("<b>Neon</b><br/><i>[PostgreSQL 17]</i><br/>migrated and loaded by deploy/neon.py")]
+  anthropic["<b>Anthropic API</b><br/><i>[External]</i>"]
+  openrouter["<b>OpenRouter</b><br/><i>[External]</i>"]
+  visitor["<b>Visitor</b><br/><i>[Person]</i>"]
+
+  dev -- "git push" --> repo
+  repo -- "on push and pull request" --> ci
+  repo -- "deploy/image.sh builds docker/Dockerfile.api" --> ghcr
+  ghcr -- "image pull" --> aca
+  visitor -- "HTTPS" --> dns --> worker
+  worker -- "HTTPS + X-Edge-Secret" --> aca
+  aca -- "pooled connection" --> neon
+  aca -- "uploads only" --> anthropic
+  aca -- "uploads only" --> openrouter
+
+  classDef person fill:#08427b,stroke:#073b6f,color:#fff
+  classDef container fill:#438dd5,stroke:#2e6295,color:#fff
+  classDef external fill:#8a8a8a,stroke:#6b6b6b,color:#fff
+  class dev,visitor person
+  class repo,ci,ghcr,dns,worker,aca container
+  class neon,anthropic,openrouter external
+```
+
+### Platforms and libraries
+
+| | What it does in Alinka | Where |
+| --- | --- | --- |
+| Anthropic API (`anthropic`) | Claude Sonnet 5.5 reads each document; Claude Haiku 5.5 reads it again to check | `alinka/extract/claude.py`, `alinka/verify/`, `alinka/cache.py` |
+| OpenRouter, TypeSafe's JEV 1.13 | Escalate-only verification questions on the reading | `alinka/verify/jev.py` |
+| Cloudflare | DNS for `alinka.alinedlabs.co`; the Worker serves the app and proxies `/api/*` with the edge secret | `edge/`, `deploy/edge.sh` |
+| Azure Container Apps | Runs the API container | `deploy/azure.sh`, `docker/Dockerfile.api` |
+| Neon | Managed PostgreSQL 17 | `deploy/neon.py`, `migrations/` |
+| GitHub, Actions and GHCR | Repository and pull requests; CI on every push; the API image registry | `.github/workflows/ci.yml`, `deploy/image.sh` |
+| PyMuPDF | PDF text trace, hidden-text checks and page images | `alinka/ingest/pdf.py`, `alinka/api/pages.py` |
+| Tesseract (`pytesseract`, Pillow) | OCR boxes for photos and scans | `alinka/ingest/image.py` |
+| FastAPI, Uvicorn | The HTTP API, the Probar jobs and their event stream | `alinka/api/` |
+| Pydantic, pydantic-settings | The shared typed contract and settings from the environment | `alinka/types.py`, `alinka/settings.py` |
+| psycopg, psycopg-pool | Postgres access, one transaction per decision | `alinka/db.py` |
+| rfc8785 | Canonical JSON bytes for the SHA-256 chain | `alinka/audit/chain.py` |
+| React Router 7 | The web app, with the public routes prerendered | `web/app/routes.ts`, `web/react-router.config.ts` |
+| Tailwind CSS 4 | The design system's styles | `web/app/styles/` |
+| Base UI | Dialogs and controls | `web/app/components/` |
+| TanStack Query and Table | Server state; the board table | `web/app/routes/`, `web/app/components/board-table.tsx` |
+| openapi-typescript, openapi-fetch | Types and a typed client generated from `openapi.json` | `web/app/api/` |
+| Playwright | End-to-end tests on the live site; renders the Open Graph image | `tests/e2e/`, `web/scripts/og.ts` |
+| WeasyPrint, Jinja2, Faker, num2words, segno | Generate the fictional dataset: documents, words for amounts, QR codes | `data/generator/` |
+| pytest, Hypothesis, Ruff, Vitest | Tests and lint behind `make check` | `tests/`, `web/app/**/*.test.ts` |
+| uv, pnpm | Python and JavaScript environments, locked | `pyproject.toml`, `uv.lock`, `pnpm-workspace.yaml` |
+
+### How it was built
+
+Planned and researched with Claude, and built in one day by Daniel Andrés Moreno Cruz (Alined Labs) directing six Claude Code sessions on Claude Opus 5.5 across four machines, one session per lane:
+
+- **A:** the core, the rules and the evaluation.
+- **B:** the dataset, then Probar's front end and the motion graphics.
+- **C:** reading and verification, then Probar's API.
+- **D:** the API, the database, SEO and the docs.
+- **E:** the front end.
+- **P:** deployment and QA.
+
+The sessions coordinated through a private repository where each one logs what it starts and finishes. A merge queue checked every branch (Conventional Commits, a secret scan, frozen contracts, `make check`) and merged it through a pull request. Context7 supplied current library documentation, the Chrome DevTools MCP checked every page, and the design system was built from Mobbin references.
+
 ## The problem
 
 A US company paying contractors in Latin America receives facturas, cuentas de cobro and invoices in four channels and three currencies. Every one has to be checked against the beneficiary list, the contract, caps, budgets and duplicates, and some are written to fool whoever reads them. Alinka does the reading with a model and everything else in code, so a model mistake costs a review, never a payment.
@@ -18,10 +243,6 @@ A US company paying contractors in Latin America receives facturas, cuentas de c
 - **The reader is quarantined.** It gets page images and code-built visible text, no tools, never the rules, the list or the ledger. Hidden text, Unicode controls and HTML/plain-text mismatches are caught in code before it reads.
 - **Every decision is explained and chained.** Each reason names its rule in Spanish with the values it used; records are RFC 8785 bytes in a SHA-256 chain that "Verificar cadena" recomputes from storage.
 - **Approvals are bounded.** Only escalations, only by name, never when R01 (beneficiary) or R12 (bank account) fired, and caps (R03, R05, R07, R08) are re-checked at that moment.
-
-## Architecture
-
-See [docs/architecture.md](docs/architecture.md) for the C4 diagrams. In short: sanitize (PyMuPDF text trace, Unicode, email parts) → read (Claude Sonnet 5.5, structured, quoted fields) → verify (grounding with boxes, regex and totals, Claude Haiku 5.5 second reading, JEV 1.13) → typed `InvoiceFacts` cross the trust boundary → 16 rules and the decision core → hash-chained log. The API (FastAPI on Postgres) serves a read-only canonical run and a private 24-hour sandbox per visitor, where rules can be edited, beneficiaries added, "Ejecutar agente" run and escalations approved.
 
 ## Probar
 
