@@ -395,9 +395,9 @@ SPECS: list[Spec] = [
                 "Diseño de interfaz: 18 pantallas del módulo de reportes",
                 "1",
                 "servicio",
-                450000000,
+                420000000,
             ),
-            Line("Prototipos interactivos y sistema de diseño", "1", "servicio", 170000000),
+            Line("Prototipos interactivos y sistema de diseño", "1", "servicio", 160000000),
         ],
     ),
     Spec(
