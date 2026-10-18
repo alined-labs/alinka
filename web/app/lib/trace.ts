@@ -96,11 +96,10 @@ export function flowFromSteps(events: readonly TraceStep[]): Flow {
   };
 }
 
-/** One sentence per stage for the visible list and the text alternative. */
+/** One sentence per stage for the visible list: what it is doing while running, then what it found. */
 export function stageSummary(flow: Flow, id: StageId): string {
   if (id === "boundary") return flow.states.boundary === "done" ? BOUNDARY_SUMMARY : "";
-  const s = flow.steps[id];
-  return s && s.status !== "running" ? s.summary_es : "";
+  return flow.steps[id]?.summary_es ?? "";
 }
 
 const NAMES: [string, string][] = [
@@ -122,8 +121,19 @@ const NAMES: [string, string][] = [
   ["R16", "Documento pagable"],
 ];
 
+/** alinka/trace.py RUNNING_ES: the sentence a step shows while it runs. */
+const RUNNING_ES: Record<StepName, string> = {
+  received: "Recibiendo el documento",
+  sanitize: "Buscando contenido oculto antes de que la IA lo vea",
+  read: "La IA lee las páginas y cita cada dato",
+  verify: "El código comprueba cada cita, los montos y la segunda lectura",
+  rules: "Aplicando las 16 reglas",
+  decide: "Combinando los resultados de las reglas",
+  record: "Guardando la decisión en el registro encadenado",
+};
+
 const step = (s: StepName, status: StepStatus, title_es: string, summary_es: string, ms: number, data: Record<string, any>) => [
-  { step: s, status: "running", title_es, summary_es: "", ms: null, data: {} } as TraceStep,
+  { step: s, status: "running", title_es, summary_es: RUNNING_ES[s], ms: null, data: {} } as TraceStep,
   { step: s, status, title_es, summary_es, ms, data } as TraceStep,
 ];
 

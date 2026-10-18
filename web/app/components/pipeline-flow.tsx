@@ -45,7 +45,7 @@ const DECISION_CLASS: Record<string, string> = { PAY: "pagada", HOLD: "retenida"
 type Geo = { x: number; y: number; w: number; h: number };
 
 function geometry(vertical: boolean) {
-  const at = (i: number): Geo => (vertical ? { x: 52, y: 44 + i * 84, w: 84, h: 64 } : { x: 60 + i * 120, y: 76, w: 92, h: 68 });
+  const at = (i: number): Geo => (vertical ? { x: 56, y: 44 + i * 84, w: 92, h: 64 } : { x: 60 + i * 120, y: 76, w: 92, h: 68 });
   return vertical ? { at, width: 320, height: 44 + 7 * 84 + 44 } : { at, width: 960, height: 176 };
 }
 
