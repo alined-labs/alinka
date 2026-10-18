@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+# pre-commit: refuses .env files and anything shaped like a secret. It prints only
+# file names, never the matching text.
+set -euo pipefail
+if git diff --cached --name-only --diff-filter=ACMR | grep -E '(^|/)\.env(\.|$)' | grep -vqE '\.env\.example$'; then
+  echo "pre-commit: refusing to commit a .env file"; exit 1
+fi
+SECRET='sk-ant-[A-Za-z0-9_-]{20,}|sk-or-[A-Za-z0-9_-]{20,}|sk-[A-Za-z0-9_-]{32,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16}|npg_[A-Za-z0-9]{12,}|-----BEGIN [A-Z ]*PRIVATE KEY-----|AccountKey=[^;[:space:]]{20,}|postgres(ql)?://[^[:space:]@/:]+:[^[:space:]@/]+@'
+LOCAL='postgres(ql)?://alinka:alinka@(localhost|127\.0\.0\.1|db)[:/]'
+bad=()
+while IFS= read -r file; do
+  [ -n "$file" ] || continue
+  if git diff --cached -U0 --no-color -- "$file" | grep -E '^\+' | grep -vE '^\+\+\+' \
+      | grep -E -- "$SECRET" | grep -vqE -- "$LOCAL"; then
+    bad+=("$file")
+  fi
+done < <(git diff --cached --name-only --diff-filter=ACMR)
+if [ ${#bad[@]} -gt 0 ]; then
+  echo "pre-commit: something shaped like a secret is staged in: ${bad[*]}"
+  echo "Remove it (keys live only in .env), then commit again."
+  exit 1
+fi

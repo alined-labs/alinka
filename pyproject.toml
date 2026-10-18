@@ -1,0 +1,60 @@
+[project]
+name = "alinka"
+version = "0.1.0"
+description = "Accounts-payable agent for the Blinka challenge: the AI reads, the rules decide, the log explains."
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "anthropic",
+  "fastapi",
+  "httpx",
+  "pillow",
+  "psycopg[binary]",
+  "psycopg-pool",
+  "pydantic",
+  "pydantic-settings",
+  "pymupdf",
+  "pytesseract",
+  "python-multipart",
+  "pyyaml",
+  "rfc8785",
+  "uvicorn[standard]",
+]
+
+[project.scripts]
+alinka = "alinka.cli:main"  # Lane A writes alinka/cli.py
+
+[dependency-groups]
+dev = ["hypothesis", "pytest", "ruff"]
+# Dataset generation only (Lane B); never imported by the service.
+data = ["faker", "jinja2", "num2words", "segno", "weasyprint"]
+
+[tool.uv]
+default-groups = ["dev", "data"]
+# Supply-chain guard: nothing published in the last week.
+exclude-newer = "2026-10-11T00:00:00Z"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["alinka"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+extend-exclude = ["web", "edge", "data/generator/templates", "cache", "runs"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -m 'not live'"
+markers = [
+  "db: needs Postgres; skipped when unreachable unless ALINKA_REQUIRE_DB=1",
+  "live: calls a real model API; never part of make check",
+  "slow: takes more than a few seconds",
+]

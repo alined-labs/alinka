@@ -1,0 +1,19 @@
+# Local Postgres for development and API tests. One per machine: every worktree
+# shares the project name "alinka". Production uses Neon (deploy block only).
+name: alinka
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: alinka
+      POSTGRES_PASSWORD: alinka
+      POSTGRES_DB: alinka
+    ports: ["127.0.0.1:5432:5432"]
+    volumes: [db:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U alinka -d alinka"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+volumes:
+  db:

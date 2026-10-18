@@ -1,0 +1,10 @@
+# pnpm only (never npm, npx or yarn). The lockfile lives at the repo root.
+packages:
+  - web
+  - edge
+# Refuse package versions published in the last 3 days (minutes).
+minimumReleaseAge: 4320
+# Install scripts are blocked except for these.
+onlyBuiltDependencies:
+  - esbuild
+  - workerd

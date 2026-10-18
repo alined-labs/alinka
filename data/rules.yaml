@@ -1,0 +1,13 @@
+# Rule parameters (frozen). Each sandbox edits its own copy. Whole USD unless noted.
+version: "2026-10-18.1"
+as_of: 2026-10-17
+fx_max_age_days: 4
+per_payment_cap_usd: 5000      # R05
+approval_threshold_usd: 2000   # R06
+approval_band_pct: 5           # R06: within 5% below the threshold also escalates
+monthly_cap_usd: 40000         # R07
+due_grace_days: 30             # R09
+verifier_risk_max: 0.7         # R10
+split_window_days: 7           # R13
+split_threshold_usd: 2000      # R13
+name_similarity_min: 0.90      # R01
