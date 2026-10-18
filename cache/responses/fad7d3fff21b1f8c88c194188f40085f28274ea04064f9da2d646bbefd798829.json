@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.001037,
+ "input_hash": "e898dc532cd252a8b397836f8cae4cf4c40d6dc31b8f1ba0485040653b4a6bc4",
+ "input_tokens": 6108,
+ "key": "fad7d3fff21b1f8c88c194188f40085f28274ea04064f9da2d646bbefd798829",
+ "latency_ms": 3692,
+ "model": "claude-haiku-5-5",
+ "output_tokens": 852,
+ "prompt_hash": "3f8cbf5f0b244427363f591abef219225b078e24fd5c19ee687e8456898eb276",
+ "recorded_at": "2026-10-18T08:34:05Z",
+ "request": {
+  "doc_sha256": "0f37824b293453e490a668c24d51f2eb99726c7bde661d4ff6cb72660c4cc373",
+  "max_tokens": 4096,
+  "model": "claude-haiku-5-5",
+  "pages_sent": 1,
+  "role": "checker",
+  "visible_text_chars": 1111,
+  "visible_text_sha256": "a455f2f0b70815390e4bbc2f0109524f2c292b4df8b81177c2a3f7368e617f8d"
+ },
+ "response": {
+  "model": "claude-haiku-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Eight hundred sixty and 00/100 US Dollars",
+    "value": "Eight hundred sixty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Account Demo Mountain Bank · ABA DEMO-1070 · Acct DEMO-5521-0042",
+    "value": "Demo Mountain Bank · ABA DEMO-1070 · Acct DEMO-5521-0042"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Juniper Demo Metrics, LLC",
+    "value": "Juniper Demo Metrics, LLC"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-91-2033418",
+    "value": "DEMO-91-2033418"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "INVOICE",
+    "value": "INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date November 8, 2026",
+    "value": "November 8, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # JDM-1042",
+    "value": "JDM-1042"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date October 9, 2026",
+    "value": "October 9, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period October 1, 2026 – October 9, 2026",
+    "value": "October 1, 2026 – October 9, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Customer survey design and analysis",
+    "value": "Customer survey design and analysis"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal 860.00",
+    "value": "860.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD) $860.00",
+    "value": "860.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

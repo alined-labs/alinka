@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.021756,
+ "input_hash": "a5d4a40b09b802e481d113d05071b8d0b8fedda49fea589c6cf76e3640fcaebe",
+ "input_tokens": 6198,
+ "key": "df5bf69c7a6addace01e2f7c60e29de55db56acdea126637da015d3b4f0340d1",
+ "latency_ms": 6259,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 936,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:34:30Z",
+ "request": {
+  "doc_sha256": "0e8cd6ff2b4c796f8291cfd71eac6d31401ad027abaca9a936e5eb09339ed8dc",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1289,
+  "visible_text_sha256": "8d870e5bcf2b7c28d365cb04d0039c3f27483644a73a979b2c3ef125d67a6f3e"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Amount in words: Six hundred forty and 00/100 US Dollars",
+    "value": "Six hundred forty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "Account: Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-4421-0010",
+    "value": "Demo Federal Bank · ABA DEMO-0210 · Acct DEMO-4421-0010"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Cobalt Ridge Hosting, Inc. (fictitious company)",
+    "value": "Cobalt Ridge Hosting, Inc."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-12-3456789",
+    "value": "DEMO-12-3456789"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Bill to: Ceiba Demo Labs, Inc. (fictitious company)",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency: USD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "Invoice\nInvoice # CR-2026-0912",
+    "value": "Invoice"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "Due date: November 11, 2026",
+    "value": "November 11, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # CR-2026-0912",
+    "value": "CR-2026-0912"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "Invoice date: October 12, 2026",
+    "value": "October 12, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period: September 1, 2026 – September 30, 2026",
+    "value": "September 1, 2026 – September 30, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "1 | Managed backups (storage snapshots), September 2026 | 1 | month | 640.00 | 640.00",
+    "value": "Managed backups (storage snapshots), September 2026"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal: 640.00",
+    "value": "640.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax: 0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "Balance due (USD): $640.00",
+    "value": "640.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

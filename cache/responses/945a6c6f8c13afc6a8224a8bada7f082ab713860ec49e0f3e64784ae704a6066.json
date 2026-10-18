@@ -1,0 +1,95 @@
+{
+ "cost_usd": 0.00011277,
+ "input_hash": "9188a9bdc09dc80cfd1127a5b19e30d95e94eaeb9d8ba3953e3c0c2f569da0c6",
+ "input_tokens": 2685,
+ "key": "945a6c6f8c13afc6a8224a8bada7f082ab713860ec49e0f3e64784ae704a6066",
+ "latency_ms": 592,
+ "model": "typesafe/jev-1.13",
+ "output_tokens": 618,
+ "prompt_hash": "34b3dbf1dd80c9f2200402ed773dcbdef8bc4ba6820806d791d6222eb73cc924",
+ "recorded_at": "2026-10-18T08:34:31Z",
+ "request": {
+  "model": "typesafe/jev-1.13",
+  "questions": [
+   "J1a",
+   "J1b",
+   "J2.beneficiary_name",
+   "J2.beneficiary_tax_id",
+   "J2.currency",
+   "J2.due_date",
+   "J2.invoice_number",
+   "J2.total"
+  ],
+  "role": "jev"
+ },
+ "response": {
+  "answers": {
+   "J1a": {
+    "choice": "3.600.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "1.826.249.686.417,00": 0,
+     "19.801,00": 0,
+     "2.210,00": 0,
+     "2.359.664,00": 0,
+     "22.641.369,00": 0,
+     "3.025.210,00": 0,
+     "3.600.000,00": 1,
+     "4.417.302,00": 0,
+     "5.000,00": 0,
+     "574.790,00": 0,
+     "665.546,00": 0,
+     "900.765.432,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J1b": {
+    "choice": "3.600.000,00",
+    "confidence": 1,
+    "probabilities": {
+     "1.826.249.686.417,00": 0,
+     "19.801,00": 0,
+     "2.210,00": 0,
+     "2.359.664,00": 0,
+     "22.641.369,00": 0,
+     "3.025.210,00": 0,
+     "3.600.000,00": 1,
+     "4.417.302,00": 0,
+     "5.000,00": 0,
+     "574.790,00": 0,
+     "665.546,00": 0,
+     "900.765.432,00": 0,
+     "not_stated": 0
+    },
+    "type": "choice"
+   },
+   "J2.beneficiary_name": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.beneficiary_tax_id": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.currency": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.due_date": {
+    "noul": 0.04,
+    "type": "noul"
+   },
+   "J2.invoice_number": {
+    "noul": 0.07,
+    "type": "noul"
+   },
+   "J2.total": {
+    "noul": 0.05,
+    "type": "noul"
+   }
+  },
+  "model": "typesafe/jev-1.13-20260917"
+ },
+ "stop_reason": "end_turn"
+}

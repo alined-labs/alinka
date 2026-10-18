@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.020524,
+ "input_hash": "d8a8992ad7cb7033a9505f3b20500393f9509b563ab5b1d669e5c591cf9fb2d5",
+ "input_tokens": 6107,
+ "key": "1f1d97168cf2f81c7edf9c2e6ea9d0ba46defa928c84d1f8f941d6042a79c630",
+ "latency_ms": 5255,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 831,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:34:12Z",
+ "request": {
+  "doc_sha256": "2264fcb93e372f2552b9033350dcc91f3cc694c815aca0e4317eec544866bd76",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1131,
+  "visible_text_sha256": "4f379f891073c84999a297a9887958e04440cb986afcc37d5a0805151f8f72e3"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "One thousand two hundred ten and 00/100 Euros",
+    "value": "One thousand two hundred ten and 00/100 Euros"
+   },
+   "bank_account": {
+    "confidence": "high",
+    "quote": "IBAN ES00 DEMO 0000 0000 0000 0013",
+    "value": "IBAN ES00 DEMO 0000 0000 0000 0013"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Estudio Albahaca S.L.",
+    "value": "Estudio Albahaca S.L."
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "NIF: DEMO-B12345678",
+    "value": "DEMO-B12345678"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "medium",
+    "quote": "Currency\nEUR",
+    "value": "EUR"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "INVOICE",
+    "value": "INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "November 4, 2026",
+    "value": "November 4, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # A-2026-301",
+    "value": "A-2026-301"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "October 5, 2026",
+    "value": "October 5, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "Service period September 30, 2026 – October 4, 2026",
+    "value": "September 30, 2026 – October 4, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Backend development: database migration and export API",
+    "value": "Backend development: database migration and export API"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal\n1,210.00",
+    "value": "1,210.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax\n0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "medium",
+    "quote": "Balance due (EUR)\n$1,210.00",
+    "value": "1,210.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}

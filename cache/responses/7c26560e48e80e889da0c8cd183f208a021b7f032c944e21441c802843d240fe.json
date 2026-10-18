@@ -1,0 +1,115 @@
+{
+ "cost_usd": 0.020556,
+ "input_hash": "4ef40467de578a1f7e086cc73c7d2547aafc6c4cb50a4aff56ced04d482a867d",
+ "input_tokens": 6108,
+ "key": "7c26560e48e80e889da0c8cd183f208a021b7f032c944e21441c802843d240fe",
+ "latency_ms": 5319,
+ "model": "claude-sonnet-5-5",
+ "output_tokens": 834,
+ "prompt_hash": "7f26fd99e636bce914978f88ae3aac225f4d6fd0b896ba35173e9fbf1a5ec434",
+ "recorded_at": "2026-10-18T08:34:05Z",
+ "request": {
+  "doc_sha256": "bd535822afcd784c332815132cf03e3955697635bfee28471b6ec38794aa9360",
+  "max_tokens": 4096,
+  "model": "claude-sonnet-5-5",
+  "pages_sent": 1,
+  "role": "reader",
+  "visible_text_chars": 1141,
+  "visible_text_sha256": "1c77dfdf8ed9b61fb130f876ce6b8eb905c52fc87dc42ce22e435d469f465ea0"
+ },
+ "response": {
+  "model": "claude-sonnet-5-5",
+  "parsed": {
+   "amount_in_words": {
+    "confidence": "high",
+    "quote": "Six hundred fifty and 00/100 US Dollars",
+    "value": "Six hundred fifty and 00/100 US Dollars"
+   },
+   "bank_account": {
+    "confidence": "medium",
+    "quote": "Banco Ficticio Andino · Ahorros\nDEMO-0012-5561-05",
+    "value": "Banco Ficticio Andino · Ahorros DEMO-0012-5561-05"
+   },
+   "beneficiary_name": {
+    "confidence": "high",
+    "quote": "Julián Herrera Mejía",
+    "value": "Julián Herrera Mejía"
+   },
+   "beneficiary_tax_id": {
+    "confidence": "high",
+    "quote": "C.C.: DEMO-CC-1152034567",
+    "value": "DEMO-CC-1152034567"
+   },
+   "buyer_name": {
+    "confidence": "high",
+    "quote": "Ceiba Demo Labs, Inc.",
+    "value": "Ceiba Demo Labs, Inc."
+   },
+   "buyer_tax_id": {
+    "confidence": "high",
+    "quote": "EIN: DEMO-88-4417302",
+    "value": "DEMO-88-4417302"
+   },
+   "currency": {
+    "confidence": "high",
+    "quote": "Currency\nUSD",
+    "value": "USD"
+   },
+   "doc_type": {
+    "confidence": "high",
+    "quote": "INVOICE",
+    "value": "INVOICE"
+   },
+   "due_date": {
+    "confidence": "high",
+    "quote": "October 11, 2026",
+    "value": "October 11, 2026"
+   },
+   "fiscal_id": {
+    "confidence": "high",
+    "quote": null,
+    "value": null
+   },
+   "instructions_seen": [],
+   "invoice_number": {
+    "confidence": "high",
+    "quote": "Invoice # CC-2026-40",
+    "value": "CC-2026-40"
+   },
+   "issue_date": {
+    "confidence": "high",
+    "quote": "October 1, 2026",
+    "value": "October 1, 2026"
+   },
+   "language": "en",
+   "service_period": {
+    "confidence": "high",
+    "quote": "September 26, 2026 – September 30, 2026",
+    "value": "September 26, 2026 – September 30, 2026"
+   },
+   "service_text": {
+    "confidence": "high",
+    "quote": "Illustration: graphic assets for the payments screens",
+    "value": "Illustration: graphic assets for the payments screens"
+   },
+   "stamps": [],
+   "subtotal": {
+    "confidence": "high",
+    "quote": "Subtotal\n650.00",
+    "value": "650.00"
+   },
+   "tax_total": {
+    "confidence": "high",
+    "quote": "Sales tax\n0.00",
+    "value": "0.00"
+   },
+   "total": {
+    "confidence": "high",
+    "quote": "$650.00",
+    "value": "650.00"
+   }
+  },
+  "stop_reason": "end_turn"
+ },
+ "stop_reason": "end_turn"
+}
