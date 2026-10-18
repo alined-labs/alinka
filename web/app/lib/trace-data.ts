@@ -55,23 +55,19 @@ export const hasData = (s: TraceStep) => s.status !== "running" && Object.keys(s
 /** The typed data of a finished step. */
 export const dataOf = <S extends StepName>(s: TraceStep, _step: S) => s.data as StepData[S];
 
-export type Trace = { steps: TraceStep[]; example: boolean };
-
-const sample = () => import("~/api/fixtures/trace.sample.json").then((m) => m.default as unknown as TraceStep[]);
-
 /**
  * The stored trace from GET /api/invoices/{id}/trace (Lane C, #79), or null when the invoice has
- * none yet. Fixture mode reads the OCT-14 sample.
+ * none yet. Fixture mode has no trace: the timeline keeps its summary entries.
  */
-export async function fetchTrace(id: string, view: View): Promise<Trace | null> {
-  if (FIXTURES) return { steps: await sample(), example: true };
+export async function fetchTrace(id: string, view: View): Promise<TraceStep[] | null> {
+  if (FIXTURES) return null;
   const res = await fetch(`/api/invoices/${encodeURIComponent(id)}/trace?view=${view}`);
   if (res.status === 404) return null;
   if (!res.ok) {
     const body = (await res.json().catch(() => null)) as { detail?: unknown } | null;
     throw new Error(typeof body?.detail === "string" ? body.detail : `Error ${res.status}`);
   }
-  return { steps: sortSteps((await res.json()) as TraceStep[]), example: false };
+  return sortSteps((await res.json()) as TraceStep[]);
 }
 
 export function sortSteps(steps: TraceStep[]): TraceStep[] {
