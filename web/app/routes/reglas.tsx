@@ -276,18 +276,18 @@ function Beneficiaries({ data }: { data: RulesOut }) {
           <tbody>
             {data.beneficiaries.map((b) => (
               <tr key={b.id}>
-                <td>
+                <td className="min-w-56">
                   <span className="font-semibold">{b.name}</span>
-                  <span className="ak-note">
+                  <span className="ak-note whitespace-nowrap">
                     {b.id} · {b.tax_id}
                     {b.added_in_sandbox && " · agregado en tu sandbox"}
                   </span>
                 </td>
-                <td>
+                <td className="whitespace-nowrap">
                   {b.country} · {b.currency}
                 </td>
-                <td>{b.account_masked}</td>
-                <td>
+                <td className="whitespace-nowrap">{b.account_masked}</td>
+                <td className="whitespace-nowrap">
                   {b.contract_id} · {b.cost_center}
                 </td>
                 <td className="whitespace-nowrap">

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { amountParts, formatDay, formatMoney, formatUsd, parseMajor } from "./format";
+import { amountParts, formatDay, formatFxLine, formatMoney, formatUsd, fxSourceEs, parseMajor } from "./format";
 
 describe("formatMoney", () => {
   it("places the ISO 4217 decimal point", () => {
@@ -43,5 +43,16 @@ describe("parseMajor", () => {
     expect(parseMajor("", "USD")).toBeNull();
     expect(parseMajor("abc", "USD")).toBeNull();
     expect(parseMajor("-5", "USD")).toBeNull();
+  });
+});
+
+describe("formatFxLine", () => {
+  it("names every rate source in Spanish, with a decimal comma and a Spanish date", () => {
+    expect(formatFxLine({ rate: "1.1253", source: "ECB reference rate", date: "2026-10-16" })).toBe(
+      "tasa 1,1253 (tasa de referencia del BCE, 16 oct 2026)",
+    );
+    for (const s of ["Banco de la República TRM", "Banxico FIX (DOF)", "BCB PTAX venda", "ECB reference rate"]) {
+      expect(fxSourceEs(s)).not.toBe(s);
+    }
   });
 });

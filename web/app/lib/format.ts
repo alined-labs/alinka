@@ -80,3 +80,18 @@ export function parseMajor(text: string, currency: string): number | null {
   const minor = BigInt(whole) * 10n ** BigInt(digits) + BigInt((frac + "0".repeat(digits)).slice(0, digits) || "0");
   return minor <= BigInt(Number.MAX_SAFE_INTEGER) ? Number(minor) : null;
 }
+
+/** data/fx.yaml names each official rate in its publisher's words; the page says them in Spanish. */
+const FX_SOURCE_ES: Record<string, string> = {
+  "Banco de la República TRM": "TRM del Banco de la República",
+  "Banxico FIX (DOF)": "FIX de Banxico (DOF)",
+  "BCB PTAX venda": "PTAX de venta del Banco Central do Brasil",
+  "ECB reference rate": "tasa de referencia del BCE",
+};
+
+export const fxSourceEs = (source: string) => FX_SOURCE_ES[source] ?? source;
+
+/** "tasa 5,08260 (PTAX de venta del Banco Central do Brasil, 16 oct 2026)": the rate keeps its digits. */
+export function formatFxLine(fx: { rate: string | number; source: string; date: string }): string {
+  return `tasa ${String(fx.rate).replace(".", ",")} (${fxSourceEs(fx.source)}, ${formatDay(fx.date)})`;
+}
