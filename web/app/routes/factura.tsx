@@ -1,8 +1,6 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
-  ChevronLeft,
-  ChevronRight,
   CircleAlert,
   CircleCheck,
   FileCheck,
@@ -21,8 +19,9 @@ import { api, unwrap, type View } from "~/api/client";
 import { ApprovalDialog } from "~/components/approval-dialog";
 import { CHANNEL, DecisionChip, DocSlip, MarkedQuote, ReasonText, RuleChip, SecurityTag } from "~/components/badges";
 import { Amount, BeneficiaryName } from "~/components/invoice-card";
+import { PageViewer } from "~/components/page-viewer";
 import { STATE_LABEL } from "~/lib/board";
-import { boxStyle, type Detail, fieldChecks, type FieldView, orderRules, type RuleView } from "~/lib/detail";
+import { type Detail, fieldChecks, type FieldView, orderRules, type RuleView } from "~/lib/detail";
 import { formatDateTime, formatMoney, formatUsd } from "~/lib/format";
 import { useView } from "~/lib/view";
 
@@ -204,7 +203,13 @@ function DetailView({ detail, view, onChange }: { detail: Detail; view: View; on
       </div>
 
       <div className="ak-detail__doc">
-        <Pages detail={detail} page={page} setPage={setPage} active={active} />
+        <PageViewer
+          pages={detail.pages}
+          page={page}
+          onPageChange={setPage}
+          boxes={detail.fields.flatMap((f) => f.boxes.map((b, i) => ({ ...b, key: `${f.name}-${i}`, active: active === f.name })))}
+          label={`la factura ${detail.card.invoice_id}`}
+        />
       </div>
     </article>
   );
@@ -436,73 +441,6 @@ function Timeline({ detail }: { detail: Detail }) {
           </li>
         )}
       </ol>
-    </section>
-  );
-}
-
-function Pages({
-  detail,
-  page,
-  setPage,
-  active,
-}: {
-  detail: Detail;
-  page: number;
-  setPage: (n: number) => void;
-  active: string | null;
-}) {
-  const [failed, setFailed] = useState<Record<number, boolean>>({});
-  const total = detail.pages.length;
-  const current = detail.pages.find((p) => p.n === page) ?? detail.pages[0];
-  if (!current) return <p className="ak-muted">Sin imágenes de página.</p>;
-  const boxes = detail.fields.flatMap((f) =>
-    f.boxes.filter((b) => b.page === current.n).map((b, i) => ({ key: `${f.name}-${i}`, field: f.name, b })),
-  );
-  return (
-    <section aria-label="Documento original">
-      <div className="ak-doctools">
-        <span>
-          Página {current.n} de {total} · imagen del documento recibido
-        </span>
-        {total > 1 && (
-          <span className="ak-row">
-            <button
-              type="button"
-              className="ak-btn ak-btn--ghost ak-btn--sm"
-              onClick={() => setPage(current.n - 1)}
-              disabled={current.n <= 1}
-              aria-label="Página anterior"
-            >
-              <ChevronLeft aria-hidden className="ak-icon" />
-            </button>
-            <button
-              type="button"
-              className="ak-btn ak-btn--ghost ak-btn--sm"
-              onClick={() => setPage(current.n + 1)}
-              disabled={current.n >= total}
-              aria-label="Página siguiente"
-            >
-              <ChevronRight aria-hidden className="ak-icon" />
-            </button>
-          </span>
-        )}
-      </div>
-      {failed[current.n] ? (
-        <p className="ak-banner ak-banner--demo">La imagen de esta página no está disponible.</p>
-      ) : (
-        <figure className="ak-page">
-          <img
-            src={current.url}
-            width={current.width}
-            height={current.height}
-            alt={`Página ${current.n} de la factura ${detail.card.invoice_id}`}
-            onError={() => setFailed((f) => ({ ...f, [current.n]: true }))}
-          />
-          {boxes.map(({ key, field, b }) => (
-            <span key={key} className={`ak-box ${active === field ? "is-active" : ""}`} style={boxStyle(b)} aria-hidden />
-          ))}
-        </figure>
-      )}
     </section>
   );
 }
