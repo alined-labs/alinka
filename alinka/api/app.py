@@ -5,9 +5,10 @@ from __future__ import annotations
 import hmac
 from datetime import UTC, datetime
 from importlib.metadata import version
+from typing import Annotated
 
 import psycopg
-from fastapi import FastAPI, HTTPException, Request, Response
+from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import JSONResponse, PlainTextResponse
 
 from alinka import db
@@ -34,9 +35,11 @@ from alinka.api.models import (
 from alinka.api.sessions import CANONICAL, Ctx
 from alinka.decide.core import mask_account
 from alinka.settings import get_settings
+from alinka.trace import TraceStep, build_trace
 from alinka.types import Beneficiary, Contract, HumanAction, InvoiceFacts
 
 ERRORS = {404: {"model": ErrorOut}, 409: {"model": ErrorOut}}
+ScaleQ = Annotated[int, Query(ge=1, le=3, description="1, 2 or 3: 150, 300 or 450 dpi")]
 
 app = FastAPI(
     title="Alinka API",
@@ -185,12 +188,22 @@ def get_invoice(invoice_id: str, ctx: Viewed, conn: Conn) -> InvoiceDetail:
     response_class=Response,
     responses={200: {"content": {"image/png": {}}}, 404: {"model": ErrorOut}},
 )
-def get_page(invoice_id: str, n: int, ctx: Viewed) -> Response:
+def get_page(invoice_id: str, n: int, ctx: Viewed, scale: ScaleQ = 1) -> Response:
     facts = find_facts(ctx, invoice_id)
-    png = pages.render_page(facts.source.path, n, invoice_id)
+    png = pages.render_page(facts.source.path, n, invoice_id, scale)
     if png is None:
         raise HTTPException(404, f"La factura {invoice_id} no tiene página {n}.")
     return Response(png, media_type="image/png", headers={"Cache-Control": "max-age=3600"})
+
+
+@app.get("/api/invoices/{invoice_id}/trace", responses=ERRORS)
+def get_trace(invoice_id: str, ctx: Viewed, conn: Conn) -> list[TraceStep]:
+    """Cómo se decidió: the seven Probar steps rebuilt from the stored record."""
+    find_facts(ctx, invoice_id)
+    rec = sessions.latest(sessions.records(conn, ctx.session_id)).get(invoice_id)
+    if rec is None:
+        raise HTTPException(404, f"La factura {invoice_id} aún no tiene decisión.")
+    return build_trace(rec)
 
 
 @app.get("/api/rules")

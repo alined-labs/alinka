@@ -151,3 +151,57 @@ def test_the_stream_has_no_cache_headers_and_pings(client, monkeypatch):
         assert stream.headers["cache-control"] == "no-cache"
         lines = list(stream.iter_lines())
     assert ": ping" in lines and lines.index(": ping") < lines.index("event: error")
+
+
+TRACE_KEYS = {
+    "received": {"invoice_id", "channel", "pages", "sha8", "filename", "language"},
+    "sanitize": {"hidden_content", "unicode_controls", "html_text_mismatch", "instructions"},
+    "read": {"mode", "calls", "fields", "stamps", "instructions_seen", "error"},
+    "verify": {
+        "calls", "fields", "ungrounded", "disagreements", "amount_in_regex",
+        "totals_reconcile", "jev", "risk", "risk_max",
+    },
+    "rules": {"results"},
+    "decide": {"decision", "label_es", "determining_rule", "alerts", "reason_es", "payment"},
+    "record": {"record_id", "seq", "hash8", "prev_hash8"},
+}  # fmt: skip
+
+
+def test_the_trace_endpoint_returns_the_contract_shape_and_matches_the_run(client):
+    got = run(client, "ATK-12-1")
+    streamed = [d for n, d in got if n == "step" and d["status"] != "running"]
+    trace = client.get(f"/api/invoices/{got[-1][1]['invoice_id']}/trace").json()
+    assert [s["step"] for s in trace] == STEPS
+    for step, live in zip(trace, streamed, strict=True):
+        assert set(step) == {"step", "status", "title_es", "summary_es", "ms", "data"}
+        assert set(step["data"]) == TRACE_KEYS[step["step"]] and step["ms"] is None
+        assert step["status"] == live["status"]
+        if step["step"] != "received":  # the language is known only after the reading
+            assert step["data"] == live["data"], step["step"]
+    assert trace[1]["status"] == "flagged" and trace[1]["data"]["unicode_controls"]
+    assert len(trace[4]["data"]["results"]) == 16
+
+
+def test_the_trace_is_scoped_like_the_invoice(client):
+    assert len(client.get("/api/invoices/OCT-01/trace", params={"view": "canonical"}).json()) == 7
+    assert client.get("/api/invoices/OCT-01/trace").status_code == 404  # still in the inbox
+    assert client.get("/api/invoices/NOPE/trace").status_code == 404
+    client.post("/api/run")
+    assert client.get("/api/invoices/OCT-01/trace").status_code == 200
+
+
+def test_page_images_scale_to_150_300_and_450_dpi(client):
+    from io import BytesIO
+
+    from PIL import Image
+
+    run(client, "GEN-090-1")  # an email: its code-rendered page, not a placeholder
+    widths = []
+    for scale in (1, 2, 3):
+        r = client.get("/api/invoices/TRY-GEN-090-1-1/pages/1", params={"scale": scale})
+        assert r.status_code == 200 and r.headers["content-type"] == "image/png"
+        widths.append(Image.open(BytesIO(r.content)).width)
+    assert abs(widths[1] - 2 * widths[0]) <= 2 and abs(widths[2] - 3 * widths[0]) <= 3
+    detail = client.get("/api/invoices/TRY-GEN-090-1-1").json()
+    assert abs(detail["pages"][0]["width"] - widths[0]) <= 1
+    assert client.get("/api/invoices/OCT-01/pages/1", params={"scale": 4}).status_code == 422
