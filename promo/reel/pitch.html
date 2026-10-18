@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <title>Alinka · segmentos del pitch</title>
+    <link rel="icon" href="data:," />
+    <!--
+      Four 1920x1080 segments for the pitch video, from the reel's code and look.
+      ?seg=01-gancho | 02-flujo | 03-resultados | 04-cierre. Every frame is render(t), set
+      through window.setTime(t); capture.mjs --pitch <seg> records one. The results segment
+      reads its numbers from evals/report.json at load.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@400;500;600;700;800&display=block"
+    />
+    <link rel="stylesheet" href="/web/app/styles/tokens.css" />
+    <link rel="stylesheet" href="/web/app/styles/pipeline.css" />
+    <link rel="stylesheet" href="./reel.css" />
+    <link rel="stylesheet" href="./pitch.css" />
+  </head>
+  <body class="landscape">
+    <div id="frame"><div id="stage"></div></div>
+    <script type="module" src="./pitch.js"></script>
+  </body>
+</html>

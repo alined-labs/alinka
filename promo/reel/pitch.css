@@ -1,0 +1,60 @@
+/* Pitch segments (pitch.js): 1920x1080, on top of reel.css and the app's tokens. */
+
+.landscape #frame { width: 1920px; height: 1080px; }
+#stage { left: 0; top: 0; width: 1920px; height: 1080px; }
+.landscape #stage { left: 0; top: 0; }
+
+/* 01-gancho */
+.g-sheet { left: 300px; top: 150px; transform-origin: 0 0; }
+.g-note { left: 1060px; top: 290px; width: 640px; font: 700 34px/44px var(--font-sans); color: var(--ink-muted); }
+.g-question { left: 1060px; top: 450px; width: 700px; font: 800 84px/96px var(--font-sans); letter-spacing: -0.01em; }
+
+/* 02-flujo */
+.f-strip { left: 0; top: 230px; width: 1920px; height: 260px; overflow: visible; }
+.f-strip .pf-label { font: 700 24px/1 var(--font-sans); }
+.f-title { left: 0; top: 600px; width: 1920px; text-align: center; font: 800 96px/110px var(--font-sans); letter-spacing: -0.01em; }
+.f-tag { left: 0; top: 640px; width: 1920px; text-align: center; font: 800 64px/80px var(--font-sans); }
+
+/* 03-resultados */
+.r-head { left: 160px; top: 90px; font: 700 40px/48px var(--font-sans); color: var(--ink-muted); }
+.tile {
+  width: 780px; height: 380px; padding: 40px 48px; display: grid; align-content: start; gap: 8px;
+  border: 2px solid var(--line); border-radius: 24px; background: var(--surface);
+}
+.tile .t-label { font: 700 38px/46px var(--font-sans); color: var(--ink-muted); }
+.tile .t-value { font: 800 132px/150px var(--font-sans); letter-spacing: -0.02em; color: var(--ink); }
+.tile .t-sub { font: 600 34px/44px var(--font-sans); color: var(--ink-muted); }
+
+/* 04-cierre */
+.c-logo { left: 660px; top: 190px; width: 600px; }
+.c-logo svg { width: 100%; height: auto; display: block; }
+.c-line { left: 0; width: 1920px; text-align: center; }
+.c-principle { top: 520px; font: 800 60px/72px var(--font-sans); }
+.c-url { top: 660px; font: 700 44px/54px var(--font-sans); color: var(--ink); }
+.c-gh { top: 724px; font: 600 40px/50px var(--font-mono); color: var(--ink-muted); }
+.c-event { top: 860px; font: 600 34px/42px var(--font-sans); color: var(--ink-muted); }
+
+/* 05-arquitectura: text boxes, no logos */
+.a-title { left: 60px; top: 50px; font: 700 40px/48px var(--font-sans); color: var(--ink-muted); }
+.a-box {
+  display: grid; align-content: center; gap: 4px; padding: 14px 20px;
+  border: 2px solid var(--line-strong); border-radius: 18px; background: var(--surface);
+}
+.a-box b { font: 800 28px/34px var(--font-sans); color: var(--ink); }
+.a-box span { font: 600 21px/27px var(--font-sans); color: var(--ink-muted); }
+.a-group { border: 2px dashed var(--line-strong); border-radius: 24px; }
+.a-group-label { font: 800 28px/34px var(--font-sans); }
+.a-chip {
+  width: 142px; height: 84px; display: grid; place-items: center; text-align: center; padding: 6px;
+  border: 2px solid var(--line-strong); border-radius: 14px; background: var(--surface);
+  font: 700 20px/24px var(--font-sans); color: var(--ink);
+}
+.a-chip.is-on { border: 4px solid var(--ink); background: var(--desk); }
+.a-box.is-on { border: 4px solid var(--ink); }
+.a-svg { left: 0; top: 0; width: 1920px; height: 1080px; overflow: visible; }
+.a-line { fill: none; stroke: var(--line-strong); stroke-width: 3; }
+.a-arrow { fill: var(--line-strong); }
+.a-dot { fill: var(--ink); }
+.a-reply { fill: var(--paper); stroke: var(--ink); stroke-width: 4; }
+.a-note { font: 600 20px/24px var(--font-sans); color: var(--ink-muted); }
+.a-deliver-label { font: 700 24px/30px var(--font-sans); color: var(--ink-muted); }
