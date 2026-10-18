@@ -184,15 +184,23 @@ def write_pdf(template: str, ctx: dict, out: Path) -> None:
     HTML(string=html, base_url=str(HERE / "templates")).write_pdf(out)
 
 
-def write_image(pdf: Path, out: Path, seed: str, dpi: int = 150) -> None:
-    """Page 1 rasterized as a phone scan: slight rotation, blur and JPEG compression."""
+def write_image(pdf: Path, out: Path, seed: str, dpi: int = 150, low: bool = False) -> None:
+    """Page 1 rasterized as a phone scan: slight rotation, blur and JPEG compression.
+
+    low=True makes a scan too poor to read with confidence (R10): low resolution, a
+    steeper angle, heavy blur and heavy compression.
+    """
     rng = Random(seed)
     with pymupdf.open(pdf) as doc:
-        img = doc[0].get_pixmap(dpi=dpi).pil_image().convert("RGB")
-    img = img.rotate(rng.uniform(-1.6, 1.6), resample=Image.BICUBIC, expand=True, fillcolor="white")
-    img = img.filter(ImageFilter.GaussianBlur(rng.uniform(0.4, 0.8)))
+        img = doc[0].get_pixmap(dpi=48 if low else dpi).pil_image().convert("RGB")
+    angle = rng.uniform(4.0, 6.0) * rng.choice((-1, 1)) if low else rng.uniform(-1.6, 1.6)
+    img = img.rotate(angle, resample=Image.BICUBIC, expand=True, fillcolor="white")
+    img = img.filter(
+        ImageFilter.GaussianBlur(rng.uniform(1.3, 1.6) if low else rng.uniform(0.4, 0.8))
+    )
     buf = io.BytesIO()
-    img.save(buf, format="JPEG", quality=rng.randint(68, 80), optimize=True)
+    quality = rng.randint(6, 9) if low else rng.randint(68, 80)
+    img.save(buf, format="JPEG", quality=quality, optimize=True)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(buf.getvalue())
 

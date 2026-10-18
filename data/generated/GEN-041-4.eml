@@ -1,0 +1,119 @@
+From:
+ =?utf-8?q?Baj=C3=ADo_Traducciones_S=2EC=2E?= <facturas@bajio-trad.invalid>
+To: "Ceiba Demo Labs, Inc." <ap@ceiba-demo.invalid>
+Subject: Factura =?utf-8?q?=C2=B7_CFDI_4=2E0_=28representaci=C3=B3n?= impresa)
+ T-0908 =?utf-8?b?wrcgQmFqw61v?= Traducciones S.C.
+Date: Wed, 14 Oct 2026 12:43:00 -0500
+Message-ID: <GEN-041-4.T-0908@mail.alinka.invalid>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="=_alinka_166e72946b63f49f"
+
+--=_alinka_166e72946b63f49f
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+
+Buen d=C3=ADa. Adjuntamos en este correo los datos del comprobante.
+
+Factura =C2=B7 CFDI 4.0 (representaci=C3=B3n impresa)
+Serie y folio T-0908
+Baj=C3=ADo Traducciones S.C. (empresa ficticia)
+RFC: DEMO020202CD2
+Calle Demo 45, Centro, Le=C3=B3n, Gto., C.P. 37000
+facturas@bajio-trad.invalid
+R=C3=A9gimen fiscal: 601 General de Ley Personas Morales
+Fecha de emisi=C3=B3n: 2026-10-07T12:46:12
+Tipo de comprobante: I - Ingreso
+Exportaci=C3=B3n: 02 - Definitiva
+Moneda: MXN
+Fecha l=C3=ADmite de pago: 22/10/2026
+Receptor: Ceiba Demo Labs, Inc. (empresa ficticia)
+N=C3=BAm. reg. id. trib.: DEMO-88-4417302
+RFC receptor: XEXX010101000 (residente en el extranjero)
+Uso CFDI: G03 - Gastos en general
+Forma de pago: 03 - Transferencia electr=C3=B3nica
+M=C3=A9todo de pago: PUE - Pago en una sola exhibici=C3=B3n
+Periodo: 02/10/2026 al 06/10/2026
+81111500 | Traducci=C3=B3n y localizaci=C3=B3n al ingl=C3=A9s del m=C3=B3dulo=
+ de onboarding | 1 | servicio | 10,200.00 | 10,200.00
+Subtotal: 10,200.00
+IVA trasladado 0% (exportaci=C3=B3n): 0.00
+Total (MXN): $ 10,200.00
+Importe con letra: (DIEZ MIL DOSCIENTOS PESOS 00/100 M.N.)
+Servicio exportado: IVA a tasa 0%.
+Folio fiscal (UUID): 55857515-1C99-5124-B56A-0F8FEF7A885B
+Fecha de certificaci=C3=B3n: 2026-10-07T12:46:12
+No. de serie del CSD: DEMO3614096033033464
+Sello digital del CFDI: zg3JAirc0xmtzBrwzteDYi5uk2zszcqaC3pQvkRu+jEB4SNJ4m/n2=
+uH6+xLuByBVVGK9icDbxVdMYnVSqcz3zn5XChCvx2MbuT7Ks0EeF7WF4F1MG4LK0p1jy1hFnulDxn=
+Ea7jxqYr6IEd3d/gQmkWtWDIqdlvALOocmb1XqiB3V
+Sello del certificador (ficticio): yLDovo/U0sB1IRm4NJpv9AZweYKh0R41en9KfEGHIu=
+0vBnP8HwTjfXYgwIA0T/bsv7fc/lW3g9JjODpQwt6a1zd7ZDD8ql3p
+Cuenta para pago: Banco Ficticio de Occidente =C2=B7 CLABE DEMO 0000 0000 000=
+0 07
+--
+Todos los nombres, identificadores y cuentas son ficticios.
+
+--=_alinka_166e72946b63f49f
+Content-Type: text/html; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+
+<!doctype html>
+<html lang=3D"es"><head><meta charset=3D"utf-8"><title>CFDI T-0908</title></h=
+ead>
+<body style=3D"font-family: Arial, sans-serif; font-size: 14px; color: #1d1d1=
+f;">
+<p>Buen d=C3=ADa. Adjuntamos en este correo los datos del comprobante.</p>
+<table cellpadding=3D"6" style=3D"border: 1px solid #7a1f3d; border-collapse:=
+ collapse; width: 100%; max-width: 680px;">
+  <tr><td colspan=3D"2" style=3D"background: #7a1f3d; color: #fff;"><b>Factur=
+a =C2=B7 CFDI 4.0 (representaci=C3=B3n impresa)</b><br>Serie y folio T-0908</=
+td></tr>
+  <tr><td valign=3D"top"><b>Baj=C3=ADo Traducciones S.C.</b><br><i>(empresa f=
+icticia)</i><br>RFC: DEMO020202CD2<br>Calle Demo 45, Centro, Le=C3=B3n, Gto.,=
+ C.P. 37000<br>facturas@bajio-trad.invalid<br>R=C3=A9gimen fiscal: 601 Genera=
+l de Ley Personas Morales</td>
+      <td valign=3D"top">Fecha de emisi=C3=B3n: 2026-10-07T12:46:12<br>Tipo d=
+e comprobante: I - Ingreso<br>Exportaci=C3=B3n: 02 - Definitiva<br>Moneda: MX=
+N<br>Fecha l=C3=ADmite de pago: 22/10/2026<br></td></tr>
+  <tr><td valign=3D"top">Receptor: <b>Ceiba Demo Labs, Inc.</b><br><i>(empres=
+a ficticia)</i><br>N=C3=BAm. reg. id. trib.: DEMO-88-4417302</td>
+      <td valign=3D"top">RFC receptor: XEXX010101000 (residente en el extranj=
+ero)<br>Uso CFDI: G03 - Gastos en general<br>Forma de pago: 03 - Transferenci=
+a electr=C3=B3nica<br>M=C3=A9todo de pago: PUE - Pago en una sola exhibici=C3=
+=B3n<br>Periodo: 02/10/2026 al 06/10/2026<br></td></tr>
+</table>
+<table cellpadding=3D"5" style=3D"border-collapse: collapse; width: 100%; max=
+-width: 680px; margin-top: 8px;">
+  <tr><th align=3D"left" style=3D"border-bottom: 2px solid #7a1f3d;">Clave</t=
+h><th align=3D"left" style=3D"border-bottom: 2px solid #7a1f3d;">Descripci=C3=
+=B3n</th><th align=3D"left" style=3D"border-bottom: 2px solid #7a1f3d;">Cant.=
+</th><th align=3D"left" style=3D"border-bottom: 2px solid #7a1f3d;">Unidad</t=
+h><th align=3D"left" style=3D"border-bottom: 2px solid #7a1f3d;">Valor unitar=
+io</th><th align=3D"left" style=3D"border-bottom: 2px solid #7a1f3d;">Importe=
+</th></tr>
+<tr><td style=3D"border-bottom: 1px solid #ddd;">81111500</td><td style=3D"bo=
+rder-bottom: 1px solid #ddd;">Traducci=C3=B3n y localizaci=C3=B3n al ingl=C3=
+=A9s del m=C3=B3dulo de onboarding</td><td style=3D"border-bottom: 1px solid =
+#ddd;">1</td><td style=3D"border-bottom: 1px solid #ddd;">servicio</td><td st=
+yle=3D"border-bottom: 1px solid #ddd;">10,200.00</td><td style=3D"border-bott=
+om: 1px solid #ddd;">10,200.00</td></tr><tr><td colspan=3D"5" align=3D"right"=
+>Subtotal</td><td>10,200.00</td></tr><tr><td colspan=3D"5" align=3D"right">IV=
+A trasladado 0% (exportaci=C3=B3n)</td><td>0.00</td></tr>  <tr><td colspan=3D=
+"5" align=3D"right"><b>Total (MXN)</b></td><td><b>$ 10,200.00</b></td></tr>
+</table>
+<p>Importe con letra: <b>(DIEZ MIL DOSCIENTOS PESOS 00/100 M.N.)</b></p><p>Se=
+rvicio exportado: IVA a tasa 0%.</p><p style=3D"font-family: monospace; font-=
+size: 11px;">Folio fiscal (UUID): 55857515-1C99-5124-B56A-0F8FEF7A885B<br>Fec=
+ha de certificaci=C3=B3n: 2026-10-07T12:46:12<br>No. de serie del CSD: DEMO36=
+14096033033464<br>Sello digital del CFDI: zg3JAirc0xmtzBrwzteDYi5uk2zszcqaC3p=
+QvkRu+jEB4SNJ4m/n2uH6+xLuByBVVGK9icDbxVdMYnVSqcz3zn5XChCvx2MbuT7Ks0EeF7WF4F1M=
+G4LK0p1jy1hFnulDxnEa7jxqYr6IEd3d/gQmkWtWDIqdlvALOocmb1XqiB3V<br>Sello del cer=
+tificador (ficticio): yLDovo/U0sB1IRm4NJpv9AZweYKh0R41en9KfEGHIu0vBnP8HwTjfXY=
+gwIA0T/bsv7fc/lW3g9JjODpQwt6a1zd7ZDD8ql3p<br>Cuenta para pago: Banco Ficticio=
+ de Occidente =C2=B7 CLABE DEMO 0000 0000 0000 07<br></p><p style=3D"font-siz=
+e: 11px; color: #777;">Todos los nombres, identificadores y cuentas son ficti=
+cios.</p>
+</body></html>
+
+--=_alinka_166e72946b63f49f--

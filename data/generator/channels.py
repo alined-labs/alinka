@@ -10,8 +10,9 @@ from __future__ import annotations
 from datetime import timedelta
 from pathlib import Path
 
-from common import ENV, write_chat, write_eml
+from common import ENV, write_chat, write_eml, write_image, write_pdf
 
+EXT = {"pdf": "pdf", "image": "jpg", "email": "eml", "chat": "txt"}
 PAYER_AP = "ap@ceiba-demo.invalid"
 PAYER_CHAT = "Cuentas por pagar · Ceiba Demo"
 
@@ -72,3 +73,18 @@ def chat(out: Path, spec, ctx: dict) -> None:
         (spec.received + timedelta(minutes=9), PAYER_CHAT, "Recibido, gracias. Queda en revisión."),
     ]
     write_chat(out, lines)
+
+
+def write_doc(spec, template: str, ctx: dict, out: Path) -> None:
+    """Writes one document in its channel: PDF, scanned image, email or chat."""
+    if spec.channel == "pdf":
+        write_pdf(template, ctx, out)
+    elif spec.channel == "image":
+        tmp = out.with_name(f".{out.stem}.pdf")
+        write_pdf(template, ctx, tmp)
+        write_image(tmp, out, seed=spec.id, low=spec.scan == "low")
+        tmp.unlink()
+    elif spec.channel == "email":
+        email(out, spec, ctx)
+    else:
+        chat(out, spec, ctx)
