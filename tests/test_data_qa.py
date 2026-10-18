@@ -5,10 +5,15 @@ from pathlib import Path
 
 import yaml
 
-from alinka.types import Beneficiary, Company
+from alinka.types import RULE_IDS, SECURITY_RULES, Beneficiary, Company, Decision, Split
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
+
+# How each rule fails, from PLAN section 7. R15 holds when the words differ and escalates
+# when they cannot be parsed, so a trap on R15 alone decides it.
+FAILS_AS = {r: Decision.ESCALATE for r in ("R01", "R06", "R09", "R10", "R11", "R12", "R13")}
+FAILS_AS |= {r: Decision.HOLD for r in ("R02", "R03", "R04", "R05", "R07", "R08", "R14", "R16")}
 
 
 def company() -> Company:
@@ -61,3 +66,25 @@ def test_beneficiaries_are_fictional_and_consistent():
         assert b.contract.rate_minor > 0 and 0 <= b.contract.tolerance_pct <= 10, b.id
     for key in ("tax_id", "name", "account_on_file"):
         assert len({getattr(b, key) for b in bens}) == len(bens), key
+
+
+def traps() -> dict:
+    return yaml.safe_load((DATA / "generator/traps.yaml").read_text())
+
+
+def test_traps_follow_the_rule_table():
+    doc = traps()
+    assert doc["routine"]["decision"] == "PAY" and doc["routine"]["rules"] == []
+    splits = {s.value for s in Split}
+    for key, t in doc["traps"].items():
+        rules = t["rules"]
+        assert rules and set(rules) <= set(RULE_IDS), key
+        assert set(t["splits"]) <= splits and t["how"], key
+        impersonation = "R01" in rules and "attack" in t["splits"]  # new vendors are no alert
+        assert t["security"] == (bool(set(rules) & SECURITY_RULES - {"R01"}) or impersonation), key
+        expected = {FAILS_AS[r] for r in rules if r in FAILS_AS}
+        if expected:
+            want = Decision.HOLD if Decision.HOLD in expected else Decision.ESCALATE
+            assert Decision(t["decision"]) == want, key
+        else:
+            assert rules == ["R15"] and t["decision"] in {"HOLD", "ESCALATE"}, key
