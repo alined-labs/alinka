@@ -149,7 +149,7 @@ def ledger_entry(
         usd_minor=usd_minor(facts, world, cfg) or 0,
         period=period_key(period_base(facts), ben.contract.frequency) if ben else None,
         received=facts.source.received_at.date(),
-        decided=cfg.as_of,
+        decided=min(facts.source.received_at.date(), cfg.as_of),  # the batch decides on arrival
         cost_center=ben.contract.cost_center if ben else None,
         status=status,
     )
@@ -266,14 +266,14 @@ def approve(
         return session.append(
             invoice_id=record.invoice_id, decision=Decision.HOLD, determining_rule=failed[0].rule,
             results=results, alerts=record.alerts, facts=facts, created_at=at, human=human,
-            reason_es=reason_es(Decision.HOLD, failed[0].rule, tuple(failed)),
+            reason_es=reason_es(Decision.HOLD, failed[0].rule, results),
         )  # fmt: skip
     payment = preview(facts, world, cfg)
     session.ledger.set_status(record.invoice_id, Status.APPROVED)
     return session.append(
         invoice_id=record.invoice_id, decision=Decision.PAY, determining_rule=None, results=results,
         alerts=record.alerts, facts=facts, created_at=at, human=human, payment=payment,
-        reason_es=reason_es(Decision.PAY, None, results, approver=name),
+        reason_es=reason_es(Decision.PAY, None, results, human),
     )  # fmt: skip
 
 
@@ -286,9 +286,9 @@ def reject(
     name = _approver(approver)
     at = at or datetime.now(UTC)
     session.ledger.set_status(record.invoice_id, Status.REJECTED)
+    human = HumanAction(action="reject", approver=name, note=note, at=at)
     return session.append(
         invoice_id=record.invoice_id, decision=Decision.HOLD, determining_rule=record.determining_rule,
         results=record.results, alerts=record.alerts, facts=record.facts, created_at=at,
-        human=HumanAction(action="reject", approver=name, note=note, at=at),
-        reason_es=f"Frenada: rechazada por {name}.",
+        human=human, reason_es=reason_es(Decision.HOLD, record.determining_rule, record.results, human),
     )  # fmt: skip

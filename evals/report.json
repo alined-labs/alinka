@@ -1,7 +1,7 @@
 {
  "source": "gold facts from data/labels",
  "gold_facts": true,
- "generated_at": "2026-10-18T08:27:32+00:00",
+ "generated_at": "2026-10-18T08:43:09+00:00",
  "rules_version": "2026-10-18.1",
  "as_of": "2026-10-17",
  "simulated_traps": [
