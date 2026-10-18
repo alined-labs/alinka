@@ -24,7 +24,7 @@ import { TraceItems } from "~/components/decision-trace";
 import { PageViewer } from "~/components/page-viewer";
 import { STATE_LABEL } from "~/lib/board";
 import { type Detail, fieldChecks, type FieldView, orderRules, type RuleView } from "~/lib/detail";
-import { formatDateTime, formatMoney, formatUsd } from "~/lib/format";
+import { formatDateTime, formatFxLine, formatMoney, formatUsd } from "~/lib/format";
 import { invoiceTransitionName, useMotionOK, useTransitionedValue } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import { fetchTrace } from "~/lib/trace-data";
@@ -131,7 +131,7 @@ function DetailView({ detail, view, onChange }: { detail: Detail; view: View; on
             <p className="ak-note">
               ≈ {formatUsd(card.usd_minor)}
               {record?.facts.computed?.fx &&
-                ` · tasa ${record.facts.computed.fx.rate} (${record.facts.computed.fx.source}, ${record.facts.computed.fx.date})`}
+                ` · ${formatFxLine(record.facts.computed.fx)}`}
             </p>
           )}
           <div className="ak-card__tags">

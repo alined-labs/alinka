@@ -3,7 +3,10 @@
  * 1024 px there). Imported from root.tsx after app.css.
  */
 
-/* Below 768 px: brand and run switch share the first row, the nav is one row that scrolls. */
+/*
+ * Below 768 px: brand and run switch share the first row, and the nav takes its own rows and
+ * wraps, so every page's link stays visible (two rows at 360 px; no link scrolled off-screen).
+ */
 @media (max-width: 767.98px) {
   .ak-header {
     flex-wrap: wrap;
@@ -13,32 +16,23 @@
     order: 3;
     flex: 1 0 100%;
     min-width: 0;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    padding: 2px;
-  }
-  .ak-nav::-webkit-scrollbar {
-    display: none;
-  }
-  .ak-nav a {
-    flex: none;
-  }
-  /* A fade on each edge that still hides links (data-fade from useNavScroll). */
-  .ak-nav[data-fade="end"] {
-    mask-image: linear-gradient(to right, #000 85%, transparent);
-  }
-  .ak-nav[data-fade="start"] {
-    mask-image: linear-gradient(to left, #000 85%, transparent);
-  }
-  .ak-nav[data-fade="start end"] {
-    mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+    flex-wrap: wrap;
+    row-gap: 0;
   }
 }
 
-/* The logo link is a target too: at least 24 px everywhere (WCAG 2.5.8), 40 px on touch below. */
+/* At least 24 px everywhere (WCAG 2.5.8), 40 px on touch below: the logo link, disclosures, checkboxes. */
 .ak-header__brand {
+  min-height: 24px;
+}
+summary {
+  padding-block: 3px;
+}
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+}
+label:has(> input[type="checkbox"]) {
   min-height: 24px;
 }
 
@@ -70,9 +64,5 @@
   }
   label:has(> input[type="checkbox"]) {
     min-height: 40px;
-  }
-  input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
   }
 }
