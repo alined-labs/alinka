@@ -330,7 +330,11 @@ def test_r15_words(world, cfg, run, make_facts):
         ({"printed": {"doc_type": "Cotización"}}, "R16.doc_type"),
         ({"stamps": ("ANULADA",)}, "R16.stamp"),
         ({"printed": {"buyer_name": "Otra Empresa LLC", "buyer_tax_id": None}}, "R16.buyer"),
-        ({"printed": {"buyer_tax_id": "DEMO-00-0000000"}}, "R16.buyer"),
+        ({"printed": {"buyer_tax_id": "DEMO-00-0000000"}}, "R16.buyer_tax_id"),
+        (
+            {"printed": {"buyer_name": "Otra Empresa LLC", "buyer_tax_id": "XEXX010101000"}},
+            "R16.buyer",
+        ),
         ({"computed": {"total_minor": 0}}, "R16.non_positive"),
         ({"computed": {"issue_date": date(2026, 10, 18)}}, "R16.future_issue"),
     ],
@@ -347,3 +351,8 @@ def test_r16_spanish_documents_pass(world, cfg, run, make_facts):
 
 def test_received_dates_are_aware(make_facts):
     assert make_facts(received=datetime(2026, 10, 2, tzinfo=UTC)).source.received_at.tzinfo
+
+
+def test_r16_accepts_the_cfdi_generic_foreign_rfc_with_the_payers_name(world, cfg, run, make_facts):
+    f = make_facts(printed={"buyer_tax_id": "XEXX010101000"})
+    assert run("R16", world, cfg, f).outcome == Outcome.PASS
