@@ -27,7 +27,7 @@ from alinka.types import (
 from alinka.verify import checks
 from alinka.verify.dateorder import ambiguous_fields, date_order
 from alinka.verify.ground import ground
-from alinka.verify.jev import run_jev
+from alinka.verify.jev import JevResult, run_jev
 from alinka.verify.normalize import compute, detect_currency
 from alinka.world import load_rules, load_world
 
@@ -64,60 +64,119 @@ def facts_for_bytes(
     cache: ResponseCache | None = None,
     cfg: RulesConfig | None = None,
 ) -> tuple[InvoiceFacts, Ingested | None]:
-    cfg = cfg or load_rules()
-    cache = cache or get_cache()
-    channel = CHANNELS.get(suffix.lower(), Channel.IMAGE)
-    try:
-        doc = ingest_bytes(data, suffix)
-    except Exception as exc:  # noqa: BLE001 - an unreadable file escalates
-        source = Source(
-            invoice_id=invoice_id, doc_sha256=sha256_bytes(data), path=path,
-            channel=channel, received_at=received_at,
-        )  # fmt: skip
-        error = f"ingest: {type(exc).__name__}: {' '.join(str(exc).split())[:200]}"
-        return InvoiceFacts(
-            source=source, as_of=cfg.as_of, flags=Flags(extraction_error=error)
-        ), None
-
-    reader = read(doc, role="reader", cache=cache)
-    checker = read(doc, role="checker", cache=cache) if reader.error is None else None
-    printed, computed, verification = verify(doc, reader, checker, cfg)
-    jev = None
-    if reader.error is None:
-        money = checks.money_spans(doc, computed.currency)
-        jev = run_jev(doc, printed, computed, money, cache=cache)
-    if jev is not None:  # JEV can only raise the risk
-        verification = verification.model_copy(
-            update={
-                "jev": jev.answers,
-                "risk": round(1 - (1 - verification.risk) * (1 - jev.risk), 4),
-                "notes": verification.notes + jev.notes,
-            }
-        )
-    flags = Flags(
-        hidden_content=tuple(doc.hidden_content),
-        unicode_controls=tuple(doc.unicode_controls),
-        html_text_mismatch=doc.html_text_mismatch,
-        instructions=tuple(doc.instructions),
-        reader_instructions=reader.instructions_seen,
-        extraction_error=reader.error,
-    )
-    source = Source(
-        invoice_id=invoice_id,
-        doc_sha256=doc.doc_sha256,
-        path=path,
-        channel=doc.channel,
-        language=reader.language,
-        received_at=received_at,
-        pages=len(doc.pages),
-    )
-    calls = tuple(r.call for r in (reader, checker) if r is not None and r.call is not None)
-    calls += jev.calls if jev is not None else ()
-    facts = InvoiceFacts(
-        source=source, as_of=cfg.as_of, printed=printed, computed=computed, flags=flags,
-        verification=verification, calls=calls,
+    staged = Staged(
+        data, suffix, invoice_id=invoice_id, received_at=received_at, path=path,
+        cache=cache, cfg=cfg,
     )  # fmt: skip
-    return facts, doc
+    staged.ingest()
+    staged.read()
+    staged.check()
+    return staged.facts(), staged.doc
+
+
+class Staged:
+    """The same pipeline one stage at a time (ingest, read, check), so Probar can show
+    each stage as it finishes. `facts()` works after any stage."""
+
+    def __init__(
+        self,
+        data: bytes,
+        suffix: str,
+        *,
+        invoice_id: str,
+        received_at: datetime,
+        path: str | None = None,
+        cache: ResponseCache | None = None,
+        cfg: RulesConfig | None = None,
+    ) -> None:
+        self.data, self.suffix, self.path = data, suffix, path
+        self.invoice_id, self.received_at = invoice_id, received_at
+        self.cfg = cfg or load_rules()
+        self.cache = cache or get_cache()
+        self.doc: Ingested | None = None
+        self.error: str | None = None  # ingest or stage failure: R10 escalates
+        self.reader: Reading | None = None
+        self.checker: Reading | None = None
+        self.checked: tuple[Printed, Computed, Verification] | None = None
+        self.jev: JevResult | None = None
+
+    def ingest(self) -> None:
+        try:
+            self.doc = ingest_bytes(self.data, self.suffix)
+        except Exception as exc:  # noqa: BLE001 - an unreadable file escalates
+            self.error = f"ingest: {type(exc).__name__}: {' '.join(str(exc).split())[:200]}"
+
+    def read(self) -> None:
+        if self.doc is not None and self.error is None:
+            self.reader = read(self.doc, role="reader", cache=self.cache)
+
+    def check(self) -> None:
+        doc, reader = self.doc, self.reader
+        if doc is None or reader is None:
+            return
+        if reader.error is None:
+            self.checker = read(doc, role="checker", cache=self.cache)
+        printed, computed, verification = verify(doc, reader, self.checker, self.cfg)
+        if reader.error is None:
+            money = checks.money_spans(doc, computed.currency)
+            self.jev = run_jev(doc, printed, computed, money, cache=self.cache)
+        if self.jev is not None:  # JEV can only raise the risk
+            verification = verification.model_copy(
+                update={
+                    "jev": self.jev.answers,
+                    "risk": round(1 - (1 - verification.risk) * (1 - self.jev.risk), 4),
+                    "notes": verification.notes + self.jev.notes,
+                }
+            )
+        self.checked = printed, computed, verification
+
+    def fail(self, stage: str, exc: Exception) -> None:
+        """An unexpected failure in a stage: record it so the rules escalate."""
+        self.error = (
+            self.error or f"{stage}: {type(exc).__name__}: {' '.join(str(exc).split())[:200]}"
+        )
+
+    def facts(self) -> InvoiceFacts:
+        doc, reader = self.doc, self.reader
+        channel = doc.channel if doc else CHANNELS.get(self.suffix.lower(), Channel.IMAGE)
+        source = Source(
+            invoice_id=self.invoice_id,
+            doc_sha256=doc.doc_sha256 if doc else sha256_bytes(self.data),
+            path=self.path,
+            channel=channel,
+            language=reader.language if reader else None,
+            received_at=self.received_at,
+            pages=len(doc.pages) if doc else 0,
+        )
+        if doc is None:
+            return InvoiceFacts(
+                source=source, as_of=self.cfg.as_of, flags=Flags(extraction_error=self.error)
+            )
+        if self.checked is not None:
+            printed, computed, verification = self.checked
+        else:
+            printed, computed, verification = (
+                reader.printed if reader else Printed(),
+                Computed(),
+                Verification(),
+            )
+        error = self.error or (reader.error if reader else "read: not run")
+        flags = Flags(
+            hidden_content=tuple(doc.hidden_content),
+            unicode_controls=tuple(doc.unicode_controls),
+            html_text_mismatch=doc.html_text_mismatch,
+            instructions=tuple(doc.instructions),
+            reader_instructions=reader.instructions_seen if reader else (),
+            extraction_error=error,
+        )
+        calls = tuple(
+            r.call for r in (reader, self.checker) if r is not None and r.call is not None
+        )
+        calls += self.jev.calls if self.jev is not None else ()
+        return InvoiceFacts(
+            source=source, as_of=self.cfg.as_of, printed=printed, computed=computed,
+            flags=flags, verification=verification, calls=calls,
+        )  # fmt: skip
 
 
 @lru_cache(maxsize=1)

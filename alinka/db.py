@@ -12,10 +12,12 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+import time
 from collections.abc import Callable, Iterator
 from contextlib import contextmanager
 from dataclasses import asdict
 from pathlib import Path
+from typing import Any
 
 import psycopg
 import rfc8785
@@ -214,15 +216,23 @@ def as_duplicate(record: DecisionRecord, earlier: dict | None, by: str) -> Decis
 DecideFn = Callable[[list[LedgerEntry]], tuple[DecisionRecord, list[LedgerEntry]]]
 
 
-def record_decision(session_id: str, decide: DecideFn, conn: psycopg.Connection) -> DecisionRecord:
+def record_decision(
+    session_id: str,
+    decide: DecideFn,
+    conn: psycopg.Connection,
+    marks: list[float] | None = None,
+) -> DecisionRecord:
     """Decide one invoice in one transaction on `conn` and return the sealed record.
 
     `decide` gets the session's ledger and returns the record (chain fields are filled
-    here) and the ledger rows to write with it.
+    here) and the ledger rows to write with it. `marks`, when given, gets the
+    perf_counter times after deciding, after the ledger write and after the commit.
     """
+    mark = marks.append if marks is not None else (lambda _: None)
     with conn.transaction():
         lock_session(conn, session_id)
         record, rows = decide(read_ledger(conn, session_id))
+        mark(time.perf_counter())
         try:
             with conn.transaction():  # a savepoint, so a conflict leaves the outer one usable
                 for row in rows:
@@ -230,9 +240,11 @@ def record_decision(session_id: str, decide: DecideFn, conn: psycopg.Connection)
         except errors.UniqueViolation as exc:
             earlier = earliest_conflict(conn, session_id, rows)
             record = as_duplicate(record, earlier, exc.diag.constraint_name or "")
+        mark(time.perf_counter())
         seq, prev = head(conn, session_id)
         sealed = seal(record, session_id, seq + 1, prev)
         insert_record(conn, sealed)
+    mark(time.perf_counter())
     return sealed
 
 
@@ -266,6 +278,12 @@ def chain_rows(conn: psycopg.Connection, session_id: str) -> list[tuple[int, str
         (session_id,),
     ).fetchall()
     return [(r["seq"], r["prev_hash"], r["hash"], bytes(r["canonical"])) for r in rows]
+
+
+def setting(conn: psycopg.Connection, key: str, default: Any = None) -> Any:
+    """A value from the settings table, read on every request so a switch needs no redeploy."""
+    row = conn.execute("SELECT value FROM settings WHERE key = %s", (key,)).fetchone()
+    return row["value"] if row else default
 
 
 def main(argv: list[str]) -> int:
