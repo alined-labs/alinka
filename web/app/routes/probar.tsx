@@ -11,13 +11,13 @@ import { useMotionOK } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import type { DoneEvent, TraceStep } from "~/lib/trace";
 import {
-  fetchSamples,
   HOLD_MS,
   KIND_ES,
   paced,
   pageUrl,
   type RunInput,
   type Sample,
+  samplesQuery,
   startTry,
   subscribe,
   TRY_MOCK,
@@ -166,7 +166,7 @@ function Dropzone({ limits, busy, onFile }: { limits: UploadLimits; busy: boolea
   );
 }
 
-const useSamples = () => useQuery({ queryKey: ["try-samples"], queryFn: fetchSamples, staleTime: 60_000 });
+const useSamples = () => useQuery(samplesQuery);
 
 /** The run's page images; their size comes from the image itself once it loads. */
 function usePages(run: Run | null): ViewerPage[] {
