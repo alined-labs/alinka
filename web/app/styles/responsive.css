@@ -25,6 +25,21 @@
   .ak-nav a {
     flex: none;
   }
+  /* A fade on each edge that still hides links (data-fade from useNavScroll). */
+  .ak-nav[data-fade="end"] {
+    mask-image: linear-gradient(to right, #000 85%, transparent);
+  }
+  .ak-nav[data-fade="start"] {
+    mask-image: linear-gradient(to left, #000 85%, transparent);
+  }
+  .ak-nav[data-fade="start end"] {
+    mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+  }
+}
+
+/* The logo link is a target too: at least 24 px everywhere (WCAG 2.5.8), 40 px on touch below. */
+.ak-header__brand {
+  min-height: 24px;
 }
 
 /* Every control at least 40 px where a finger aims, or on a narrow screen. */
