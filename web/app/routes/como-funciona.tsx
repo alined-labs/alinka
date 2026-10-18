@@ -4,54 +4,79 @@ export function meta() {
   return [{ title: "Cómo funciona · Alinka" }];
 }
 
+// Copy by Lane A (brain note A11), checked against evals/report.json after the date-order fix.
+
 const STEPS = [
   {
-    name: "Lee",
-    text: "Antes de que la IA vea un documento, el código busca contenido oculto: texto blanco o invisible, capas ocultas, caracteres Unicode invisibles o un correo cuyo HTML dice algo distinto al texto plano, y lo descarta. Claude Sonnet lee las imágenes de cada página y el texto visible, y devuelve cada dato con la cita exacta del documento. La IA no tiene herramientas ni ve las reglas, la lista de beneficiarios o el saldo.",
+    name: "Revisar antes de leer",
+    text: "Antes de que la IA vea el documento, el código busca lo que una persona no vería: texto blanco o invisible, capas ocultas, texto tapado, instrucciones en los metadatos, caracteres Unicode invisibles o un correo cuyo HTML dice algo distinto a su texto plano. Si encuentra algo, la factura queda Pendiente de aprobación con una alerta de seguridad.",
   },
   {
-    name: "Verifica",
-    text: "El código comprueba cada dato: la cita debe estar en la página (y se marca dónde), los montos y las fechas se normalizan, el monto en letras se compara con los números y las tasas de cambio salen de fuentes oficiales. Claude Haiku hace una segunda lectura independiente y JEV pregunta si el total o algún campo crítico se leyó mal. Si algo duda, la factura escala.",
+    name: "Leer con evidencia",
+    text: "Claude Sonnet lee las imágenes de cada página y el texto visible, sin herramientas y sin acceso a las reglas, a la lista de beneficiarios ni al registro. Devuelve cada dato (beneficiario, identificación, número, moneda, total, fecha de pago y más) con la cita exacta del documento. Claude Haiku hace una segunda lectura independiente. Si el documento trae instrucciones dirigidas a un sistema, la IA las reporta y no las sigue.",
   },
   {
-    name: "Decide",
-    text: "Dieciséis reglas deterministas deciden: beneficiario autorizado, moneda y país, duplicados, lo pactado, tope por pago, umbral de aprobación, tope mensual, saldo y presupuesto, fecha de pago, lectura confiable, contenido oculto, cuenta bancaria, fraccionamiento, frecuencia, monto en letras y documento pagable. Solo el código de las reglas puede marcar una factura como Pagada.",
+    name: "Verificar en código",
+    text: "La cita de cada dato debe aparecer en la página, y Alinka marca dónde. El código normaliza montos y fechas, convierte a dólares con la tasa oficial del día (TRM, FIX de Banxico, PTAX o BCE), lee el monto en letras y lo compara con los números, y confirma que el total cuadre. JEV pregunta de forma independiente si el total o algún campo crítico se leyó mal. Cualquier duda sube el riesgo de la lectura.",
   },
   {
-    name: "Registra",
-    text: "Cada decisión queda en un registro encadenado con hashes, con el motivo en español, las reglas que se activaron y los valores que usaron. La cadena se puede verificar y exportar a CSV para conciliar.",
+    name: "Decidir con reglas y registrar",
+    text: "Dieciséis reglas deterministas revisan beneficiario autorizado, moneda y país, duplicados, lo pactado, tope por pago, umbral de aprobación, tope mensual, saldo y presupuesto, fecha de pago, lectura confiable, contenido oculto, cuenta bancaria, fraccionamiento, frecuencia, monto en letras y documento pagable. Frenada gana sobre Pendiente de aprobación, y Pendiente de aprobación gana sobre Pagada. Cada decisión se guarda en un registro encadenado con hashes, con el motivo en español, las reglas que se activaron y los valores que usaron.",
   },
 ];
 
 const GUARANTEES = [
   {
-    title: "Solo las reglas aprueban",
-    text: "El modelo lee y nunca decide. Un modelo o un verificador solo pueden volver una decisión más cautelosa, nunca aprobarla.",
+    title: "Solo las reglas aprueban un pago.",
+    text: "Un error del modelo cuesta una revisión, nunca un pago. Una factura es Pagada solo si cumple las 16 reglas.",
   },
   {
-    title: "La cuenta de pago sale de la lista",
-    text: "Se paga siempre a la cuenta registrada en la lista de beneficiarios, nunca a la que trae el documento. Un «cambiamos de cuenta» o una instrucción oculta no puede desviar dinero: escala con alerta de seguridad.",
+    title: "La cuenta de pago sale de la lista de beneficiarios, nunca del documento.",
+    text: "Un correo de «cambiamos de cuenta» o un texto oculto no puede desviar el dinero.",
   },
   {
-    title: "Cualquier duda escala",
-    text: "Un error, una negativa, una lectura incompleta o un dato sin cita se convierte en «Pendiente de aprobación». Lo decide una persona, con su nombre en el registro.",
+    title: "Toda duda pasa a una persona.",
+    text: "Un error técnico, una lectura incompleta, una respuesta truncada o un riesgo alto deja la factura Pendiente de aprobación.",
   },
   {
-    title: "El texto del documento nunca se ve como interfaz",
-    text: "Lo que viene de un documento se muestra siempre citado y escapado, en el estilo «Texto del documento», para que nadie confunda una instrucción escrita en una factura con un mensaje del sistema.",
+    title: "Las aprobaciones tienen límites.",
+    text: "Quien aprueba deja su nombre. Al aprobar, Alinka vuelve a revisar duplicados, tope por pago, tope mensual, saldo y presupuesto. Nadie puede aprobar una posible suplantación ni una cuenta bancaria distinta a la registrada.",
   },
   {
-    title: "Nada se reescribe en silencio",
-    text: "Cada registro incluye el hash del anterior: cambiar un solo byte rompe la cadena y «Verificar cadena» lo detecta.",
+    title: "Cada motivo se puede leer y comprobar.",
+    text: "El motivo nombra la regla y los valores, por ejemplo: «Pendiente de aprobación: 2.400,00 USD supera el umbral de aprobación de 2.000 USD (R06)». Con «Verificar cadena» se comprueba que nadie alteró el registro, y el registro se exporta a CSV para conciliar.",
+  },
+  {
+    title: "La seguridad se mide.",
+    text: "En 175 facturas ficticias, 0 de 85 facturas que no debían pagarse se pagaron (cota superior del 95%: 3,5%), y los 13 ataques que debían levantar una alerta de seguridad la levantaron.",
   },
 ];
 
 const LIMITS = [
-  "Los datos son 100% ficticios: la empresa, los beneficiarios, las cuentas y los documentos.",
-  "No mueve dinero ni se conecta con plataformas de pago: muestra lo que se pagaría y a qué cuenta.",
-  "No toma decisiones de fraude ni de cumplimiento: las alertas las resuelve una persona.",
-  "No verifica identidades; confía en la lista de beneficiarios que mantiene la empresa.",
-  "Las tasas de cambio son las oficiales publicadas en la fecha de corte, no tasas en tiempo real.",
+  {
+    title: "No mueve dinero.",
+    text: "«Pagada» significa que las reglas permiten el pago. No hay conexión con bancos, Blinka, un ERP ni autoridades tributarias.",
+  },
+  {
+    title: "Usa datos 100% ficticios.",
+    text: "La empresa pagadora, los 13 beneficiarios, sus contratos, cuentas y las 175 facturas son inventados. Las cifras miden el comportamiento con estas trampas, no con proveedores reales.",
+  },
+  {
+    title: "No da veredictos de fraude ni de cumplimiento.",
+    text: "Las alertas señalan riesgo y una persona decide. No valida facturas electrónicas ante la autoridad (CFDI, DIAN, NFS-e) ni calcula retenciones.",
+  },
+  {
+    title: "Lee peor las fotos.",
+    text: "En imágenes acierta el 87,6% de los campos, frente al 99,8% en PDF. Cuando una lectura es débil, la factura queda Pendiente de aprobación en vez de pagarse.",
+  },
+  {
+    title: "Es una demo sin inicio de sesión.",
+    text: "Cada visitante tiene un espacio de prueba por 24 horas. Las aprobaciones piden un nombre, pero nadie se autentica.",
+  },
+  {
+    title: "Lee con respuestas grabadas.",
+    text: "La demo y la evaluación reproducen lecturas ya grabadas. La carga de documentos nuevos está apagada.",
+  },
 ];
 
 export default function ComoFunciona() {
@@ -59,19 +84,19 @@ export default function ComoFunciona() {
     <div className="max-w-3xl space-y-8">
       <header className="space-y-2">
         <h1 className="ak-h1">Cómo funciona</h1>
-        <p className="text-lead">La IA lee, las reglas deciden, el registro explica.</p>
+        <h2 className="ak-h2">La IA lee, las reglas deciden, el registro explica</h2>
         <p className="ak-muted">
-          Alinka es un agente de cuentas por pagar para una empresa en EE. UU. que paga a equipos, contratistas y proveedores en
-          Latinoamérica. Recibe facturas y cuentas de cobro por correo, PDF, imagen o chat; paga solo lo que cumple las reglas
-          de la empresa, frena o escala todo lo demás y deja un registro que cualquiera entiende.
+          Alinka paga facturas sin dejar que un modelo de IA mueva el dinero. La IA solo lee el documento. Dieciséis reglas
+          escritas en código deciden si se paga, se frena o pasa a una persona. Cada decisión queda en un registro que cualquiera
+          entiende sin abrir el código.
         </p>
       </header>
 
       <section aria-labelledby="pasos" className="ak-stack">
         <h2 id="pasos" className="ak-h2">
-          El recorrido de una factura
+          El recorrido de una factura, en cuatro pasos
         </h2>
-        <ol className="ak-steps" aria-label="Pasos">
+        <ol className="ak-steps flex-wrap" aria-label="Pasos">
           {STEPS.map((s) => (
             <li key={s.name}>{s.name}</li>
           ))}
@@ -80,7 +105,7 @@ export default function ComoFunciona() {
           {STEPS.map((s, i) => (
             <li key={s.name} className="grid gap-1">
               <strong>
-                {i + 1}. {s.name}
+                {i + 1}. {s.name}.
               </strong>
               <p className="ak-muted m-0">{s.text}</p>
             </li>
@@ -110,7 +135,7 @@ export default function ComoFunciona() {
 
       <section aria-labelledby="garantias" className="ak-stack">
         <h2 id="garantias" className="ak-h2">
-          Garantías
+          Lo que Alinka garantiza
         </h2>
         {GUARANTEES.map((g) => (
           <div key={g.title} className="ak-sec-box">
@@ -123,12 +148,12 @@ export default function ComoFunciona() {
 
       <section aria-labelledby="limites" className="ak-stack">
         <h2 id="limites" className="ak-h2">
-          Límites
+          Lo que Alinka no hace
         </h2>
         <ul className="ak-stack list-disc pl-5">
           {LIMITS.map((l) => (
-            <li key={l} className="ak-muted">
-              {l}
+            <li key={l.title}>
+              <strong>{l.title}</strong> <span className="ak-muted">{l.text}</span>
             </li>
           ))}
         </ul>
