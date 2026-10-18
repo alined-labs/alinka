@@ -4,7 +4,7 @@
 !.env.example
 
 # batch outputs (runs worth keeping are copied to data/runs/ by Lane C)
-runs/
+/runs/
 
 # Python
 __pycache__/
