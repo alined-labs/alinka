@@ -1,0 +1,46 @@
+test: 4
+layer: playwright
+title: Un beneficiario fuera de la lista queda Pendiente (R01) sin botón de aprobar; agregarlo en Reglas
+  lo re-decide
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+  before:
+    invoice_id: OCT-11
+    path: data/showcase/OCT-11.txt
+    decision: ESCALATE
+    state_es: Pendiente de aprobación
+    rules:
+    - R01
+    approve_button: false
+  action:
+    POST /api/beneficiaries:
+      name: Laura Cifuentes Rojas
+      tax_id: DEMO-CC-1098765432
+      country: CO
+      currency: COP
+      account_on_file: Banco Ficticio Andino · Ahorros DEMO-0012-9904-77
+      doc_types:
+      - cuenta_de_cobro
+      contract:
+        scope_es:
+        - redacción
+        - artículos
+        - centro de ayuda
+        scope_en:
+        - writing
+        - help center articles
+        rate_minor: 240000000
+        tolerance_pct: 5
+        frequency: per_delivery
+        valid_from: '2026-10-01'
+        valid_to: '2026-12-31'
+        cost_center: design
+  after:
+    invoice_id: OCT-11
+    decision: PAY
+    state_es: Pagada
+    note: design budget covers it; operations would not

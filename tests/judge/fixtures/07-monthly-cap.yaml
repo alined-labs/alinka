@@ -1,0 +1,22 @@
+test: 7
+layer: api
+title: Pasar el tope mensual queda Frenada (R07)
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+setup:
+  PUT /api/rules:
+    monthly_cap_usd: 3000
+expected:
+  pays:
+  - OCT-01
+  - OCT-02
+  - OCT-03
+  first_held:
+    invoice_id: OCT-04
+    decision: HOLD
+    state_es: Frenada
+    fired_includes: R07
+  why: OCT-01..03 spend 2,876.48 USD at the published TRM; OCT-04 adds 1,637.96

@@ -1,0 +1,31 @@
+test: 6
+layer: api
+title: Un monto sobre el tope por pago queda Frenada (R05) y no se puede aprobar
+input:
+  split: generated
+  episodes:
+  - GEN-054
+  - GEN-064
+expected:
+- invoice_id: GEN-054-1
+  path: data/generated/GEN-054-1.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R04
+  - R05
+  - R06
+  - R13
+  fired_includes: R05
+  approvable: false
+- invoice_id: GEN-064-1
+  path: data/generated/GEN-064-1.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R04
+  - R05
+  - R06
+  - R13
+  fired_includes: R05
+  approvable: false

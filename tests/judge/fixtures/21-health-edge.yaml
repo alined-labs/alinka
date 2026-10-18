@@ -1,0 +1,8 @@
+test: 21
+layer: api
+title: /api/health responde por el Worker; llamar la URL de Azure sin el secreto del edge es rechazado
+input:
+  none: no dataset input
+expected:
+  GET /api/health via Worker: 200
+  GET /api/board on Azure without X-Edge-Secret: refused (401 or 403)

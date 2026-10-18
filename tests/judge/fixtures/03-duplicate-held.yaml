@@ -1,0 +1,25 @@
+test: 3
+layer: api
+title: Un cobro duplicado queda Frenada (R03) y cita la factura anterior
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+- invoice_id: OCT-20
+  path: data/showcase/OCT-20.txt
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R03
+  cites: OCT-10
+  cites_number: CC-2026-14
+- invoice_id: OCT-12
+  path: data/showcase/OCT-12.pdf
+  decision: HOLD
+  state_es: Frenada
+  rules:
+  - R03
+  cites: OCT-07
+  note: new folio, same CFDI UUID

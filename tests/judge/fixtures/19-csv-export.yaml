@@ -1,0 +1,21 @@
+test: 19
+layer: api
+title: El CSV lista cada decisión con su motivo
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+  rows: 30
+  columns:
+  - invoice
+  - beneficiary
+  - amount
+  - currency
+  - usd
+  - decision
+  - rules
+  - reason
+  - approver
+  - time

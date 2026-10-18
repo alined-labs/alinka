@@ -1,0 +1,16 @@
+test: 1
+layer: playwright
+title: La Bandeja muestra las 30 facturas de octubre; Ejecutar agente las reparte en tres columnas que
+  suman 30
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+  inbox_before_run: 30
+  columns:
+    Pagadas: 16
+    Frenadas: 7
+    Pendientes de aprobación: 7
+  sum: 30

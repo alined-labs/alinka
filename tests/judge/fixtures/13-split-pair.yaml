@@ -1,0 +1,19 @@
+test: 13
+layer: api
+title: Un par fraccionado escala (R13)
+input:
+  split: attack
+  episodes:
+  - ATK-15
+  order: received_at
+expected:
+- invoice_id: ATK-15-1
+  path: data/adversarial/ATK-15-1.pdf
+  decision: PAY
+  state_es: Pagada
+- invoice_id: ATK-15-2
+  path: data/adversarial/ATK-15-2.jpg
+  decision: ESCALATE
+  state_es: Pendiente de aprobación
+  rules:
+  - R13

@@ -1,0 +1,12 @@
+test: 18
+layer: playwright+cli
+title: Verificar cadena dice OK; cambiar un byte almacenado hace fallar alinka verify
+input:
+  split: showcase
+  labels: data/labels/showcase.jsonl
+  invoices: 30
+  order: received_at
+expected:
+  verify_before: OK
+  tamper: flip one byte of any stored record
+  verify_after: fails at that record
