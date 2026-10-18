@@ -266,3 +266,24 @@ def test_sandbox_work_never_touches_the_canonical_run(client, run):
     assert client.get("/api/log", params={"view": "canonical"}).json() == canon
     assert client.get("/api/log/verify", params={"view": "canonical"}).json()["ok"]
     assert client.get("/api/log/verify").json()["ok"]
+
+
+def test_02_every_card_reason_names_its_rule_and_values(client, run):
+    out = run(
+        invoice("J-01", "BEN-01"),  # Andes Diseño S.A.S.: the name must not be cut at "S.A.S."
+        invoice("J-02", "BEN-10", 150_000, day=2),
+        invoice("J-03", "BEN-12", 252_000, day=3),
+        invoice("J-04", "BEN-10", number="J-02-N", day=4),
+    )
+    board = client.get("/api/board", params={"view": "canonical"}).json()
+    cards = [c for col in board["columns"] for c in col["cards"]]
+    assert len(cards) == 4
+    for c in cards:
+        assert any(ch.isdigit() for ch in c["reason_es"]), c["reason_es"]
+        if c["determining_rule"]:
+            assert f"({c['determining_rule']})" in c["reason_es"], c["reason_es"]
+    for detail in out.values():
+        for rule in detail["rules"]:
+            assert rule["reason_es"].endswith(f"({rule['rule']})"), rule["reason_es"]
+    paid = next(c for c in cards if c["invoice_id"] == "J-01")
+    assert paid["state"] == "PAY" and "USD" in paid["reason_es"]

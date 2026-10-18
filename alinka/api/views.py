@@ -6,6 +6,7 @@ import re
 from collections.abc import Sequence
 
 from alinka.api.models import Board, Card, Column, FieldView, LogEntry, RuleView, View
+from alinka.audit.reasons import headline, sentence
 from alinka.decide.core import approval_blockers
 from alinka.rules import claimed
 from alinka.types import (
@@ -16,7 +17,6 @@ from alinka.types import (
     Decision,
     DecisionRecord,
     InvoiceFacts,
-    Outcome,
     Printed,
 )
 from alinka.world import World
@@ -72,12 +72,6 @@ def inbox_card(facts: InvoiceFacts, ben: Beneficiary | None) -> Card:
     return Card(**_base(facts, ben), state="inbox", state_es=INBOX_ES)
 
 
-def short_reason(reason_es: str) -> str:
-    """The first sentence of the reason, which already names the rule and its values."""
-    head, dot, _ = reason_es.partition(". ")
-    return head + "." if dot else reason_es
-
-
 def can_approve(record: DecisionRecord, view: View) -> bool:
     """Whether to show the approve button; the core decides again when it is pressed."""
     return (
@@ -88,8 +82,17 @@ def can_approve(record: DecisionRecord, view: View) -> bool:
     )
 
 
+def is_technical_error(record: DecisionRecord) -> bool:
+    """The pipeline failed (reading or deciding) and the invoice escalated for that reason."""
+    return record.facts.flags.extraction_error is not None or (
+        record.decision == Decision.ESCALATE and record.determining_rule is None
+    )
+
+
 def record_card(record: DecisionRecord, ben: Beneficiary | None, view: View) -> Card:
+    """One board card; its reason is the headline, which names the rule and its values."""
     det = record.determining_rule
+    technical = is_technical_error(record)
     return Card(
         **_base(record.facts, ben),
         state=record.decision.value,
@@ -97,11 +100,10 @@ def record_card(record: DecisionRecord, ben: Beneficiary | None, view: View) -> 
         determining_rule=det,
         determining_rule_es=RULE_NAMES_ES[det] if det else None,
         alerts=record.alerts,
-        reason_es=short_reason(record.reason_es),
+        reason_es=record.reason_es if technical else headline(record),
         approvable=can_approve(record, view),
         approver=record.human.approver if record.human else None,
-        technical_error=record.facts.flags.extraction_error is not None
-        or (record.decision == Decision.ESCALATE and det is None),
+        technical_error=technical,
     )
 
 
@@ -159,12 +161,6 @@ def field_views(printed: Printed) -> tuple[FieldView, ...]:
 def rule_views(record: DecisionRecord) -> tuple[RuleView, ...]:
     out = []
     for r in record.results:
-        if r.rule == record.determining_rule:
-            reason = record.reason_es
-        elif r.outcome == Outcome.PASS:
-            reason = f"{RULE_NAMES_ES[r.rule]}: cumple."
-        else:
-            reason = f"{RULE_NAMES_ES[r.rule]}: no cumple ({r.rule})."
         out.append(
             RuleView(
                 rule=r.rule,
@@ -173,7 +169,7 @@ def rule_views(record: DecisionRecord) -> tuple[RuleView, ...]:
                 security=r.security,
                 approvable=r.approvable,
                 values=r.values,
-                reason_es=reason,
+                reason_es=sentence(r),  # names the rule in words and cites its values
             )
         )
     return tuple(out)

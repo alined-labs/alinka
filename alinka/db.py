@@ -23,7 +23,9 @@ from psycopg import errors
 from psycopg.rows import dict_row
 from psycopg_pool import ConnectionPool
 
+from alinka.audit.reasons import reason_es
 from alinka.decide.ledger import LedgerEntry, Status
+from alinka.money import format_minor
 from alinka.settings import get_settings
 from alinka.types import Decision, DecisionRecord, Outcome, RuleResult
 
@@ -172,33 +174,38 @@ def lock_session(conn: psycopg.Connection, session_id: str) -> None:
     conn.execute("SELECT pg_advisory_xact_lock(hashtextextended(%s, 0))", (session_id,))
 
 
-def as_duplicate(record: DecisionRecord, earlier: dict | None) -> DecisionRecord:
-    """The record a ledger unique violation turns into: Frenada by R03, nothing to pay."""
-    number = record.facts.printed.invoice_number.value or record.invoice_id
-    values = {
-        "invoice_number": number,
+def as_duplicate(record: DecisionRecord, earlier: dict | None, by: str) -> DecisionRecord:
+    """The record a ledger unique violation turns into: Frenada by R03, nothing to pay.
+
+    `by` is the constraint that fired: the same number from the same beneficiary, or the
+    same document. The values feed Lane A's R03 templates, so the reason cites them.
+    """
+    printed = record.facts.printed
+    values: dict[str, str | None] = {
+        "invoice_number": printed.invoice_number.value or record.invoice_id,
+        "beneficiary": record.payment.beneficiary_name
+        if record.payment
+        else printed.beneficiary_name.value,
         "earlier_invoice": earlier["invoice_id"] if earlier else None,
         "earlier_status": earlier["status"] if earlier else None,
+        "earlier_date": earlier["decided"].isoformat() if earlier else None,
+        "earlier_amount": format_minor(earlier["amount_minor"], earlier["currency"])
+        if earlier
+        else None,
     }
+    key = "R03.duplicate_document" if by == "ledger_document_unique" else "R03.duplicate_number"
     results = tuple(
-        RuleResult(
-            rule="R03",
-            outcome=Outcome.HOLD,
-            values=values,
-            message_key="R03.ledger_conflict",
-        )
+        RuleResult(rule="R03", outcome=Outcome.HOLD, values=values, message_key=key)
         if r.rule == "R03"
         else r
         for r in record.results
     )
-    cited = f", igual que {earlier['invoice_id']}" if earlier else ""
-    reason = f"Frenada: factura duplicada (R03). {number} ya está en el libro de pagos{cited}."
     return record.model_copy(
         update={
             "decision": Decision.HOLD,
             "determining_rule": "R03",
             "results": results,
-            "reason_es": reason,
+            "reason_es": reason_es(Decision.HOLD, "R03", results, record.human),
             "payment": None,
         }
     )
@@ -220,8 +227,9 @@ def record_decision(session_id: str, decide: DecideFn, conn: psycopg.Connection)
             with conn.transaction():  # a savepoint, so a conflict leaves the outer one usable
                 for row in rows:
                     insert_ledger(conn, session_id, row)
-        except errors.UniqueViolation:
-            record = as_duplicate(record, earliest_conflict(conn, session_id, rows))
+        except errors.UniqueViolation as exc:
+            earlier = earliest_conflict(conn, session_id, rows)
+            record = as_duplicate(record, earlier, exc.diag.constraint_name or "")
         seq, prev = head(conn, session_id)
         sealed = seal(record, session_id, seq + 1, prev)
         insert_record(conn, sealed)
@@ -231,7 +239,8 @@ def record_decision(session_id: str, decide: DecideFn, conn: psycopg.Connection)
 def earliest_conflict(conn: psycopg.Connection, session_id: str, rows: list[LedgerEntry]):
     for row in rows:
         hit = conn.execute(
-            "SELECT invoice_id, status FROM ledger WHERE session_id = %s AND (doc_sha256 = %s"
+            "SELECT invoice_id, status, decided, amount_minor, currency FROM ledger"
+            " WHERE session_id = %s AND (doc_sha256 = %s"
             " OR (beneficiary_id = %s AND invoice_number_norm = %s)) ORDER BY id LIMIT 1",
             (session_id, row.doc_sha256, row.beneficiary_id, row.invoice_number_norm),
         ).fetchone()
