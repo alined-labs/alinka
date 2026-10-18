@@ -19,7 +19,8 @@ function Hash({ value, label }: { value: string | null | undefined; label: strin
   return (
     <span className="ak-hash" title={`${label}: ${value}`}>
       <Link2 aria-hidden className="ak-icon" />
-      {value.slice(0, 10)}
+      <span aria-hidden className="lg:hidden">{value.slice(0, 6)}…</span>
+      <span aria-hidden className="max-lg:hidden">{value.slice(0, 10)}</span>
       <span className="ak-sr">
         {label}: {value}
       </span>
@@ -105,10 +106,16 @@ export default function Registro() {
           <p className="text-small text-ink-muted">
             {log.data.entries.length} registros · último hash <Hash value={log.data.head_hash} label="Hash del último registro" />
           </p>
-          <div className="overflow-x-auto rounded-xl border border-line bg-surface">
+          {/* Below 1024 px the log scrolls in its own box; relative keeps the sr-only text inside it. */}
+          <div
+            className="relative overflow-x-auto rounded-xl border border-line bg-surface max-lg:max-h-[70vh] max-lg:overflow-y-auto"
+            tabIndex={0}
+            role="region"
+            aria-label="Registro encadenado"
+          >
             <table className="ak-log">
               <caption className="ak-sr">Registro encadenado de decisiones, en orden</caption>
-              <thead>
+              <thead className="sticky top-0 z-[1] bg-surface">
                 <tr>
                   <th scope="col">N.º</th>
                   <th scope="col">Factura</th>
@@ -137,7 +144,7 @@ export default function Registro() {
                         {e.determining_rule && <RuleChip rule={e.determining_rule} decision={e.decision} />}
                       </span>
                     </td>
-                    <td className="min-w-80">
+                    <td className="min-w-64">
                       <ReasonText text={e.reason_es} className="ak-muted" />
                     </td>
                     <td>{e.approver ?? <span className="ak-muted">—</span>}</td>
