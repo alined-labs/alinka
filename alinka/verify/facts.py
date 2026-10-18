@@ -146,7 +146,7 @@ class Staged:
             channel=channel,
             language=reader.language if reader else None,
             received_at=self.received_at,
-            pages=len(doc.pages) if doc else 0,
+            pages=len(doc.pages) if doc else int(channel is Channel.IMAGE),  # a photo is a page
         )
         if doc is None:
             return InvoiceFacts(
