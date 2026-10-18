@@ -53,6 +53,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
 const NAV = [
   { to: "/", label: "Tablero" },
+  { to: "/probar", label: "Probar" },
   { to: "/reglas", label: "Reglas" },
   { to: "/registro", label: "Registro" },
   { to: "/evaluacion", label: "Evaluación" },

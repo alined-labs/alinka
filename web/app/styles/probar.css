@@ -1,0 +1,21 @@
+/* Probar (routes/probar.tsx): the sample gallery and the run's two columns. Tokens only. */
+
+.probar-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); gap: var(--space-3); }
+.probar-thumb { display: block; width: 100%; height: 132px; object-fit: cover; object-position: top; background: var(--doc-paper); border: 1px solid var(--line); }
+.probar-thumb--none { display: grid; place-items: center; background: var(--desk); color: var(--ink-muted); }
+.probar-thumb--none .ak-icon { width: 28px; height: 28px; }
+
+/* The sample's kind: outlined, never a decision colour; Ataque is drawn like a security tag. */
+.probar-kind { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border: 1px solid var(--line-strong); border-radius: var(--radius-pill); color: var(--ink-muted); font: 600 12px/1 var(--font-sans); white-space: nowrap; }
+.probar-kind--trap { border-style: dashed; color: var(--ink); }
+.probar-kind--attack { border: 1.5px solid var(--ink); color: var(--ink); font-weight: 700; }
+
+.probar-run { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-4); align-items: start; }
+.probar-run .ak-detail__doc { padding: var(--space-4); position: sticky; top: var(--space-4); }
+@media (max-width: 1024px) {
+  .probar-run { grid-template-columns: minmax(0, 1fr); }
+  .probar-run .ak-detail__doc { position: static; }
+}
+@media (max-width: 640px) {
+  .probar-run .ak-detail__doc { padding: var(--space-2); }
+}
