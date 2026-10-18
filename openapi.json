@@ -73,7 +73,7 @@
     "/api/run": {
       "post": {
         "summary": "Run Agent",
-        "description": "Ejecutar agente: decide the sandbox's inbox in received order.",
+        "description": "Ejecutar agente: decide the sandbox's inbox in received order from the recorded facts.",
         "operationId": "run_agent_api_run_post",
         "responses": {
           "200": {
@@ -281,6 +281,7 @@
       },
       "put": {
         "summary": "Put Rules",
+        "description": "Save the sandbox's rules (range-checked) and re-decide the sandbox.",
         "operationId": "put_rules_api_rules_put",
         "requestBody": {
           "required": true,
@@ -319,6 +320,7 @@
     "/api/beneficiaries": {
       "post": {
         "summary": "Add Beneficiary",
+        "description": "Add a beneficiary to the sandbox's list (the way out of R01), then re-decide.",
         "operationId": "add_beneficiary_api_beneficiaries_post",
         "requestBody": {
           "content": {
@@ -505,6 +507,7 @@
     "/api/sandbox/reset": {
       "post": {
         "summary": "Reset",
+        "description": "A fresh sandbox, copied from the canonical run, under the same cookie.",
         "operationId": "reset_api_sandbox_reset_post",
         "responses": {
           "200": {
@@ -569,6 +572,7 @@
     "/api/log/verify": {
       "get": {
         "summary": "Verify Log",
+        "description": "Verificar cadena: recompute every hash from the stored canonical bytes.",
         "operationId": "verify_log_api_log_verify_get",
         "parameters": [
           {
