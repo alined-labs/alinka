@@ -4,7 +4,7 @@ packages:
   - edge
 # Refuse package versions published in the last 3 days (minutes).
 minimumReleaseAge: 4320
-# Install scripts are blocked except for these.
-onlyBuiltDependencies:
-  - esbuild
-  - workerd
+# Install scripts are blocked except for these (pnpm 11+ replaced onlyBuiltDependencies).
+allowBuilds:
+  esbuild: true
+  workerd: true
