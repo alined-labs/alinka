@@ -1,18 +1,20 @@
 """alinka/trace.py against the Probar contract, on stored readings: OCT-01 (routine),
-OCT-16 (near the approval threshold) and ATK-01-1 (hidden white text)."""
+OCT-16 (near the approval threshold), ATK-01-1 (hidden white text) and the whole month."""
 
 from __future__ import annotations
 
+from datetime import UTC, datetime
 from pathlib import Path
 
 import pytest
 from pydantic import ValidationError
 
 from alinka import trace
+from alinka.api import engine
 from alinka.decide import core
 from alinka.decide.ledger import MemoryLedger
 from alinka.trace import STEPS, TraceStep, build_trace
-from alinka.types import RULE_IDS, Flags, Printed, Verification
+from alinka.types import RULE_IDS, Confidence, Decision, Flags, Outcome, Printed, Verification
 from alinka.world import load_run_dir
 
 RUNS = Path(__file__).parents[3] / "data" / "runs"
@@ -136,3 +138,80 @@ def test_running_step_and_strict_model():
         TraceStep(step="read", status="done", title_es="x", summary_es="y", extra=1)
     with pytest.raises(ValidationError):
         step.status = "done"  # frozen
+
+
+def consistent(rec) -> list[str]:
+    """What a step may not say given the record's decision; empty when the trace agrees."""
+    steps = build_trace(rec)
+    by = {s.step: s for s in steps}
+    fired = {r.rule: r for r in rec.results if r.outcome != Outcome.PASS}
+    problems = [f"{s.step} error" for s in steps if s.status == "error"]
+    if tuple(s.step for s in steps) != STEPS or any(set(s.data) != KEYS[s.step] for s in steps):
+        problems.append("shape")
+    if by["decide"].data["decision"] != rec.decision.value:
+        problems.append("decision")
+    if (rec.decision == Decision.PAY) != (by["rules"].status == "done") and rec.human is None:
+        problems.append("rules status")
+    if "R10" in fired and by["verify"].status == "done" and by["read"].status != "error":
+        problems.append("R10 fired, verify done")
+    if "R11" in fired and by["sanitize"].status == by["read"].status == "done":
+        problems.append("R11 fired, nothing flagged")
+    if by["sanitize"].status == "flagged" and "R11" not in fired:
+        problems.append("sanitize flagged, R11 passed")
+    return problems
+
+
+def test_every_record_of_the_canonical_month_traces(records):
+    month = [r for i, r in records.items() if i.startswith("OCT-")]
+    assert len(month) == 30
+    assert {i: p for r in month if (p := consistent(r)) for i in [r.invoice_id]} == {}
+    decisions = {r.decision for r in month}
+    assert decisions == {Decision.PAY, Decision.HOLD, Decision.ESCALATE}
+
+
+def test_human_actions_and_engine_errors_trace(records, world, cfg):
+    def fresh():
+        session = core.Session(id="h", world=world, cfg=cfg, ledger=MemoryLedger(), records=[])
+        return session, core.record_decision(session, records["OCT-16"].facts)
+
+    session, pending = fresh()
+    approved = core.approve(session, pending, "Ana Demo", None, datetime.now(UTC))
+    session, pending = fresh()
+    rejected = core.reject(session, pending, "Ana Demo", None, datetime.now(UTC))
+    assert build_trace(approved)[5].summary_es == (
+        "Pagada: aprobada por Ana Demo tras revisar de nuevo duplicados, topes, saldo y presupuesto"
+    )
+    assert build_trace(rejected)[5].summary_es == (
+        "Frenada: rechazada por Ana Demo; estaba pendiente por umbral de aprobación (R06)"
+    )
+    assert consistent(approved) == consistent(rejected) == []
+    failed = build_trace(engine._escalated(records["OCT-01"].facts, cfg))
+    assert (failed[4].status, failed[5].summary_es) == (
+        "error", "Pendiente de aprobación: error técnico al decidir",
+    )  # fmt: skip
+
+
+def test_missing_and_unsure_fields_flag_verification(records):
+    facts = records["OCT-01"].facts
+    p = facts.printed
+    unsure = p.model_copy(
+        update={"total": p.total.model_copy(update={"confidence": Confidence.MEDIUM})}
+    )
+    step = trace.verify(facts.model_copy(update={"printed": unsure}), risk_max=0.7)
+    assert step.status == "flagged" and "la IA no está segura de total" in step.summary_es
+    empty = facts.model_copy(update={"printed": Printed()})
+    assert trace.read(empty).summary_es == "La IA no encontró ningún dato en el documento"
+    step = trace.verify(empty, risk_max=0.7)
+    assert step.status == "flagged" and "faltan beneficiario, moneda y total" in step.summary_es
+    assert "segunda lectura" not in step.summary_es
+
+
+def test_build_trace_never_raises(records, monkeypatch):
+    def broken(*args, **kwargs):
+        raise RuntimeError("boom")
+
+    monkeypatch.setattr(trace, "verify", broken)
+    steps = build_trace(records["OCT-01"])
+    assert tuple(s.step for s in steps) == STEPS
+    assert (steps[3].status, steps[3].data) == ("error", {})
+    assert all(s.status == "done" for s in steps if s.step != "verify")
