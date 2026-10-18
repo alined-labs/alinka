@@ -19,6 +19,7 @@ import { Link } from "react-router";
 
 import type { Card } from "~/api/client";
 import { STATE_LABEL } from "~/lib/board";
+import { useMotionOK } from "~/lib/motion";
 import { useView } from "~/lib/view";
 
 import { CHANNEL, ChannelIcon, DecisionChip, ReasonText, RuleChip, SecurityTag } from "./badges";
@@ -37,10 +38,12 @@ const col = createColumnHelper<typeof features, Card>();
 
 function InvoiceLink({ id }: { id: string }) {
   const [view] = useView();
+  const motion = useMotionOK();
   return (
     <Link
       to={{ pathname: `/facturas/${encodeURIComponent(id)}`, search: view === "canonical" ? "?vista=canonica" : "" }}
       className="font-mono whitespace-nowrap underline underline-offset-2"
+      viewTransition={motion}
     >
       {id}
     </Link>

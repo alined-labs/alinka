@@ -29,11 +29,17 @@ const APP_LD = {
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 };
 
+/**
+ * The SoftwareApplication JSON-LD, the same on every page. root.tsx writes it once in <head>:
+ * as a route meta tag React would re-create the <script> on each navigation and warn.
+ */
+export const JSON_LD = JSON.stringify(APP_LD).replace(/</g, "\\u003c");
+
 type Page = { path: string; title?: string; description?: string };
 
 /**
  * Every tag a page needs. A route's meta replaces its parent's, so each route returns the
- * full set from here: title, description, canonical, Open Graph, Twitter and JSON-LD.
+ * full set from here: title, description, canonical, Open Graph and Twitter.
  */
 export function seo({ path, title, description = DESCRIPTION }: Page): MetaDescriptor[] {
   const fullTitle = title ? `${title} · ${SITE_NAME}` : `${SITE_NAME} · Cuentas por pagar con reglas y registro`;
@@ -57,6 +63,5 @@ export function seo({ path, title, description = DESCRIPTION }: Page): MetaDescr
     { name: "twitter:description", content: description },
     { name: "twitter:image", content: OG_IMAGE.url },
     { name: "twitter:image:alt", content: OG_IMAGE.alt },
-    { "script:ld+json": APP_LD },
   ];
 }

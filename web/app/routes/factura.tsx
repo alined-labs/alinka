@@ -24,7 +24,7 @@ import { PageViewer } from "~/components/page-viewer";
 import { STATE_LABEL } from "~/lib/board";
 import { type Detail, fieldChecks, type FieldView, orderRules, type RuleView } from "~/lib/detail";
 import { formatDateTime, formatMoney, formatUsd } from "~/lib/format";
-import { invoiceTransitionName, useTransitionedValue } from "~/lib/motion";
+import { invoiceTransitionName, useMotionOK, useTransitionedValue } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import { useView } from "~/lib/view";
 
@@ -59,6 +59,7 @@ export async function clientLoader({ params, request }: Route.ClientLoaderArgs) 
 export default function Factura() {
   const { invoiceId = "" } = useParams();
   const [view] = useView();
+  const motion = useMotionOK();
   const qc = useQueryClient();
   const detail = useQuery(detailQuery(view, invoiceId));
   // An approval or rejection changes the state: the chip morphs into its new decision.
@@ -67,7 +68,7 @@ export default function Factura() {
 
   return (
     <div className="space-y-4">
-      <Link to={back} className="ak-btn ak-btn--ghost ak-btn--sm">
+      <Link to={back} className="ak-btn ak-btn--ghost ak-btn--sm" viewTransition={motion}>
         <ArrowLeft aria-hidden className="ak-icon" />
         Volver al tablero
       </Link>
