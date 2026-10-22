@@ -1,6 +1,6 @@
 import { expect, type Page, test } from "@playwright/test";
 
-import { counts, runAgent } from "./helpers";
+import { BOARD, counts, runAgent } from "./helpers";
 
 /*
  * Every route at phone, tablet and desktop widths, with the board decided so the cards carry
@@ -12,13 +12,15 @@ import { counts, runAgent } from "./helpers";
 const WIDTHS = [360, 768, 1280];
 // Detail pages: a plain payment, and the longest reason on the board (a quote from the document).
 const DETAILS = ["/facturas/OCT-01", "/facturas/OCT-22"];
+// The showcase page in both languages: outside the app's navigation, so listed by hand.
+const SHOWCASE = ["/", "/en"];
 
 /** The routes in the main navigation, so a new screen is covered as soon as it is linked. */
 async function routes(page: Page): Promise<string[]> {
   const nav = page.getByRole("navigation", { name: "Principal" }).getByRole("link");
   await expect(nav.first()).toBeVisible();
   const hrefs = await nav.evaluateAll((links) => links.map((a) => new URL((a as HTMLAnchorElement).href).pathname));
-  return [...new Set([...hrefs, ...DETAILS])];
+  return [...new Set([...SHOWCASE, ...hrefs, ...DETAILS])];
 }
 
 /** How far the page itself scrolls sideways, in CSS pixels (0 when it doesn't). */
@@ -62,17 +64,17 @@ test.describe("sin View Transitions", () => {
 
     const nav = page.getByRole("navigation", { name: "Principal" });
     for (const path of await routes(page)) {
-      if (DETAILS.includes(path)) continue;
+      if (DETAILS.includes(path) || SHOWCASE.includes(path)) continue;
       await nav.locator(`a[href="${path}"]`).click();
-      await expect(page).toHaveURL(new RegExp(`${path === "/" ? "/$" : `${path}$`}`));
+      await expect(page).toHaveURL(new RegExp(`${path}$`));
       await expect(page.locator("h1").first(), path).toBeVisible();
     }
-    await page.goto("/");
+    await page.goto(BOARD);
     await page.getByRole("link", { name: /^Factura OCT-01:/ }).click();
     await expect(page).toHaveURL(/\/facturas\/OCT-01$/);
     await expect(page.locator("h1").first()).toBeVisible();
     await page.goBack();
-    await expect(page).toHaveURL(/\/$/);
+    await expect(page).toHaveURL(/\/tablero$/);
     expect(errors).toEqual([]);
   });
 });

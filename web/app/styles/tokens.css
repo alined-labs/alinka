@@ -91,3 +91,24 @@
   --doc-paper: #FFFFFF;
   --doc-ink: #1C253A;
 }
+
+/*
+  Showcase page tokens: the Hallmark-designed landing at / and /en (styles/showcase.css),
+  added on 2026-10-22. The app screens do not use them. Sizes are fluid with clamp(), so
+  the page keeps its proportions from a 320 px phone to a wide desktop.
+*/
+:root {
+  --page-max: 72rem;
+  --page-gutter: clamp(16px, 4vw, 40px);
+  --space-16: 64px;
+  --space-24: 96px;
+  /* Five sizes in all: the hero figure, display, section heads, lead and body. */
+  --text-figure: clamp(7rem, 5rem + 12vw, 12rem);
+  --text-showcase-display: clamp(1.75rem, 1.35rem + 1.9vw, 2.9rem);
+  --text-showcase-section: clamp(1.5rem, 1.3rem + 0.9vw, 2rem);
+  --text-showcase-lead: 1.125rem;
+  --text-showcase-body: 1rem;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro: 60ms;
+  --dur-short: 220ms;
+}

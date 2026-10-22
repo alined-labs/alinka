@@ -13,7 +13,25 @@ export const OG_IMAGE = {
 };
 
 /** The public routes: prerendered at build time and listed in sitemap.xml. */
-export const PUBLIC_PATHS = ["/", "/probar", "/como-funciona", "/evaluacion", "/registro", "/reglas"] as const;
+export const PUBLIC_PATHS = [
+  "/",
+  "/en",
+  "/tablero",
+  "/probar",
+  "/como-funciona",
+  "/evaluacion",
+  "/registro",
+  "/reglas",
+] as const;
+
+/** The showcase page in each language, linked to each other with hreflang alternates. */
+const SHOWCASE_PATHS = { es: "/", en: "/en" } as const;
+
+/** Per-language defaults: the title a page gets without one of its own, and the Open Graph locale. */
+const LOCALES = {
+  es: { title: `${SITE_NAME} · Cuentas por pagar con reglas y registro`, og: "es_CO" },
+  en: { title: `${SITE_NAME} · Accounts payable with rules and a log`, og: "en_US" },
+} as const;
 
 const APP_LD = {
   "@context": "https://schema.org",
@@ -35,25 +53,48 @@ const APP_LD = {
  */
 export const JSON_LD = JSON.stringify(APP_LD).replace(/</g, "\\u003c");
 
-type Page = { path: string; title?: string; description?: string };
+type Page = {
+  path: string;
+  title?: string;
+  description?: string;
+  /** The page's language; Spanish unless it says otherwise (only /en does). */
+  lang?: keyof typeof LOCALES;
+  /** True on the showcase pages: adds hreflang links to both language versions. */
+  alternates?: boolean;
+};
 
 /**
  * Every tag a page needs. A route's meta replaces its parent's, so each route returns the
- * full set from here: title, description, canonical, Open Graph and Twitter.
+ * full set from here: title, description, canonical, Open Graph and Twitter, plus the hreflang
+ * alternates on the two showcase pages.
  */
-export function seo({ path, title, description = DESCRIPTION }: Page): MetaDescriptor[] {
-  const fullTitle = title ? `${title} · ${SITE_NAME}` : `${SITE_NAME} · Cuentas por pagar con reglas y registro`;
+export function seo({ path, title, description = DESCRIPTION, lang = "es", alternates = false }: Page): MetaDescriptor[] {
+  const locale = LOCALES[lang];
+  const fullTitle = title ? `${title} · ${SITE_NAME}` : locale.title;
   const url = `${SITE}${path}`;
+  const hreflang: MetaDescriptor[] = alternates
+    ? [
+        ...Object.entries(SHOWCASE_PATHS).map(([code, href]) => ({
+          tagName: "link" as const,
+          rel: "alternate",
+          hrefLang: code,
+          href: `${SITE}${href}`,
+        })),
+        { tagName: "link", rel: "alternate", hrefLang: "x-default", href: `${SITE}${SHOWCASE_PATHS.es}` },
+        { property: "og:locale:alternate", content: LOCALES[lang === "es" ? "en" : "es"].og },
+      ]
+    : [];
   return [
     { title: fullTitle },
     { name: "description", content: description },
     { tagName: "link", rel: "canonical", href: url },
+    ...hreflang,
     { property: "og:type", content: "website" },
     { property: "og:site_name", content: SITE_NAME },
     { property: "og:title", content: fullTitle },
     { property: "og:description", content: description },
     { property: "og:url", content: url },
-    { property: "og:locale", content: "es_CO" },
+    { property: "og:locale", content: locale.og },
     { property: "og:image", content: OG_IMAGE.url },
     { property: "og:image:width", content: String(OG_IMAGE.width) },
     { property: "og:image:height", content: String(OG_IMAGE.height) },

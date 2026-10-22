@@ -7,9 +7,11 @@ import { FIXTURES } from "./api/client";
 import { queryClient } from "./api/query";
 import { AlinkaLogo } from "./components/brand/AlinkaLogo";
 import { Segmented } from "./components/segmented";
+import { FROZEN } from "./lib/frozen";
+import { useRouteHandle } from "./lib/handle";
 import { useMotionOK } from "./lib/motion";
 import { JSON_LD, seo } from "./lib/seo";
-import { useView } from "./lib/view";
+import { BOARD_PATH, useView } from "./lib/view";
 import "./app.css";
 import "./styles/motion.css";
 import "./styles/responsive.css";
@@ -30,8 +32,10 @@ export const meta: Route.MetaFunction = () =>
   seo({ path: "/" }).filter((d) => !("rel" in d && d.rel === "canonical") && !("property" in d && d.property === "og:url"));
 
 export function Layout({ children }: { children: React.ReactNode }) {
+  // Spanish everywhere except /en, which says so through its route handle.
+  const { lang = "es" } = useRouteHandle();
   return (
-    <html lang="es">
+    <html lang={lang}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,7 +55,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 const NAV = [
-  { to: "/", label: "Tablero" },
+  { to: BOARD_PATH, label: "Tablero" },
   { to: "/probar", label: "Probar" },
   { to: "/reglas", label: "Reglas" },
   { to: "/registro", label: "Registro" },
@@ -68,12 +72,8 @@ function Shell({ children }: { children: React.ReactNode }) {
         Saltar al contenido
       </a>
       <header className="ak-header">
-        <NavLink
-          to={{ pathname: "/", search: view === "canonical" ? "?vista=canonica" : "" }}
-          className="ak-header__brand"
-          aria-label="Alinka, ir al tablero"
-          viewTransition={motion}
-        >
+        {/* The wordmark leads home to the showcase page; the board is the first nav link. */}
+        <NavLink to="/" className="ak-header__brand" aria-label="Alinka, ir al inicio" viewTransition={motion}>
           <AlinkaLogo />
         </NavLink>
         <nav aria-label="Principal" className="ak-nav">
@@ -107,6 +107,7 @@ function Shell({ children }: { children: React.ReactNode }) {
               ? "Estás viendo la ejecución canónica: es de solo lectura y la misma para todos."
               : "Estás en tu sandbox: tus cambios no tocan la ejecución canónica."}
             {FIXTURES && " Modo de muestras: respuestas de ejemplo, sin API."}
+            {FROZEN && " Demo congelada: la API se retiró el 22 de octubre de 2026 y el sitio reproduce sus respuestas grabadas."}
           </span>
         </p>
         {children}
@@ -121,11 +122,17 @@ function Shell({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  // The showcase pages (/ and /en) bring their own header and footer instead of the app's shell.
+  const { bare } = useRouteHandle();
   return (
     <QueryClientProvider client={queryClient}>
-      <Shell>
+      {bare ? (
         <Outlet />
-      </Shell>
+      ) : (
+        <Shell>
+          <Outlet />
+        </Shell>
+      )}
     </QueryClientProvider>
   );
 }

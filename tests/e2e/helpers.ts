@@ -39,6 +39,9 @@ export const COLUMN_DECISION: Record<string, "PAY" | "HOLD" | "ESCALATE"> = {
   "Pendientes de aprobación": "ESCALATE",
 };
 
+/** The Tablero's path (web/app/lib/view.ts BOARD_PATH): "/" has been the showcase page since 22 Oct 2026. */
+export const BOARD = "/tablero";
+
 export const count = (page: Page, state: string) => page.getByTestId(`count-${state}`);
 
 export async function counts(page: Page) {
@@ -60,7 +63,7 @@ export async function open(page: Page, path: string) {
 
 /** The sandbox board, decided: press "Ejecutar agente" and wait for the inbox to empty. */
 export async function runAgent(page: Page) {
-  await open(page, "/");
+  await open(page, BOARD);
   const run = page.getByRole("button", { name: "Ejecutar agente" });
   await expect(run).toBeEnabled();
   await run.click();

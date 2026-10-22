@@ -1,0 +1,461 @@
+/* Hallmark · macrostructure: Stat-Led · tone: technical · anchor hue: ink navy (--ink #1C253A), decision hues only inside the real screenshot
+ * genre: modern-minimal · theme: Alinka (preserved from web/DESIGN.md) · enrichment: real pitch video + real screenshots, no generated imagery · nav: N9 · footer: Ft5
+ * audience: recruiters, hiring managers and engineers · use: grasp Alinka in a minute, then open the demo, the code or the pitch
+ * H4 knobs: number=monospace, qualifier=below, secondary=none · F3 knobs: 3 columns (key/value/note), rules=every row, numbers=tabular
+ * F4 knobs: numbering=01/02/03, layout=2×2 beside its heading (stacked on phones), connector=rule above each step
+ * slop test: 58/58 · contrast: pass (40–41) · honest: pass (46) · chrome: pass (47) · tokens: pass (48) · responsive: pass (49) · mobile: pass (34, 49, 50–57)
+ * F5 knobs: callouts=numbered pins, frame=plain hairline, anchor=image-led · Ft5 knobs: width=28ch, wordmark=under sentence, rule=hairline
+ * motion: CTA hover lift only, off under reduced motion. The stat-led number reveal was cut on purpose:
+ *   a static capture (print, screenshot, reader mode) must never show a figure the evaluation did not measure.
+ */
+/* Hallmark · pre-emit critique: P5 H5 E4 S5 R5 V4 */
+
+/*
+ * The showcase page at / and /en (components/showcase.tsx). Every colour and font comes from
+ * Alinka's tokens (styles/tokens.css), so the page reads as the same product as the app screens
+ * behind it; the only new tokens are the page's type scale and spacing, added there too.
+ * Mobile first: base rules are for a 320 px phone, min-width queries add the wider layouts.
+ */
+
+/* The page never scrolls sideways; clip (not hidden) keeps sticky and focus behaviour intact. */
+html:has(.sc),
+body:has(.sc) {
+  overflow-x: clip;
+}
+
+@layer components {
+  .sc {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: var(--text-showcase-body);
+    line-height: 1.55;
+  }
+  .sc-wrap {
+    width: 100%;
+    max-width: var(--page-max);
+    margin-inline: auto;
+    padding-inline: var(--page-gutter);
+  }
+
+  /* N9 · edge-aligned: the wordmark hard left, the way in hard right, nothing between. */
+  .sc-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-4);
+  }
+  .sc-nav__brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    color: var(--ink);
+  }
+  .sc-nav__brand svg {
+    height: 22px;
+    width: auto;
+  }
+  .sc-nav__end {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .sc-nav .sc-cta {
+    padding-inline: var(--space-3);
+  }
+  .sc-nav__lang {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    color: var(--ink-muted);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+  }
+  .sc-nav__lang:hover {
+    color: var(--ink);
+  }
+
+  /* H4 · stat-led hero: the figure and its words are one heading; the proof sits beside it. */
+  .sc-hero {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: var(--space-12) var(--space-16);
+  }
+  .sc-hero__title {
+    display: grid;
+    gap: var(--space-3);
+    min-width: 0;
+    margin: 0;
+  }
+  .sc-hero__figure {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: var(--text-figure);
+    line-height: 0.82;
+    letter-spacing: -0.06em;
+    font-variant-numeric: tabular-nums;
+  }
+  .sc-hero__words {
+    max-width: 20ch;
+    font-size: var(--text-showcase-display);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+  }
+  .sc-hero__side {
+    display: grid;
+    gap: var(--space-4);
+    align-content: end;
+    max-width: 60ch;
+  }
+  .sc-hero__qualifier {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+  .sc-hero__lede {
+    margin: 0;
+    font-size: var(--text-showcase-lead);
+    line-height: 1.6;
+  }
+  .sc-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
+  }
+
+  /* Buttons keep the app's ak-btn voice; on the showcase they lift a pixel and a half on hover. */
+  .sc-cta {
+    white-space: nowrap;
+    transition:
+      transform var(--dur-short) var(--ease-out),
+      background-color var(--dur-short) var(--ease-out),
+      border-color var(--dur-short) var(--ease-out);
+  }
+  .sc-cta:active {
+    transform: translateY(0);
+    transition-duration: var(--dur-micro);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .sc-cta:hover {
+      transform: translateY(-1.5px);
+    }
+  }
+
+  /* C3 · typographic link: a word, an arrow and a 1 px underline that thickens on hover. */
+  .sc-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 40px;
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    white-space: nowrap;
+  }
+  .sc-link:hover {
+    text-decoration-thickness: 2px;
+  }
+  .sc-link:active,
+  .sc-nav__lang:active,
+  .sc-foot a:active {
+    color: var(--ink-muted);
+  }
+
+  /* Sections: a hairline above each, and uneven padding so the rhythm is not a template's. */
+  .sc-section {
+    padding-block-end: var(--space-16);
+  }
+  .sc-section::before,
+  .sc-foot::before {
+    content: "";
+    display: block;
+    grid-column: 1 / -1;
+    height: 1px;
+    background: var(--line);
+    margin-block-end: var(--space-16);
+  }
+  .sc-h2 {
+    min-width: 0;
+    margin: 0 0 var(--space-6);
+    font-size: var(--text-showcase-section);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    overflow-wrap: anywhere;
+  }
+
+  /* F3 · spec sheet as a description list: label, value and note per row, a rule under each. */
+  .sc-spec {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .sc-spec__row {
+    display: grid;
+    gap: var(--space-1);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--line);
+  }
+  .sc-spec__row:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .sc-spec dt {
+    color: var(--ink-muted);
+  }
+  .sc-spec dd {
+    margin: 0;
+  }
+  .sc-spec__value {
+    font-size: var(--text-showcase-lead);
+    font-weight: 700;
+  }
+  .sc-spec__note {
+    color: var(--ink-muted);
+  }
+  .sc-source {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 var(--space-4);
+    margin: var(--space-6) 0 0;
+    color: var(--ink-muted);
+  }
+
+  /* F4 · four numbered steps, each under a rule that reads as one line across the row. */
+  .sc-steps__head {
+    display: grid;
+    gap: var(--space-2);
+    align-content: start;
+  }
+  .sc-steps__list {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sc-step {
+    display: grid;
+    gap: var(--space-2);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line-strong);
+  }
+  .sc-step__n {
+    color: var(--ink-muted);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    font-variant-numeric: tabular-nums;
+  }
+  .sc-step__title {
+    margin: 0;
+    font-size: var(--text-showcase-lead);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  .sc-step__text {
+    margin: 0;
+    color: var(--ink-muted);
+  }
+
+  /* The pitch: the real video behind a hairline, with its poster until someone presses play. */
+  .sc-figure {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+    min-width: 0;
+    margin: 0;
+  }
+  .sc-video {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    background: var(--desk);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-container);
+  }
+  .sc-caption {
+    color: var(--ink-muted);
+  }
+
+  /* F5 · annotated screenshot: numbered pins on the capture, the same numbers in the legend. */
+  .sc-demo__head {
+    display: grid;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+  .sc-demo__text {
+    display: grid;
+    gap: var(--space-4);
+    justify-items: start;
+    max-width: 62ch;
+  }
+  .sc-demo__text p {
+    margin: 0;
+  }
+  .sc-shot__frame {
+    position: relative;
+    overflow: hidden;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-container);
+  }
+  .sc-shot__frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .sc-pin,
+  .sc-legend li::before {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: var(--radius-pill);
+    background: var(--ink);
+    color: var(--on-ink);
+    font-weight: 700;
+    line-height: 1;
+  }
+  .sc-pin {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    translate: -50% -50%;
+    box-shadow: 0 0 0 3px var(--paper);
+  }
+  .sc-legend {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: pin;
+  }
+  .sc-legend li {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    gap: var(--space-3);
+    align-items: start;
+    counter-increment: pin;
+  }
+  .sc-legend li::before {
+    content: counter(pin);
+  }
+
+  /* Ft5 · the closing line is the principle; the credits sit under a hairline in muted type. */
+  .sc-foot {
+    display: grid;
+    gap: var(--space-8);
+    padding-block: 0 var(--space-8);
+  }
+  .sc-foot__line {
+    min-width: 0;
+    max-width: 28ch;
+    margin: 0;
+    font-size: var(--text-showcase-display);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    overflow-wrap: anywhere;
+  }
+  .sc-foot__meta {
+    display: grid;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+    color: var(--ink-muted);
+  }
+  .sc-foot__logo {
+    height: 18px;
+    width: auto;
+    color: var(--ink);
+  }
+  .sc-foot__items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-6);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .sc-foot a {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+  }
+  .sc-foot a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  @media (min-width: 30rem) {
+    .sc-nav__end {
+      gap: var(--space-4);
+    }
+    .sc-nav .sc-cta {
+      padding-inline: var(--space-4);
+    }
+  }
+
+  /* 40 rem and up: the spec sheet becomes three columns, the legend three across. */
+  @media (min-width: 40rem) {
+    .sc-spec__row {
+      grid-template-columns: minmax(0, 15rem) minmax(0, 15rem) minmax(0, 1fr);
+      gap: var(--space-6);
+      align-items: baseline;
+    }
+    .sc-legend {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-6);
+    }
+    .sc-foot__meta {
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      column-gap: var(--space-8);
+    }
+  }
+
+  /* 60 rem and up: two-column hero (title left, proof right) and asymmetric section heads. */
+  @media (min-width: 60rem) {
+    .sc-hero {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+      align-items: end;
+      column-gap: var(--space-16);
+      padding-block: var(--space-16) var(--space-24);
+    }
+    .sc-steps {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+      column-gap: var(--space-16);
+    }
+    .sc-steps__list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--space-8);
+      row-gap: var(--space-12);
+    }
+    .sc-demo__head {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      column-gap: var(--space-16);
+      align-items: start;
+    }
+  }
+
+  /* Reduced motion: buttons stop lifting; the counters already skip in components/showcase.tsx. */
+  @media (prefers-reduced-motion: reduce) {
+    .sc-cta {
+      transition: none;
+    }
+    .sc-cta:hover {
+      transform: none;
+    }
+  }
+}

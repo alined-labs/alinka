@@ -4,7 +4,7 @@ import { join } from "node:path";
 
 import { expect, test } from "@playwright/test";
 
-import { card, COLUMN_DECISION, count, counts, fixture, open, runAgent, uv } from "./helpers";
+import { BOARD, card, COLUMN_DECISION, count, counts, fixture, open, runAgent, uv } from "./helpers";
 
 /*
  * PLAN section 9, the judge tests at the Playwright layer. Every expectation comes from the
@@ -13,7 +13,7 @@ import { card, COLUMN_DECISION, count, counts, fixture, open, runAgent, uv } fro
 
 test("1 · la Bandeja muestra las 30 facturas y Ejecutar agente las reparte en tres columnas", async ({ page }) => {
   const f = fixture("01");
-  await open(page, "/");
+  await open(page, BOARD);
   await expect(count(page, "inbox")).toHaveText(String(f.expected.inbox_before_run));
   await runAgent(page);
   const c = await counts(page);
@@ -145,7 +145,7 @@ test("17 · bajar el umbral mueve facturas a Pendientes; restablecer las restaur
   await page.getByRole("button", { name: "Guardar y volver a decidir" }).click();
   await expect(page.getByRole("status")).toContainText("Con este cambio");
 
-  await open(page, "/");
+  await open(page, BOARD);
   for (const id of f.expected.moves_to_pending as string[]) {
     await expect.soft(card(page, "ESCALATE", id), id).toHaveCount(1);
   }

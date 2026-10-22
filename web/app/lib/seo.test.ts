@@ -26,6 +26,21 @@ describe("seo", () => {
     expect(JSON.parse(JSON_LD)).toMatchObject({ "@type": "SoftwareApplication", url: `${SITE}/` });
   });
 
+  it("links the two showcase pages to each other and localizes the English one", () => {
+    const tags = seo({ path: "/en", lang: "en", alternates: true });
+    const alternates = tags.filter((t) => (t as Record<string, unknown>).rel === "alternate");
+    expect(alternates).toEqual([
+      { tagName: "link", rel: "alternate", hrefLang: "es", href: `${SITE}/` },
+      { tagName: "link", rel: "alternate", hrefLang: "en", href: `${SITE}/en` },
+      { tagName: "link", rel: "alternate", hrefLang: "x-default", href: `${SITE}/` },
+    ]);
+    expect(tags).toContainEqual({ property: "og:locale", content: "en_US" });
+    expect(tags).toContainEqual({ property: "og:locale:alternate", content: "es_CO" });
+    expect(tags).toContainEqual({ title: "Alinka · Accounts payable with rules and a log" });
+    // The app screens stay Spanish and carry no alternates.
+    expect(seo({ path: "/tablero", title: "Tablero" }).some((t) => (t as Record<string, unknown>).rel === "alternate")).toBe(false);
+  });
+
   it("lists every prerendered route in the sitemap, and nothing else", () => {
     const listed = [...read("sitemap.xml").matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]!.replace(SITE, ""));
     const prerendered = PUBLIC_PATHS.filter((p) => staticPaths.includes(p));

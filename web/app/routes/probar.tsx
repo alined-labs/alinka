@@ -7,6 +7,7 @@ import { ChannelIcon, CHANNEL } from "~/components/badges";
 import { PageViewer, type ViewerPage } from "~/components/page-viewer";
 import { PipelineFlow } from "~/components/pipeline-flow";
 import { TrySteps } from "~/components/try-steps";
+import { FROZEN } from "~/lib/frozen";
 import { useMotionOK } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import type { DoneEvent, TraceStep } from "~/lib/trace";
@@ -24,6 +25,7 @@ import {
   TryError,
   type UploadLimits,
 } from "~/lib/try";
+import { BOARD_PATH } from "~/lib/view";
 import "~/styles/probar.css";
 
 export function meta() {
@@ -278,9 +280,12 @@ export default function Probar() {
           )}
           {run.done && (
             <p className="ak-row" role="status">
-              <Link to={{ pathname: "/", search: "" }} className="ak-btn ak-btn--secondary" viewTransition={motion}>
-                Ver en el tablero
-              </Link>
+              {/* The frozen demo's board is a recording, so a sample's new card never reaches it. */}
+              {!FROZEN && (
+                <Link to={{ pathname: BOARD_PATH, search: "" }} className="ak-btn ak-btn--secondary" viewTransition={motion}>
+                  Ver en el tablero
+                </Link>
+              )}
               <Link to={run.done.href} className="ak-btn ak-btn--primary" viewTransition={motion}>
                 Ver el detalle
                 <ArrowRight aria-hidden className="ak-icon" />
