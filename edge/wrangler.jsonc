@@ -1,4 +1,6 @@
-// alinka-edge on alinka.alinedlabs.co (P5). Deploy with deploy/edge.sh, which builds web/ first.
+// alinka-edge on alinka.alinedlabs.co (P5): the built front end and the frozen API, both from
+// web/build/client (the API's recorded answers are its snapshot/ folder). Deploy with
+// deploy/edge.sh, which builds web/ first.
 {
   "name": "alinka-edge",
   "main": "src/index.ts",
@@ -6,19 +8,18 @@
   "assets": {
     "directory": "../web/build/client",
     "binding": "ASSETS",
-    // The API never falls through to a file; every other path tries the files first.
-    "run_worker_first": ["/api/*"],
+    // The API never falls through to a file, and /media/* goes through the Worker so the video
+    // can be read in byte ranges; every other path tries the files first.
+    "run_worker_first": ["/api/*", "/media/*"],
     // /como-funciona serves como-funciona/index.html (a prerendered page) without a redirect.
     "html_handling": "drop-trailing-slash",
     // Misses reach the Worker, which picks React Router's SPA fallback.
     "not_found_handling": "none"
   },
-  "vars": {
-    "API_ORIGIN": "https://alinka-api.salmonfield-cee7654d.eastus2.azurecontainerapps.io"
-  },
   "routes": [{ "pattern": "alinka.alinedlabs.co", "custom_domain": true }],
-  // Keeps Neon awake through judging (Neon suspends after 5 idle minutes); drop it afterwards.
-  "triggers": { "crons": ["*/4 * * * *"] },
+  // The keep-alive ping for Neon went with the database. An empty list removes the deployed
+  // cron on the next deploy; leaving "triggers" out would keep it running.
+  "triggers": { "crons": [] },
   "workers_dev": false,
   "preview_urls": false
 }

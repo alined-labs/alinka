@@ -1,0 +1,24 @@
+// Type-checks the Worker and its tests with the TypeScript web/ already installs; edge/ has no
+// package.json of its own, so nothing new to install:  pnpm --filter ./web exec tsc -p ../edge
+// Wrangler bundles src/index.ts with esbuild and never type-checks.
+{
+  "include": ["src"],
+  "compilerOptions": {
+    // fetch, Request, Response, URL and the streams, as the Workers runtime provides them.
+    "lib": ["ES2023", "DOM", "DOM.Iterable"],
+    // node:test and node:assert, for frozen.test.ts only.
+    "typeRoots": ["../web/node_modules/@types"],
+    "types": ["node"],
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    // The source imports "./frozen.ts", which both esbuild and Node's type stripping resolve.
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

@@ -1,0 +1,2343 @@
+{
+  "format": 1,
+  "about": "Recorded answers of the Alinka API, replayed by the frozen Worker (edge/src/frozen.ts). Written by web/scripts/snapshot.ts.",
+  "recorded_at": "2026-10-22T08:53:05Z",
+  "source": "https://alinka.alinedlabs.co",
+  "site_build_sha": null,
+  "api_version": "0.1.0",
+  "canonical_head": "5b5379070e12b29a8dcd4f70ec76df1e30248604c4a758be24b56c97cd77002b",
+  "page_scales": [
+    1,
+    2
+  ],
+  "responses": {
+    "decided GET /api/board?view=sandbox": {
+      "file": "board/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-01?view=sandbox": {
+      "file": "invoices/OCT-01/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-01/trace?view=sandbox": {
+      "file": "invoices/OCT-01/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-02?view=sandbox": {
+      "file": "invoices/OCT-02/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-02/trace?view=sandbox": {
+      "file": "invoices/OCT-02/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-03?view=sandbox": {
+      "file": "invoices/OCT-03/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-03/trace?view=sandbox": {
+      "file": "invoices/OCT-03/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-04?view=sandbox": {
+      "file": "invoices/OCT-04/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-04/trace?view=sandbox": {
+      "file": "invoices/OCT-04/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-05?view=sandbox": {
+      "file": "invoices/OCT-05/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-05/trace?view=sandbox": {
+      "file": "invoices/OCT-05/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-06?view=sandbox": {
+      "file": "invoices/OCT-06/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-06/trace?view=sandbox": {
+      "file": "invoices/OCT-06/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-07?view=sandbox": {
+      "file": "invoices/OCT-07/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-07/trace?view=sandbox": {
+      "file": "invoices/OCT-07/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-08?view=sandbox": {
+      "file": "invoices/OCT-08/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-08/trace?view=sandbox": {
+      "file": "invoices/OCT-08/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-09?view=sandbox": {
+      "file": "invoices/OCT-09/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-09/trace?view=sandbox": {
+      "file": "invoices/OCT-09/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-10?view=sandbox": {
+      "file": "invoices/OCT-10/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-10/trace?view=sandbox": {
+      "file": "invoices/OCT-10/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-11?view=sandbox": {
+      "file": "invoices/OCT-11/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-11/trace?view=sandbox": {
+      "file": "invoices/OCT-11/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-12?view=sandbox": {
+      "file": "invoices/OCT-12/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-12/trace?view=sandbox": {
+      "file": "invoices/OCT-12/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-13?view=sandbox": {
+      "file": "invoices/OCT-13/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-13/trace?view=sandbox": {
+      "file": "invoices/OCT-13/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-14?view=sandbox": {
+      "file": "invoices/OCT-14/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-14/trace?view=sandbox": {
+      "file": "invoices/OCT-14/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-15?view=sandbox": {
+      "file": "invoices/OCT-15/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-15/trace?view=sandbox": {
+      "file": "invoices/OCT-15/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-16?view=sandbox": {
+      "file": "invoices/OCT-16/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-16/trace?view=sandbox": {
+      "file": "invoices/OCT-16/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-17?view=sandbox": {
+      "file": "invoices/OCT-17/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-17/trace?view=sandbox": {
+      "file": "invoices/OCT-17/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-18?view=sandbox": {
+      "file": "invoices/OCT-18/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-18/trace?view=sandbox": {
+      "file": "invoices/OCT-18/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-19?view=sandbox": {
+      "file": "invoices/OCT-19/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-19/trace?view=sandbox": {
+      "file": "invoices/OCT-19/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-20?view=sandbox": {
+      "file": "invoices/OCT-20/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-20/trace?view=sandbox": {
+      "file": "invoices/OCT-20/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-21?view=sandbox": {
+      "file": "invoices/OCT-21/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-21/trace?view=sandbox": {
+      "file": "invoices/OCT-21/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-22?view=sandbox": {
+      "file": "invoices/OCT-22/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-22/trace?view=sandbox": {
+      "file": "invoices/OCT-22/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-23?view=sandbox": {
+      "file": "invoices/OCT-23/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-23/trace?view=sandbox": {
+      "file": "invoices/OCT-23/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-24?view=sandbox": {
+      "file": "invoices/OCT-24/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-24/trace?view=sandbox": {
+      "file": "invoices/OCT-24/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-25?view=sandbox": {
+      "file": "invoices/OCT-25/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-25/trace?view=sandbox": {
+      "file": "invoices/OCT-25/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-26?view=sandbox": {
+      "file": "invoices/OCT-26/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-26/trace?view=sandbox": {
+      "file": "invoices/OCT-26/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-27?view=sandbox": {
+      "file": "invoices/OCT-27/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-27/trace?view=sandbox": {
+      "file": "invoices/OCT-27/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-28?view=sandbox": {
+      "file": "invoices/OCT-28/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-28/trace?view=sandbox": {
+      "file": "invoices/OCT-28/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-29?view=sandbox": {
+      "file": "invoices/OCT-29/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-29/trace?view=sandbox": {
+      "file": "invoices/OCT-29/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-30?view=sandbox": {
+      "file": "invoices/OCT-30/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/invoices/OCT-30/trace?view=sandbox": {
+      "file": "invoices/OCT-30/trace-decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/log?view=sandbox": {
+      "file": "log/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/log/export.csv?view=sandbox": {
+      "file": "log/decided.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "decided GET /api/log/verify?view=sandbox": {
+      "file": "log/decided-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided GET /api/rules?view=sandbox": {
+      "file": "rules/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/run": {
+      "file": "run/decided.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/board?view=canonical": {
+      "file": "board/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/eval": {
+      "file": "eval.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/health": {
+      "file": "health.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-01?view=canonical": {
+      "file": "invoices/OCT-01/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-01/pages/1?scale=1": {
+      "file": "pages/OCT-01/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-01/pages/1?scale=2": {
+      "file": "pages/OCT-01/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-01/trace?view=canonical": {
+      "file": "invoices/OCT-01/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-02?view=canonical": {
+      "file": "invoices/OCT-02/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-02/pages/1?scale=1": {
+      "file": "pages/OCT-02/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-02/pages/1?scale=2": {
+      "file": "pages/OCT-02/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-02/trace?view=canonical": {
+      "file": "invoices/OCT-02/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-03?view=canonical": {
+      "file": "invoices/OCT-03/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-03/pages/1?scale=1": {
+      "file": "pages/OCT-03/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-03/pages/1?scale=2": {
+      "file": "pages/OCT-03/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-03/trace?view=canonical": {
+      "file": "invoices/OCT-03/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-04?view=canonical": {
+      "file": "invoices/OCT-04/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-04/pages/1?scale=1": {
+      "file": "pages/OCT-04/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-04/pages/1?scale=2": {
+      "file": "pages/OCT-04/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-04/trace?view=canonical": {
+      "file": "invoices/OCT-04/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-05?view=canonical": {
+      "file": "invoices/OCT-05/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-05/pages/1?scale=1": {
+      "file": "pages/OCT-05/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-05/pages/1?scale=2": {
+      "file": "pages/OCT-05/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-05/trace?view=canonical": {
+      "file": "invoices/OCT-05/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-06?view=canonical": {
+      "file": "invoices/OCT-06/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-06/pages/1?scale=1": {
+      "file": "pages/OCT-06/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-06/pages/1?scale=2": {
+      "file": "pages/OCT-06/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-06/trace?view=canonical": {
+      "file": "invoices/OCT-06/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-07?view=canonical": {
+      "file": "invoices/OCT-07/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-07/pages/1?scale=1": {
+      "file": "pages/OCT-07/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-07/pages/1?scale=2": {
+      "file": "pages/OCT-07/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-07/trace?view=canonical": {
+      "file": "invoices/OCT-07/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-08?view=canonical": {
+      "file": "invoices/OCT-08/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-08/pages/1?scale=1": {
+      "file": "pages/OCT-08/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-08/pages/1?scale=2": {
+      "file": "pages/OCT-08/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-08/trace?view=canonical": {
+      "file": "invoices/OCT-08/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-09?view=canonical": {
+      "file": "invoices/OCT-09/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-09/pages/1?scale=1": {
+      "file": "pages/OCT-09/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-09/pages/1?scale=2": {
+      "file": "pages/OCT-09/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-09/trace?view=canonical": {
+      "file": "invoices/OCT-09/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-10?view=canonical": {
+      "file": "invoices/OCT-10/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-10/pages/1?scale=1": {
+      "file": "pages/OCT-10/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-10/pages/1?scale=2": {
+      "file": "pages/OCT-10/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-10/trace?view=canonical": {
+      "file": "invoices/OCT-10/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-11?view=canonical": {
+      "file": "invoices/OCT-11/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-11/pages/1?scale=1": {
+      "file": "pages/OCT-11/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-11/pages/1?scale=2": {
+      "file": "pages/OCT-11/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-11/trace?view=canonical": {
+      "file": "invoices/OCT-11/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-12?view=canonical": {
+      "file": "invoices/OCT-12/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-12/pages/1?scale=1": {
+      "file": "pages/OCT-12/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-12/pages/1?scale=2": {
+      "file": "pages/OCT-12/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-12/trace?view=canonical": {
+      "file": "invoices/OCT-12/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-13?view=canonical": {
+      "file": "invoices/OCT-13/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-13/pages/1?scale=1": {
+      "file": "pages/OCT-13/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-13/pages/1?scale=2": {
+      "file": "pages/OCT-13/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-13/trace?view=canonical": {
+      "file": "invoices/OCT-13/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-14?view=canonical": {
+      "file": "invoices/OCT-14/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-14/pages/1?scale=1": {
+      "file": "pages/OCT-14/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-14/pages/1?scale=2": {
+      "file": "pages/OCT-14/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-14/trace?view=canonical": {
+      "file": "invoices/OCT-14/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-15?view=canonical": {
+      "file": "invoices/OCT-15/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-15/pages/1?scale=1": {
+      "file": "pages/OCT-15/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-15/pages/1?scale=2": {
+      "file": "pages/OCT-15/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-15/trace?view=canonical": {
+      "file": "invoices/OCT-15/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-16?view=canonical": {
+      "file": "invoices/OCT-16/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-16/pages/1?scale=1": {
+      "file": "pages/OCT-16/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-16/pages/1?scale=2": {
+      "file": "pages/OCT-16/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-16/trace?view=canonical": {
+      "file": "invoices/OCT-16/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-17?view=canonical": {
+      "file": "invoices/OCT-17/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-17/pages/1?scale=1": {
+      "file": "pages/OCT-17/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-17/pages/1?scale=2": {
+      "file": "pages/OCT-17/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-17/trace?view=canonical": {
+      "file": "invoices/OCT-17/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-18?view=canonical": {
+      "file": "invoices/OCT-18/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-18/pages/1?scale=1": {
+      "file": "pages/OCT-18/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-18/pages/1?scale=2": {
+      "file": "pages/OCT-18/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-18/trace?view=canonical": {
+      "file": "invoices/OCT-18/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-19?view=canonical": {
+      "file": "invoices/OCT-19/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-19/pages/1?scale=1": {
+      "file": "pages/OCT-19/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-19/pages/1?scale=2": {
+      "file": "pages/OCT-19/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-19/trace?view=canonical": {
+      "file": "invoices/OCT-19/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-20?view=canonical": {
+      "file": "invoices/OCT-20/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-20/pages/1?scale=1": {
+      "file": "pages/OCT-20/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-20/pages/1?scale=2": {
+      "file": "pages/OCT-20/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-20/trace?view=canonical": {
+      "file": "invoices/OCT-20/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-21?view=canonical": {
+      "file": "invoices/OCT-21/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-21/pages/1?scale=1": {
+      "file": "pages/OCT-21/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-21/pages/1?scale=2": {
+      "file": "pages/OCT-21/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-21/trace?view=canonical": {
+      "file": "invoices/OCT-21/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-22?view=canonical": {
+      "file": "invoices/OCT-22/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-22/pages/1?scale=1": {
+      "file": "pages/OCT-22/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-22/pages/1?scale=2": {
+      "file": "pages/OCT-22/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-22/trace?view=canonical": {
+      "file": "invoices/OCT-22/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-23?view=canonical": {
+      "file": "invoices/OCT-23/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-23/pages/1?scale=1": {
+      "file": "pages/OCT-23/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-23/pages/1?scale=2": {
+      "file": "pages/OCT-23/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-23/trace?view=canonical": {
+      "file": "invoices/OCT-23/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-24?view=canonical": {
+      "file": "invoices/OCT-24/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-24/pages/1?scale=1": {
+      "file": "pages/OCT-24/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-24/pages/1?scale=2": {
+      "file": "pages/OCT-24/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-24/trace?view=canonical": {
+      "file": "invoices/OCT-24/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-25?view=canonical": {
+      "file": "invoices/OCT-25/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-25/pages/1?scale=1": {
+      "file": "pages/OCT-25/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-25/pages/1?scale=2": {
+      "file": "pages/OCT-25/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-25/trace?view=canonical": {
+      "file": "invoices/OCT-25/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-26?view=canonical": {
+      "file": "invoices/OCT-26/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-26/pages/1?scale=1": {
+      "file": "pages/OCT-26/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-26/pages/1?scale=2": {
+      "file": "pages/OCT-26/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-26/trace?view=canonical": {
+      "file": "invoices/OCT-26/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-27?view=canonical": {
+      "file": "invoices/OCT-27/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-27/pages/1?scale=1": {
+      "file": "pages/OCT-27/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-27/pages/1?scale=2": {
+      "file": "pages/OCT-27/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-27/trace?view=canonical": {
+      "file": "invoices/OCT-27/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-28?view=canonical": {
+      "file": "invoices/OCT-28/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-28/pages/1?scale=1": {
+      "file": "pages/OCT-28/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-28/pages/1?scale=2": {
+      "file": "pages/OCT-28/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-28/trace?view=canonical": {
+      "file": "invoices/OCT-28/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-29?view=canonical": {
+      "file": "invoices/OCT-29/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-29/pages/1?scale=1": {
+      "file": "pages/OCT-29/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-29/pages/1?scale=2": {
+      "file": "pages/OCT-29/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-29/trace?view=canonical": {
+      "file": "invoices/OCT-29/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-30?view=canonical": {
+      "file": "invoices/OCT-30/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/OCT-30/pages/1?scale=1": {
+      "file": "pages/OCT-30/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-30/pages/1?scale=2": {
+      "file": "pages/OCT-30/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/OCT-30/trace?view=canonical": {
+      "file": "invoices/OCT-30/trace-canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-01-1-1?view=sandbox": {
+      "file": "invoices/TRY-ATK-01-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-01-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-ATK-01-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-01-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-ATK-01-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-01-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-ATK-01-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-07-1-1?view=sandbox": {
+      "file": "invoices/TRY-ATK-07-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-07-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-ATK-07-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-07-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-ATK-07-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-07-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-ATK-07-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-10-1-1?view=sandbox": {
+      "file": "invoices/TRY-ATK-10-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-10-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-ATK-10-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-10-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-ATK-10-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-10-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-ATK-10-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-12-1-1?view=sandbox": {
+      "file": "invoices/TRY-ATK-12-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-ATK-12-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-ATK-12-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-12-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-ATK-12-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-ATK-12-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-ATK-12-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-DUP-GEN-084-1-1?view=sandbox": {
+      "file": "invoices/TRY-DUP-GEN-084-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-DUP-GEN-084-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-DUP-GEN-084-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-DUP-GEN-084-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-DUP-GEN-084-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-DUP-GEN-084-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-DUP-GEN-084-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-012-1-1?view=sandbox": {
+      "file": "invoices/TRY-GEN-012-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-012-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-GEN-012-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-012-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-GEN-012-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-012-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-GEN-012-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-035-1-1?view=sandbox": {
+      "file": "invoices/TRY-GEN-035-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-035-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-GEN-035-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-035-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-GEN-035-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-035-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-GEN-035-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-084-1-1?view=sandbox": {
+      "file": "invoices/TRY-GEN-084-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-084-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-DUP-GEN-084-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-084-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-DUP-GEN-084-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-084-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-GEN-084-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-090-1-1?view=sandbox": {
+      "file": "invoices/TRY-GEN-090-1-1/sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/invoices/TRY-GEN-090-1-1/pages/1?scale=1": {
+      "file": "pages/TRY-GEN-090-1-1/1@1x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-090-1-1/pages/1?scale=2": {
+      "file": "pages/TRY-GEN-090-1-1/1@2x.png",
+      "status": 200,
+      "content_type": "image/png",
+      "headers": {
+        "cache-control": "max-age=3600"
+      }
+    },
+    "GET /api/invoices/TRY-GEN-090-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-GEN-090-1-1/trace-sandbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/log?view=canonical": {
+      "file": "log/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/log/export.csv?view=canonical": {
+      "file": "log/canonical.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-canonical.csv\""
+      }
+    },
+    "GET /api/log/verify?view=canonical": {
+      "file": "log/canonical-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/rules?view=canonical": {
+      "file": "rules/canonical.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "GET /api/try/samples": {
+      "file": "try/samples.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/board?view=sandbox": {
+      "file": "board/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-01?view=sandbox": {
+      "file": "invoices/OCT-01/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-01/trace?view=sandbox": {
+      "file": "invoices/OCT-01/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-02?view=sandbox": {
+      "file": "invoices/OCT-02/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-02/trace?view=sandbox": {
+      "file": "invoices/OCT-02/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-03?view=sandbox": {
+      "file": "invoices/OCT-03/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-03/trace?view=sandbox": {
+      "file": "invoices/OCT-03/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-04?view=sandbox": {
+      "file": "invoices/OCT-04/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-04/trace?view=sandbox": {
+      "file": "invoices/OCT-04/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-05?view=sandbox": {
+      "file": "invoices/OCT-05/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-05/trace?view=sandbox": {
+      "file": "invoices/OCT-05/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-06?view=sandbox": {
+      "file": "invoices/OCT-06/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-06/trace?view=sandbox": {
+      "file": "invoices/OCT-06/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-07?view=sandbox": {
+      "file": "invoices/OCT-07/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-07/trace?view=sandbox": {
+      "file": "invoices/OCT-07/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-08?view=sandbox": {
+      "file": "invoices/OCT-08/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-08/trace?view=sandbox": {
+      "file": "invoices/OCT-08/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-09?view=sandbox": {
+      "file": "invoices/OCT-09/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-09/trace?view=sandbox": {
+      "file": "invoices/OCT-09/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-10?view=sandbox": {
+      "file": "invoices/OCT-10/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-10/trace?view=sandbox": {
+      "file": "invoices/OCT-10/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-11?view=sandbox": {
+      "file": "invoices/OCT-11/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-11/trace?view=sandbox": {
+      "file": "invoices/OCT-11/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-12?view=sandbox": {
+      "file": "invoices/OCT-12/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-12/trace?view=sandbox": {
+      "file": "invoices/OCT-12/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-13?view=sandbox": {
+      "file": "invoices/OCT-13/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-13/trace?view=sandbox": {
+      "file": "invoices/OCT-13/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-14?view=sandbox": {
+      "file": "invoices/OCT-14/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-14/trace?view=sandbox": {
+      "file": "invoices/OCT-14/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-15?view=sandbox": {
+      "file": "invoices/OCT-15/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-15/trace?view=sandbox": {
+      "file": "invoices/OCT-15/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-16?view=sandbox": {
+      "file": "invoices/OCT-16/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-16/trace?view=sandbox": {
+      "file": "invoices/OCT-16/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-17?view=sandbox": {
+      "file": "invoices/OCT-17/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-17/trace?view=sandbox": {
+      "file": "invoices/OCT-17/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-18?view=sandbox": {
+      "file": "invoices/OCT-18/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-18/trace?view=sandbox": {
+      "file": "invoices/OCT-18/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-19?view=sandbox": {
+      "file": "invoices/OCT-19/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-19/trace?view=sandbox": {
+      "file": "invoices/OCT-19/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-20?view=sandbox": {
+      "file": "invoices/OCT-20/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-20/trace?view=sandbox": {
+      "file": "invoices/OCT-20/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-21?view=sandbox": {
+      "file": "invoices/OCT-21/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-21/trace?view=sandbox": {
+      "file": "invoices/OCT-21/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-22?view=sandbox": {
+      "file": "invoices/OCT-22/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-22/trace?view=sandbox": {
+      "file": "invoices/OCT-22/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-23?view=sandbox": {
+      "file": "invoices/OCT-23/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-23/trace?view=sandbox": {
+      "file": "invoices/OCT-23/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-24?view=sandbox": {
+      "file": "invoices/OCT-24/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-24/trace?view=sandbox": {
+      "file": "invoices/OCT-24/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-25?view=sandbox": {
+      "file": "invoices/OCT-25/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-25/trace?view=sandbox": {
+      "file": "invoices/OCT-25/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-26?view=sandbox": {
+      "file": "invoices/OCT-26/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-26/trace?view=sandbox": {
+      "file": "invoices/OCT-26/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-27?view=sandbox": {
+      "file": "invoices/OCT-27/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-27/trace?view=sandbox": {
+      "file": "invoices/OCT-27/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-28?view=sandbox": {
+      "file": "invoices/OCT-28/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-28/trace?view=sandbox": {
+      "file": "invoices/OCT-28/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-29?view=sandbox": {
+      "file": "invoices/OCT-29/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-29/trace?view=sandbox": {
+      "file": "invoices/OCT-29/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-30?view=sandbox": {
+      "file": "invoices/OCT-30/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/invoices/OCT-30/trace?view=sandbox": {
+      "file": "invoices/OCT-30/trace-inbox.json",
+      "status": 404,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/log?view=sandbox": {
+      "file": "log/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/log/export.csv?view=sandbox": {
+      "file": "log/inbox.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "inbox GET /api/log/verify?view=sandbox": {
+      "file": "log/inbox-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox GET /api/rules?view=sandbox": {
+      "file": "rules/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "inbox POST /api/run": {
+      "file": "run/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "POST /api/sandbox/reset": {
+      "file": "board/inbox.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"ATK-01-1\"}": {
+      "file": "try/ATK-01-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"ATK-07-1\"}": {
+      "file": "try/ATK-07-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"ATK-10-1\"}": {
+      "file": "try/ATK-10-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"ATK-12-1\"}": {
+      "file": "try/ATK-12-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"DUP-GEN-084-1\"}": {
+      "file": "try/DUP-GEN-084-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"GEN-012-1\"}": {
+      "file": "try/GEN-012-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"GEN-035-1\"}": {
+      "file": "try/GEN-035-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"GEN-084-1\"}": {
+      "file": "try/GEN-084-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "POST /api/try {\"sample_id\":\"GEN-090-1\"}": {
+      "file": "try/GEN-090-1/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    }
+  },
+  "samples": {
+    "GEN-084-1": {
+      "started": "try/GEN-084-1/started.json",
+      "events": "try/GEN-084-1/events.json",
+      "invoice_id": "TRY-GEN-084-1-1",
+      "decision": "PAY"
+    },
+    "DUP-GEN-084-1": {
+      "started": "try/DUP-GEN-084-1/started.json",
+      "events": "try/DUP-GEN-084-1/events.json",
+      "invoice_id": "TRY-DUP-GEN-084-1-1",
+      "decision": "HOLD",
+      "after": "GEN-084-1"
+    },
+    "GEN-090-1": {
+      "started": "try/GEN-090-1/started.json",
+      "events": "try/GEN-090-1/events.json",
+      "invoice_id": "TRY-GEN-090-1-1",
+      "decision": "ESCALATE"
+    },
+    "GEN-035-1": {
+      "started": "try/GEN-035-1/started.json",
+      "events": "try/GEN-035-1/events.json",
+      "invoice_id": "TRY-GEN-035-1-1",
+      "decision": "ESCALATE"
+    },
+    "ATK-01-1": {
+      "started": "try/ATK-01-1/started.json",
+      "events": "try/ATK-01-1/events.json",
+      "invoice_id": "TRY-ATK-01-1-1",
+      "decision": "ESCALATE"
+    },
+    "ATK-10-1": {
+      "started": "try/ATK-10-1/started.json",
+      "events": "try/ATK-10-1/events.json",
+      "invoice_id": "TRY-ATK-10-1-1",
+      "decision": "ESCALATE"
+    },
+    "ATK-07-1": {
+      "started": "try/ATK-07-1/started.json",
+      "events": "try/ATK-07-1/events.json",
+      "invoice_id": "TRY-ATK-07-1-1",
+      "decision": "ESCALATE"
+    },
+    "GEN-012-1": {
+      "started": "try/GEN-012-1/started.json",
+      "events": "try/GEN-012-1/events.json",
+      "invoice_id": "TRY-GEN-012-1-1",
+      "decision": "PAY"
+    },
+    "ATK-12-1": {
+      "started": "try/ATK-12-1/started.json",
+      "events": "try/ATK-12-1/events.json",
+      "invoice_id": "TRY-ATK-12-1-1",
+      "decision": "ESCALATE"
+    }
+  },
+  "recorded_only": {
+    "approved:OCT-08 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-08/approve-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-08 GET /api/invoices/OCT-08?view=sandbox": {
+      "file": "approvals/OCT-08/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-08 GET /api/invoices/OCT-08/trace?view=sandbox": {
+      "file": "approvals/OCT-08/approve-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-08 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-08/approve-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-08 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-08/approve-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "approved:OCT-08 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-08/approve-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-09 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-09/approve-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-09 GET /api/invoices/OCT-09?view=sandbox": {
+      "file": "approvals/OCT-09/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-09 GET /api/invoices/OCT-09/trace?view=sandbox": {
+      "file": "approvals/OCT-09/approve-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-09 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-09/approve-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-09 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-09/approve-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "approved:OCT-09 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-09/approve-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-14 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-14/approve-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-14 GET /api/invoices/OCT-14?view=sandbox": {
+      "file": "approvals/OCT-14/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-14 GET /api/invoices/OCT-14/trace?view=sandbox": {
+      "file": "approvals/OCT-14/approve-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-14 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-14/approve-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-14 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-14/approve-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "approved:OCT-14 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-14/approve-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-15 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-15/approve-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-15 GET /api/invoices/OCT-15?view=sandbox": {
+      "file": "approvals/OCT-15/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-15 GET /api/invoices/OCT-15/trace?view=sandbox": {
+      "file": "approvals/OCT-15/approve-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-15 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-15/approve-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-15 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-15/approve-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "approved:OCT-15 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-15/approve-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-16 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-16/approve-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-16 GET /api/invoices/OCT-16?view=sandbox": {
+      "file": "approvals/OCT-16/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-16 GET /api/invoices/OCT-16/trace?view=sandbox": {
+      "file": "approvals/OCT-16/approve-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-16 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-16/approve-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "approved:OCT-16 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-16/approve-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "approved:OCT-16 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-16/approve-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-08/approve": {
+      "file": "approvals/OCT-08/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-08/reject": {
+      "file": "approvals/OCT-08/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-09/approve": {
+      "file": "approvals/OCT-09/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-09/reject": {
+      "file": "approvals/OCT-09/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-14/approve": {
+      "file": "approvals/OCT-14/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-14/reject": {
+      "file": "approvals/OCT-14/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-15/approve": {
+      "file": "approvals/OCT-15/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-15/reject": {
+      "file": "approvals/OCT-15/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-16/approve": {
+      "file": "approvals/OCT-16/approve.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "decided POST /api/invoices/OCT-16/reject": {
+      "file": "approvals/OCT-16/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "fresh GET /api/invoices/TRY-DUP-GEN-084-1-1?view=sandbox": {
+      "file": "invoices/TRY-DUP-GEN-084-1-1/sandbox-fresh.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "fresh GET /api/invoices/TRY-DUP-GEN-084-1-1/trace?view=sandbox": {
+      "file": "invoices/TRY-DUP-GEN-084-1-1/trace-sandbox-fresh.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "fresh POST /api/try {\"sample_id\":\"DUP-GEN-084-1\"}": {
+      "file": "try/DUP-GEN-084-1-fresh/started.json",
+      "status": 202,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-08 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-08/reject-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-08 GET /api/invoices/OCT-08?view=sandbox": {
+      "file": "approvals/OCT-08/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-08 GET /api/invoices/OCT-08/trace?view=sandbox": {
+      "file": "approvals/OCT-08/reject-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-08 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-08/reject-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-08 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-08/reject-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "rejected:OCT-08 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-08/reject-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-09 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-09/reject-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-09 GET /api/invoices/OCT-09?view=sandbox": {
+      "file": "approvals/OCT-09/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-09 GET /api/invoices/OCT-09/trace?view=sandbox": {
+      "file": "approvals/OCT-09/reject-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-09 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-09/reject-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-09 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-09/reject-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "rejected:OCT-09 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-09/reject-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-14 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-14/reject-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-14 GET /api/invoices/OCT-14?view=sandbox": {
+      "file": "approvals/OCT-14/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-14 GET /api/invoices/OCT-14/trace?view=sandbox": {
+      "file": "approvals/OCT-14/reject-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-14 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-14/reject-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-14 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-14/reject-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "rejected:OCT-14 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-14/reject-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-15 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-15/reject-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-15 GET /api/invoices/OCT-15?view=sandbox": {
+      "file": "approvals/OCT-15/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-15 GET /api/invoices/OCT-15/trace?view=sandbox": {
+      "file": "approvals/OCT-15/reject-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-15 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-15/reject-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-15 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-15/reject-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "rejected:OCT-15 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-15/reject-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-16 GET /api/board?view=sandbox": {
+      "file": "approvals/OCT-16/reject-board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-16 GET /api/invoices/OCT-16?view=sandbox": {
+      "file": "approvals/OCT-16/reject.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-16 GET /api/invoices/OCT-16/trace?view=sandbox": {
+      "file": "approvals/OCT-16/reject-trace.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-16 GET /api/log?view=sandbox": {
+      "file": "approvals/OCT-16/reject-log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "rejected:OCT-16 GET /api/log/export.csv?view=sandbox": {
+      "file": "approvals/OCT-16/reject-log.csv",
+      "status": 200,
+      "content_type": "text/csv; charset=utf-8",
+      "headers": {
+        "content-disposition": "attachment; filename=\"alinka-sandbox.csv\""
+      }
+    },
+    "rejected:OCT-16 GET /api/log/verify?view=sandbox": {
+      "file": "approvals/OCT-16/reject-log-verify.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-01-1 GET /api/board?view=sandbox": {
+      "file": "try/ATK-01-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-01-1 GET /api/log?view=sandbox": {
+      "file": "try/ATK-01-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-07-1 GET /api/board?view=sandbox": {
+      "file": "try/ATK-07-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-07-1 GET /api/log?view=sandbox": {
+      "file": "try/ATK-07-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-10-1 GET /api/board?view=sandbox": {
+      "file": "try/ATK-10-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-10-1 GET /api/log?view=sandbox": {
+      "file": "try/ATK-10-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-12-1 GET /api/board?view=sandbox": {
+      "file": "try/ATK-12-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:ATK-12-1 GET /api/log?view=sandbox": {
+      "file": "try/ATK-12-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:DUP-GEN-084-1 GET /api/board?view=sandbox": {
+      "file": "try/DUP-GEN-084-1-fresh/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:DUP-GEN-084-1 GET /api/log?view=sandbox": {
+      "file": "try/DUP-GEN-084-1-fresh/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-012-1 GET /api/board?view=sandbox": {
+      "file": "try/GEN-012-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-012-1 GET /api/log?view=sandbox": {
+      "file": "try/GEN-012-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-035-1 GET /api/board?view=sandbox": {
+      "file": "try/GEN-035-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-035-1 GET /api/log?view=sandbox": {
+      "file": "try/GEN-035-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-084-1 GET /api/board?view=sandbox": {
+      "file": "try/GEN-084-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-084-1 GET /api/log?view=sandbox": {
+      "file": "try/GEN-084-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-084-1+DUP-GEN-084-1 GET /api/board?view=sandbox": {
+      "file": "try/DUP-GEN-084-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-084-1+DUP-GEN-084-1 GET /api/log?view=sandbox": {
+      "file": "try/DUP-GEN-084-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-090-1 GET /api/board?view=sandbox": {
+      "file": "try/GEN-090-1/board.json",
+      "status": 200,
+      "content_type": "application/json"
+    },
+    "tried:GEN-090-1 GET /api/log?view=sandbox": {
+      "file": "try/GEN-090-1/log.json",
+      "status": 200,
+      "content_type": "application/json"
+    }
+  },
+  "failures": []
+}
