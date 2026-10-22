@@ -56,9 +56,14 @@ describe("showcase copy", () => {
     expect(en.usd(0.02348)).toBe("US$0.023");
   });
 
-  it("states the frozen demo's scope in both languages", () => {
-    expect(COPY.es.demo.text).toContain("22 de octubre de 2026");
-    expect(COPY.en.demo.text).toContain("October 22, 2026");
+  it("says in both languages that the demo replays recordings", () => {
+    expect(COPY.es.demo.text).toContain("respuestas grabadas");
+    expect(COPY.en.demo.text).toContain("recorded API responses");
     expect(COPY.es.demo.callouts).toHaveLength(3);
+  });
+
+  it.each(LANGS)("presents Alinka, not the project's status (%s)", (lang) => {
+    // The demo's limits are stated plainly in demo.text; the project's own status is its owner's business, not the page's.
+    expect(JSON.stringify(COPY[lang])).not.toMatch(/cerrad|closed|retir|congelad|frozen/i);
   });
 });

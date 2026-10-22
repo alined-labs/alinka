@@ -3,10 +3,9 @@
  *   pnpm --filter ./web run snapshot             # or: node web/scripts/snapshot.ts
  *   node web/scripts/snapshot.ts --origin URL --out DIR
  *
- * Why: the API on Azure and its Neon database are deleted once this snapshot ships. From then on
- * the Worker (edge/src/frozen.ts) answers every /api/* call the web app makes from these files,
- * so the site runs on Cloudflare alone. Whatever is not recorded here is gone for good, so the
- * script walks every state a visitor can reach:
+ * Why: the Worker (edge/src/frozen.ts) answers every /api/* call the web app makes from these
+ * files, so the site runs on Cloudflare alone, with no API server or database. Whatever is not
+ * recorded here cannot be answered, so the script walks every state a visitor can reach:
  *   - the canonical run: board, each invoice (detail, trace, page images), rules, log, eval;
  *   - one fresh visitor sandbox before "Ejecutar agente" (inbox), the run itself, the sandbox
  *     after it (decided), a second run with nothing left to decide, and "Restablecer sandbox";

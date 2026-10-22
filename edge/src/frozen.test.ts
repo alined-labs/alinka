@@ -205,7 +205,7 @@ describe("writes the recording cannot answer", () => {
     ["POST", "/api/try", "multipart/form-data; boundary=x"],
   ];
   for (const [method, path, contentType] of writes) {
-    test(`${method} ${path}${contentType ? " (upload)" : ""} is a 403 that says the demo is frozen`, () => {
+    test(`${method} ${path}${contentType ? " (upload)" : ""} is a 403 that says why`, () => {
       const a = ask(method, path, { contentType, state: "decided" });
       assert.equal(a.kind === "json" && a.status, 403);
       assert.equal(detailOf(a), FROZEN_ES);
@@ -215,7 +215,7 @@ describe("writes the recording cannot answer", () => {
 });
 
 describe("Probar", () => {
-  test("the samples list is the recorded one with uploads off for good", () => {
+  test("the samples list is the recorded one with uploads off", () => {
     const a = ask("GET", "/api/try/samples");
     assert.equal(a.kind === "file" && a.entry.file, "try/samples.json");
     assert.deepEqual(a.kind === "file" && a.patch, { live_uploads: false });
