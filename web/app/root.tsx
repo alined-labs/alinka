@@ -107,7 +107,7 @@ function Shell({ children }: { children: React.ReactNode }) {
               ? "Estás viendo la ejecución canónica: es de solo lectura y la misma para todos."
               : "Estás en tu sandbox: tus cambios no tocan la ejecución canónica."}
             {FIXTURES && " Modo de muestras: respuestas de ejemplo, sin API."}
-            {FROZEN && " Demo congelada: la API se retiró el 22 de octubre de 2026 y el sitio reproduce sus respuestas grabadas."}
+            {FROZEN && " Esta demo reproduce respuestas grabadas de la API, así que editar reglas, aprobar y subir facturas está desactivado."}
           </span>
         </p>
         {children}

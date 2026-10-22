@@ -4,19 +4,7 @@ An accounts-payable agent for the Blinka challenge (HackRadar 30X). It reads inv
 
 **La IA lee, las reglas deciden, el registro explica.** The AI reads, the rules decide, the log explains.
 
-**Live demo, frozen: <https://alinka.alinedlabs.co>** (fictional data; the app is in Spanish, with an English summary at [/en](https://alinka.alinedlabs.co/en)).
-
-## Project status: closed
-
-The hackathon is over, and on 22 October 2026 Alinka was closed for good. The site stays up as a frozen demo, served by Cloudflare alone:
-
-- **The showcase page** at [`/`](https://alinka.alinedlabs.co) (Spanish) and [`/en`](https://alinka.alinedlabs.co/en) (English) sums up what Alinka is and what the evaluation measured. The Tablero moved from `/` to [`/tablero`](https://alinka.alinedlabs.co/tablero).
-- **The API was retired.** Its Azure Container App and Neon database are no longer used, and no model is called any more. The Cloudflare Worker (`edge/`) now answers `/api/*` from responses recorded from the live API just before it was retired (`web/public/snapshot/`, recorded by `web/scripts/snapshot.ts`).
-- **What still works:** browsing every screen, "Ejecutar agente" and "Restablecer sandbox", every invoice with its page image and decision trace, "Verificar cadena", the CSV export, Evaluación and Probar's samples. Editing rules, adding beneficiaries, approving, rejecting and uploading answer with a message that the demo is frozen.
-- **The canonical run is pinned.** Its chain head at the freeze is `5b5379070e12b29a8dcd4f70ec76df1e30248604c4a758be24b56c97cd77002b`, recorded at 08:53 UTC; the frozen `/api/health` serves it.
-- **Everything still runs locally.** The FastAPI service, the evaluation and the tests work in replay mode with no keys, as described in [Reproduce in replay mode](#reproduce-in-replay-mode).
-
-The architecture and deployment below describe Alinka as it ran live, from 18 to 22 October 2026.
+**Live demo: <https://alinka.alinedlabs.co>** (fictional data; the app is in Spanish, with an English summary at [/en](https://alinka.alinedlabs.co/en)). The demo replays recorded API responses: you can run the agent, open every invoice with its page and trace, and verify the chain, but it doesn't accept edits, approvals or uploads. To run the API yourself, with no keys, see [Reproduce in replay mode](#reproduce-in-replay-mode).
 
 ## Participation certificate
 
@@ -164,7 +152,7 @@ flowchart TB
 
 ### Deployment
 
-As it ran until 22 October 2026; since then only Cloudflare serves the site (see [Project status](#project-status-closed)). CI checks every push in replay mode with no keys. The API image goes to GHCR and runs on Azure Container Apps in East US 2, with one replica always warm and its secrets held as secret references; the database is Neon, and Cloudflare serves the domain and the Worker.
+CI checks every push in replay mode with no keys. The API image goes to GHCR, and `deploy/azure.sh` runs it on Azure Container Apps in East US 2, with one replica always warm and its secrets held as secret references; the database is Neon, and Cloudflare serves the domain and the Worker. The public demo runs on Cloudflare alone: the Worker answers `/api/*` from responses recorded from the API (`web/public/snapshot/`, written by `web/scripts/snapshot.ts`).
 
 ```mermaid
 flowchart LR
@@ -266,8 +254,8 @@ A US company paying contractors in Latin America receives facturas, cuentas de c
 
 [Probar](https://alinka.alinedlabs.co/probar) runs one document through the real pipeline in your sandbox and shows each of the seven steps as it happens: Recepción, Contenido oculto, La IA lee, Verificación, 16 reglas, Decisión and Registro, each with its real duration.
 
-- **Samples** (routine invoices, traps and attacks from the dataset) replay the recorded model readings, shown as "Lectura grabada". Everything after the reading runs live: the sanitizer, the checks, the 16 rules, the decision and the chained log. No keys are needed. Until the freeze the new invoice landed on your sandbox board; in the frozen demo a sample's run is a recording and its invoice no longer joins the board.
-- **Uploads** are off for good since the freeze. Until then they were read live by the models ("Lectura en vivo") only while an administrator had switched them on; they were off by default. Limits: PDF, PNG or JPG, 4 MB, 3 pages, 5 uploads per 10 minutes and 30 a day per client IP, 200 a day in total. Files and results are deleted with the sandbox after 24 hours. Upload only fictitious invoices.
+- **Samples** (routine invoices, traps and attacks from the dataset) replay the recorded model readings, shown as "Lectura grabada". Everything after the reading runs live: the sanitizer, the checks, the 16 rules, the decision and the chained log. No keys are needed. Against the FastAPI service the new invoice lands on your sandbox board; on the public demo a sample's run is a recording, so its invoice doesn't join the board.
+- **Uploads** are off on the public demo. Against the FastAPI service they are read live by the models ("Lectura en vivo") only while an administrator switches them on; they are off by default. Limits: PDF, PNG or JPG, 4 MB, 3 pages, 5 uploads per 10 minutes and 30 a day per client IP, 200 a day in total. Files and results are deleted with the sandbox after 24 hours. Upload only fictitious invoices.
 
 ## Results
 
@@ -298,11 +286,11 @@ Every number below is in [`evals/report.json`](evals/report.json) (summary in [E
 | Look-alike or impersonated beneficiaries | Name similarity, tax ID ownership and mixed scripts (R01, "posible suplantación"), no approve button |
 | Duplicates, split invoices, cap and budget pressure | R03, R13, R05, R07, R08, enforced again on approval; the database's unique keys make a concurrent duplicate an R03 hold |
 | Words that differ from the digits, amounts near a threshold, FX games | R15, R06 with a 5% band, official rates at most 4 days old |
-| Direct calls to the API | Until the freeze, the Worker added `X-Edge-Secret`, and without it every route but `/api/health` was refused. Since then there is no API to call: the Worker replays recordings |
+| Direct calls to the API | With `EDGE_SECRET` set, the API refuses every route but `/api/health` without a matching `X-Edge-Secret` header, so only a proxy holding the secret gets through. The public demo has no API behind it: its Worker replays recordings |
 
 ## API
 
-Every route is under `/api`. Since the freeze the Worker answers them from the recorded snapshot (`edge/src/frozen.ts`), and every route that writes answers 403. Against the FastAPI service, sandbox routes are scoped by the `alinka_sandbox` cookie; `?view=canonical` reads the read-only canonical run instead. Errors are `{"detail": "<Spanish message>"}`. The full schema is in [`openapi.json`](openapi.json).
+Every route is under `/api`. On the public demo the Worker answers them from the recorded snapshot (`edge/src/frozen.ts`), and every route that writes answers 403. Against the FastAPI service, sandbox routes are scoped by the `alinka_sandbox` cookie; `?view=canonical` reads the read-only canonical run instead. Errors are `{"detail": "<Spanish message>"}`. The full schema is in [`openapi.json`](openapi.json).
 
 | Route | What it does |
 | --- | --- |
@@ -341,7 +329,7 @@ make web                      # the seven screens, proxying /api
 
 ## Canonical run
 
-The board judges see first is the October month (`data/runs/showcase`), loaded as a read-only canonical session. `uv run python -m alinka.api.load_run showcase` decides it in received order and prints the head hash of its chain; the deployed API serves the same hash as `canonical_head` at `/api/health`. Records carry the time they were decided, so every load has its own head; "Verificar cadena" recomputes it from the stored bytes.
+The board judges see first is the October month (`data/runs/showcase`), loaded as a read-only canonical session. `uv run python -m alinka.api.load_run showcase` decides it in received order and prints the head hash of its chain, which the API serves as `canonical_head` at `/api/health`; the public demo serves the head of its recorded run, `5b5379070e12b29a8dcd4f70ec76df1e30248604c4a758be24b56c97cd77002b`. Records carry the time they were decided, so every load has its own head; "Verificar cadena" recomputes it from the stored bytes.
 
 ## Licence
 

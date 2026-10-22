@@ -1,8 +1,8 @@
 // alinka-edge: the front end on alinka.alinedlabs.co, and the frozen API behind /api/*. Files and
 // prerendered pages come straight from the assets layer; this code runs first for /api/* and
-// otherwise only for paths that match no file. The Azure API was retired on 22 Oct 2026, so /api/*
-// is answered from the responses recorded before it went (web/public/snapshot/, which the same
-// assets serve at /snapshot/): the routing is in frozen.ts, the reading and streaming here.
+// otherwise only for paths that match no file. No API server stands behind /api/*: it is answered
+// from responses recorded from the API (web/public/snapshot/, which the same assets serve at
+// /snapshot/): the routing is in frozen.ts, the reading and streaming here.
 
 import { type Answer, gaps, type Manifest, patched, type Recording, readState, route, sseFrame, stateCookie, type StreamEvent } from "./frozen.ts";
 import { contentRange, parseRange } from "./ranges.ts";
@@ -14,7 +14,7 @@ interface Env {
 // React Router writes __spa-fallback.html when "/" is prerendered, else index.html is the shell.
 const FALLBACKS = ["/__spa-fallback", "/"];
 const SNAPSHOT = "/snapshot/";
-const NOT_RECORDED_ES = "Esta respuesta no quedó grabada en la demo congelada.";
+const NOT_RECORDED_ES = "Esta respuesta no quedó grabada en la demo.";
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {

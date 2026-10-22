@@ -1,4 +1,4 @@
-// The frozen API: how alinka-edge answers /api/* since the Azure API was retired on 22 Oct 2026.
+// The frozen API: how alinka-edge answers /api/* from recordings, with no API server behind it.
 // Every answer was recorded from the live API by web/scripts/snapshot.ts into
 // web/public/snapshot/, which the assets layer serves at /snapshot/; manifest.json there lists
 // each recorded request. This module is pure: route() takes a request and the visitor's sandbox
@@ -76,11 +76,10 @@ export type Answer = (
 ) & { next?: State };
 
 export const STATE_COOKIE = "alinka_frozen";
-const STATE_TTL_S = 24 * 60 * 60; // as long as a sandbox lived on the live API
+const STATE_TTL_S = 24 * 60 * 60; // as long as a sandbox lives on the FastAPI service
 
 /** The 403 detail for every write: shown by the screens in their error banner. */
-export const FROZEN_ES =
-  "La demo está congelada desde que su API se retiró el 22 de octubre de 2026, así que ya no acepta cambios ni documentos nuevos.";
+export const FROZEN_ES = "Esta demo reproduce respuestas grabadas, así que no acepta cambios ni documentos nuevos.";
 
 type View = "canonical" | "sandbox";
 type Context = Ask & { m: Manifest };
@@ -155,14 +154,14 @@ function lookup(c: Context, view: View, path: string): Entry | undefined {
 
 function recorded(c: Context, key: string): Answer {
   const entry = c.m.responses[key];
-  return entry ? { kind: "file", entry } : detail(404, "Esta respuesta no quedó grabada en la demo congelada.");
+  return entry ? { kind: "file", entry } : detail(404, "Esta respuesta no quedó grabada en la demo.");
 }
 
 function viewed(c: Context, path: string): Answer {
   const view = viewOf(c);
   if (!view) return badView();
   const entry = lookup(c, view, path);
-  return entry ? { kind: "file", entry } : detail(404, "Esta respuesta no quedó grabada en la demo congelada.");
+  return entry ? { kind: "file", entry } : detail(404, "Esta respuesta no quedó grabada en la demo.");
 }
 
 /** "Ejecutar agente": the recorded run from the inbox (or, once decided, the run with nothing left). */
@@ -210,8 +209,8 @@ function page(c: Context, [id = "", n = ""]: string[]): Answer {
 
 /**
  * Probar: a sample starts a job whose events URL replays that sample's recorded stream. The
- * job id is the sample id and a nonce, so each run is a new job, as on the live API. An upload
- * is refused: nothing can read a new document any more.
+ * job id is the sample id and a nonce, so each run is a new job, as on the FastAPI service. An
+ * upload is refused: with no API behind the demo, nothing can read a new document.
  */
 function startTry(c: Context): Answer {
   if (c.contentType.startsWith("multipart/form-data")) return detail(403, FROZEN_ES);
@@ -228,9 +227,9 @@ function startTry(c: Context): Answer {
 }
 
 /**
- * The Probar samples as recorded, but with uploads off for good: the owner's decision for the
- * frozen demo, since nothing can read a new document any more (an upload still gets the 403).
- * With live_uploads false, Probar hides its upload box and Cómo funciona says uploads are off.
+ * The Probar samples as recorded, but with uploads off: nothing behind the demo can read a new
+ * document (an upload still gets the 403). With live_uploads false, Probar hides its upload box
+ * and Cómo funciona says uploads are off.
  */
 function samplesList(c: Context): Answer {
   const answer = recorded(c, "GET /api/try/samples");

@@ -104,7 +104,7 @@ export const COPY: Record<Lang, ShowcaseCopy> = {
   es: {
     meta: {
       title: "Alinka · Cuentas por pagar con reglas y registro",
-      description: `Agente de cuentas por pagar del hackathon HackRadar 30X: la IA lee la factura, ${F.rules} reglas deciden y un registro encadenado explica. ${F.improperPaid} de ${F.mustNotPay} facturas que no debían pagarse se pagaron. Demo congelada con datos ficticios.`,
+      description: `Agente de cuentas por pagar del hackathon HackRadar 30X: la IA lee la factura, ${F.rules} reglas deciden y un registro encadenado explica. ${F.improperPaid} de ${F.mustNotPay} facturas que no debían pagarse se pagaron. Demo con datos ficticios.`,
     },
     nav: {
       skip: "Saltar al contenido",
@@ -185,8 +185,8 @@ export const COPY: Record<Lang, ShowcaseCopy> = {
       fallback: "Tu navegador no reproduce este video. Descárgalo (MP4, 6,7 MB).",
     },
     demo: {
-      title: "La demo sigue abierta",
-      text: "El 22 de octubre de 2026 la API se retiró y la demo quedó congelada: reproduce las respuestas que grabó. Puedes ejecutar el agente, abrir cada factura con su página y su traza, verificar la cadena y correr las muestras de Probar. Editar reglas, aprobar y subir facturas quedó desactivado.",
+      title: "Prueba la demo",
+      text: "La demo reproduce respuestas grabadas de la API: puedes ejecutar el agente, abrir cada factura con su página y su traza, verificar la cadena y correr las muestras de Probar. Editar reglas, aprobar y subir facturas está desactivado.",
       cta: "Abrir el tablero",
       alt: "El tablero de Alinka con las 30 facturas de octubre decididas: 16 pagadas, 7 frenadas y 7 pendientes de aprobación, cada una con su motivo.",
       callouts: [
@@ -199,7 +199,6 @@ export const COPY: Record<Lang, ShowcaseCopy> = {
       statement: "La IA lee, las reglas deciden, el registro explica.",
       items: [
         { text: "HackRadar 30X · reto Blinka · octubre de 2026" },
-        { text: "Proyecto cerrado" },
         { text: "Código abierto (AGPL-3.0)", href: LINKS.license },
         { text: `Datos ${es.pct(1)} ficticios` },
       ],
@@ -211,7 +210,7 @@ export const COPY: Record<Lang, ShowcaseCopy> = {
   en: {
     meta: {
       title: "Alinka · Accounts payable with rules and a log",
-      description: `An accounts-payable agent from the HackRadar 30X hackathon: the AI reads the invoice, ${F.rules} rules decide and a hash-chained log explains. ${F.improperPaid} of ${F.mustNotPay} invoices that should not have been paid were paid. A frozen demo with fictional data.`,
+      description: `An accounts-payable agent from the HackRadar 30X hackathon: the AI reads the invoice, ${F.rules} rules decide and a hash-chained log explains. ${F.improperPaid} of ${F.mustNotPay} invoices that should not have been paid were paid. A demo with fictional data.`,
     },
     nav: {
       skip: "Skip to content",
@@ -292,8 +291,8 @@ export const COPY: Record<Lang, ShowcaseCopy> = {
       fallback: "Your browser can't play this video. Download it (MP4, 6.7 MB).",
     },
     demo: {
-      title: "The demo is still open",
-      text: "On October 22, 2026 the API was retired and the demo was frozen: it replays the responses it recorded. You can run the agent, open every invoice with its page and trace, verify the chain and run Probar's samples. Editing rules, approving and uploading invoices are switched off.",
+      title: "Try the demo",
+      text: "The demo replays recorded API responses: you can run the agent, open every invoice with its page and trace, verify the chain and run Probar's samples. Editing rules, approving and uploading invoices are switched off.",
       cta: "Open the board",
       alt: "Alinka's board with October's 30 invoices decided: 16 paid, 7 held and 7 pending approval, each with its reason.",
       callouts: [
@@ -306,7 +305,6 @@ export const COPY: Record<Lang, ShowcaseCopy> = {
       statement: "The AI reads, the rules decide, the log explains.",
       items: [
         { text: "HackRadar 30X · Blinka challenge · October 2026" },
-        { text: "Project closed" },
         { text: "Open source (AGPL-3.0)", href: LINKS.license },
         { text: "100% fictional data" },
       ],
