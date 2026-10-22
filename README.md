@@ -16,7 +16,13 @@ The hackathon is over, and on 22 October 2026 Alinka was closed for good. The si
 - **The canonical run is pinned.** Its chain head at the freeze is `5b5379070e12b29a8dcd4f70ec76df1e30248604c4a758be24b56c97cd77002b`, recorded at 08:53 UTC; the frozen `/api/health` serves it.
 - **Everything still runs locally.** The FastAPI service, the evaluation and the tests work in replay mode with no keys, as described in [Reproduce in replay mode](#reproduce-in-replay-mode).
 
-The architecture and deployment below describe Alinka as it ran during the hackathon, from 18 to 22 October 2026.
+The architecture and deployment below describe Alinka as it ran live, from 18 to 22 October 2026.
+
+## Participation certificate
+
+Alinka was built for the Blinka challenge in the second edition of the 30X Hackathon, held from 16 to 19 October 2026. The certificate of participation is below; the image links to [the original PDF](docs/certificado-participacion-30x.pdf).
+
+[![Certificate of participation in the second edition of the 30X Hackathon, 16 to 19 October 2026, for Daniel Andrés Moreno Cruz, signed by Andrés Bilbao, co-founder of 30X](docs/img/certificado-participacion-30x.jpg)](docs/certificado-participacion-30x.pdf)
 
 ## Architecture
 
