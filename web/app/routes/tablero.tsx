@@ -13,10 +13,10 @@ import { Segmented } from "~/components/segmented";
 import { allCards, COLUMN_TITLE, type CardState, projectRun, type RunResult, stepDelay } from "~/lib/board";
 import { prefersReducedMotion, useTransitionedValue } from "~/lib/motion";
 import { seo } from "~/lib/seo";
-import { useView } from "~/lib/view";
+import { BOARD_PATH, useView } from "~/lib/view";
 
 export function meta() {
-  return seo({ path: "/" });
+  return seo({ path: BOARD_PATH, title: "Tablero" });
 }
 
 export const boardKey = (view: View) => ["board", view] as const;

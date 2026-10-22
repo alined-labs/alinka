@@ -28,7 +28,7 @@ import { formatDateTime, formatFxLine, formatMoney, formatUsd } from "~/lib/form
 import { invoiceTransitionName, useMotionOK, useTransitionedValue } from "~/lib/motion";
 import { seo } from "~/lib/seo";
 import { fetchTrace } from "~/lib/trace-data";
-import { useView } from "~/lib/view";
+import { BOARD_PATH, useView } from "~/lib/view";
 
 import type { Route } from "./+types/factura";
 
@@ -66,7 +66,7 @@ export default function Factura() {
   const detail = useQuery(detailQuery(view, invoiceId));
   // An approval or rejection changes the state: the chip morphs into its new decision.
   const shown = useTransitionedValue(detail.data, (d) => (d ? `${d.card.state}:${d.card.approver ?? ""}` : ""));
-  const back = { pathname: "/", search: view === "canonical" ? "?vista=canonica" : "" };
+  const back = { pathname: BOARD_PATH, search: view === "canonical" ? "?vista=canonica" : "" };
 
   return (
     <div className="space-y-4">
