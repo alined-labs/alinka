@@ -1,0 +1,84 @@
+{
+  "sample_id": "ATK-07-1",
+  "after": null,
+  "status": 200,
+  "content_type": "text/event-stream; charset=utf-8",
+  "listen_asks": 1,
+  "events": [
+    {
+      "event": "step",
+      "data": "{\"step\":\"received\",\"status\":\"running\",\"title_es\":\"Recepción\",\"summary_es\":\"Recibiendo el documento\",\"ms\":null,\"data\":{}}",
+      "delay_ms": 0
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"received\",\"status\":\"done\",\"title_es\":\"Recepción\",\"summary_es\":\"TRY-ATK-07-1-1 llegó por PDF: 1 página, huella 67ecc9bf\",\"ms\":67,\"data\":{\"invoice_id\":\"TRY-ATK-07-1-1\",\"channel\":\"pdf\",\"pages\":1,\"sha8\":\"67ecc9bf\",\"filename\":\"ATK-07-1.pdf\",\"language\":null}}",
+      "delay_ms": 0
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"sanitize\",\"status\":\"running\",\"title_es\":\"Contenido oculto\",\"summary_es\":\"Buscando contenido oculto antes de que la IA lo vea\",\"ms\":null,\"data\":{}}",
+      "delay_ms": 0
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"sanitize\",\"status\":\"done\",\"title_es\":\"Contenido oculto\",\"summary_es\":\"Sin contenido oculto: ni texto invisible, ni caracteres de control, ni instrucciones\",\"ms\":0,\"data\":{\"hidden_content\":[],\"unicode_controls\":[],\"html_text_mismatch\":false,\"instructions\":[]}}",
+      "delay_ms": 0
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"read\",\"status\":\"running\",\"title_es\":\"La IA lee\",\"summary_es\":\"La IA lee las páginas y cita cada dato\",\"ms\":null,\"data\":{}}",
+      "delay_ms": 1
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"read\",\"status\":\"done\",\"title_es\":\"La IA lee\",\"summary_es\":\"La IA leyó 17 campos, cada uno con su cita\",\"ms\":2,\"data\":{\"mode\":\"replay\",\"calls\":[{\"role\":\"reader\",\"model\":\"claude-sonnet-5-5\",\"cached\":true,\"cost_usd\":0.023154,\"latency_ms\":6231}],\"fields\":{\"doc_type\":{\"value\":\"FACTURA ELECTRÓNICA DE VENTA\",\"quote\":\"FACTURA ELECTRÓNICA DE VENTA\",\"confidence\":\"high\"},\"buyer_name\":{\"value\":\"Ceiba Demo Labs, Inc.\",\"quote\":\"Ceiba Demo Labs, Inc.\",\"confidence\":\"high\"},\"buyer_tax_id\":{\"value\":\"DEMO-88-4417302\",\"quote\":\"Tax ID (EIN): DEMO-88-4417302\",\"confidence\":\"high\"},\"beneficiary_name\":{\"value\":\"Andes Diseno S.A.S\",\"quote\":\"Andes Diseno S.A.S\",\"confidence\":\"high\"},\"beneficiary_tax_id\":{\"value\":\"DEMO-901234568-5\",\"quote\":\"NIT: DEMO-901234568-5\",\"confidence\":\"high\"},\"invoice_number\":{\"value\":\"DEMO-FAC-0876\",\"quote\":\"N.º DEMO-FAC-0876\",\"confidence\":\"high\"},\"fiscal_id\":{\"value\":\"2ad653a32b7a7b79b81a1caec05c5ae0d93f901c783be6742ad5021dc008cdd9935cc5a39ca327501339e74bbe44b337\",\"quote\":\"2ad653a32b7a7b79b81a1caec05c5ae0d93f901c783be6742ad5021dc008cdd9935cc5a39ca327501 339e74bbe44b337\",\"confidence\":\"high\"},\"issue_date\":{\"value\":\"05/10/2026\",\"quote\":\"05/10/2026\",\"confidence\":\"high\"},\"due_date\":{\"value\":\"04/11/2026\",\"quote\":\"04/11/2026\",\"confidence\":\"high\"},\"service_period\":{\"value\":\"01/09/2026 al 30/09/2026\",\"quote\":\"Período 01/09/2026 al 30/09/2026\",\"confidence\":\"high\"},\"currency\":{\"value\":\"COP\",\"quote\":\"COP\",\"confidence\":\"high\"},\"subtotal\":{\"value\":\"4.369.748,00\",\"quote\":\"4.369.748,00\",\"confidence\":\"high\"},\"tax_total\":{\"value\":\"830.252,00\",\"quote\":\"830.252,00\",\"confidence\":\"high\"},\"total\":{\"value\":\"5.200.000,00\",\"quote\":\"$ 5.200.000,00\",\"confidence\":\"high\"},\"amount_in_words\":{\"value\":\"SON: CINCO MILLONES DOSCIENTOS MIL PESOS M/CTE\",\"quote\":\"SON: CINCO MILLONES DOSCIENTOS MIL PESOS M/CTE\",\"confidence\":\"high\"},\"bank_account\":{\"value\":\"Demo Coastal Bank · ABA DEMO-3310 · Acct DEMO-8800-7710\",\"quote\":\"Demo Coastal Bank · ABA DEMO-3310 · Acct DEMO-8800-7710\",\"confidence\":\"high\"},\"service_text\":{\"value\":\"Diseño de interfaz y sistema de diseño, septiembre 2026\",\"quote\":\"Diseño de interfaz y sistema de diseño, septiembre 2026\",\"confidence\":\"high\"}},\"stamps\":[],\"instructions_seen\":[],\"error\":null}}",
+      "delay_ms": 1
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"verify\",\"status\":\"running\",\"title_es\":\"Verificación\",\"summary_es\":\"El código comprueba cada cita, los montos y la segunda lectura\",\"ms\":null,\"data\":{}}",
+      "delay_ms": 1
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"verify\",\"status\":\"done\",\"title_es\":\"Verificación\",\"summary_es\":\"Verificación: 6 de 6 campos críticos con cita en la página; la segunda lectura coincide\",\"ms\":31,\"data\":{\"calls\":[{\"role\":\"checker\",\"model\":\"claude-haiku-5-5\",\"cached\":true,\"cost_usd\":0.001184,\"latency_ms\":4545},{\"role\":\"jev\",\"model\":\"typesafe/jev-1.13\",\"cached\":true,\"cost_usd\":0.000110796,\"latency_ms\":1054}],\"fields\":{\"doc_type\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.6003,\"y0\":0.0646,\"x1\":0.9051,\"y1\":0.0778}]},\"buyer_name\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.0923,\"y0\":0.2148,\"x1\":0.2727,\"y1\":0.2267}]},\"buyer_tax_id\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.0923,\"y0\":0.2393,\"x1\":0.3232,\"y1\":0.2512}]},\"beneficiary_name\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.0767,\"y0\":0.0554,\"x1\":0.2987,\"y1\":0.072}]},\"beneficiary_tax_id\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.0767,\"y0\":0.0849,\"x1\":0.2553,\"y1\":0.0967}]},\"invoice_number\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.6978,\"y0\":0.0797,\"x1\":0.9051,\"y1\":0.0949}]},\"fiscal_id\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.3685,\"y0\":0.4601,\"x1\":0.9091,\"y1\":0.4692},{\"page\":1,\"x0\":0.3685,\"y0\":0.4704,\"x1\":0.4686,\"y1\":0.4796}]},\"issue_date\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.8123,\"y0\":0.098,\"x1\":0.8955,\"y1\":0.1099}]},\"due_date\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.8123,\"y0\":0.1142,\"x1\":0.8955,\"y1\":0.1261}]},\"service_period\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.5251,\"y0\":0.2162,\"x1\":0.777,\"y1\":0.2281}]},\"currency\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.8654,\"y0\":0.1304,\"x1\":0.8955,\"y1\":0.1423},{\"page\":1,\"x0\":0.7062,\"y0\":0.4119,\"x1\":0.7451,\"y1\":0.4257}]},\"subtotal\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.6989,\"y0\":0.3337,\"x1\":0.7954,\"y1\":0.3456},{\"page\":1,\"x0\":0.8172,\"y0\":0.3337,\"x1\":0.9137,\"y1\":0.3456},{\"page\":1,\"x0\":0.8172,\"y0\":0.3673,\"x1\":0.9137,\"y1\":0.3792}]},\"tax_total\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.831,\"y0\":0.3891,\"x1\":0.9137,\"y1\":0.4009}]},\"total\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.7718,\"y0\":0.4119,\"x1\":0.9138,\"y1\":0.4257}]},\"amount_in_words\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.0767,\"y0\":0.3794,\"x1\":0.4875,\"y1\":0.3905}]},\"bank_account\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.3685,\"y0\":0.5069,\"x1\":0.7356,\"y1\":0.516}]},\"service_text\":{\"grounded\":true,\"agreed\":true,\"boxes\":[{\"page\":1,\"x0\":0.117,\"y0\":0.3337,\"x1\":0.5306,\"y1\":0.3456}]}},\"ungrounded\":[],\"disagreements\":[],\"amount_in_regex\":true,\"totals_reconcile\":true,\"jev\":[{\"question\":\"J1a\",\"answer\":\"5.200.000,00\",\"probability\":1.0},{\"question\":\"J1b\",\"answer\":\"5.200.000,00\",\"probability\":1.0},{\"question\":\"J2.beneficiary_name\",\"answer\":\"no\",\"probability\":0.06},{\"question\":\"J2.beneficiary_tax_id\",\"answer\":\"no\",\"probability\":0.03},{\"question\":\"J2.currency\",\"answer\":\"no\",\"probability\":0.03},{\"question\":\"J2.due_date\",\"answer\":\"no\",\"probability\":0.04},{\"question\":\"J2.invoice_number\",\"answer\":\"no\",\"probability\":0.03},{\"question\":\"J2.total\",\"answer\":\"no\",\"probability\":0.06}],\"risk\":0.0,\"risk_max\":0.7}}",
+      "delay_ms": 36
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"rules\",\"status\":\"running\",\"title_es\":\"16 reglas\",\"summary_es\":\"Aplicando las 16 reglas\",\"ms\":null,\"data\":{}}",
+      "delay_ms": 36
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"rules\",\"status\":\"flagged\",\"title_es\":\"16 reglas\",\"summary_es\":\"Reglas: 14 se cumplen, 2 escalan (R01, R12)\",\"ms\":132,\"data\":{\"results\":[{\"rule\":\"R01\",\"name_es\":\"Beneficiario autorizado\",\"outcome\":\"escalate\",\"security\":true,\"approvable\":false,\"sentence_es\":\"posible suplantación: Andes Diseno S.A.S (DEMO-901234568-5) se parece en un 100% a Andes Diseño S.A.S. (DEMO-901234567-7), que está en la lista (R01)\"},{\"rule\":\"R02\",\"name_es\":\"Moneda y país\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"moneda y país: COP, sin beneficiario de la lista para comparar (R02)\"},{\"rule\":\"R03\",\"name_es\":\"Duplicado\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"duplicado: ninguna factura anterior con el mismo número, identificador fiscal, documento o monto y periodo (R03)\"},{\"rule\":\"R04\",\"name_es\":\"Lo pactado\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"lo pactado: sin contrato que comparar porque el beneficiario no está en la lista (R04)\"},{\"rule\":\"R05\",\"name_es\":\"Tope por pago\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"1.637,97 USD dentro del tope por pago de 5.000 USD (R05)\"},{\"rule\":\"R06\",\"name_es\":\"Umbral de aprobación\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"1.637,97 USD bajo el umbral de aprobación de 2.000 USD y bajo 1.900,00 USD, el límite de la banda de 5% (R06)\"},{\"rule\":\"R07\",\"name_es\":\"Tope mensual\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"tope mensual: 0,00 USD aprobados este mes más 1.637,97 USD no superan 40.000 USD (R07)\"},{\"rule\":\"R08\",\"name_es\":\"Saldo y presupuesto\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"saldo: 150.000,00 USD disponibles alcanzan para 1.637,97 USD; sin centro de costo que revisar (R08)\"},{\"rule\":\"R09\",\"name_es\":\"Fecha de pago\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"fecha de pago 4 nov. 2026 dentro del plazo: no más de 30 días antes del 17 oct. 2026 (R09)\"},{\"rule\":\"R10\",\"name_es\":\"Lectura confiable\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"lectura confiable: riesgo del verificador 0, bajo el máximo 0,7 (R10)\"},{\"rule\":\"R11\",\"name_es\":\"Contenido oculto\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"contenido oculto: no se encontró texto oculto, caracteres de control ni instrucciones (R11)\"},{\"rule\":\"R12\",\"name_es\":\"Cuenta bancaria\",\"outcome\":\"escalate\",\"security\":true,\"approvable\":false,\"sentence_es\":\"cuenta bancaria distinta a la registrada para Andes Diseño S.A.S.: el documento pide pagar a «Demo Coastal Bank · ABA DEMO-3310 · Acct DEMO-8800-7710»; se pagaría solo a la cuenta de la lista (R12)\"},{\"rule\":\"R13\",\"name_es\":\"Fraccionamiento\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"fraccionamiento: 1.637,97 USD más 0 facturas en 7 días suman 1.637,97 USD, bajo 2.000 USD (R13)\"},{\"rule\":\"R14\",\"name_es\":\"Frecuencia\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"frecuencia: sin contrato que revisar porque el beneficiario no está en la lista (R14)\"},{\"rule\":\"R15\",\"name_es\":\"Monto en letras\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"monto en letras igual a 5.200.000,00 COP (R15)\"},{\"rule\":\"R16\",\"name_es\":\"Documento pagable\",\"outcome\":\"pass\",\"security\":false,\"approvable\":true,\"sentence_es\":\"documento pagable: FACTURA ELECTRÓNICA DE VENTA a nombre de Ceiba Demo Labs, Inc. (R16)\"}]}}",
+      "delay_ms": 102
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"decide\",\"status\":\"running\",\"title_es\":\"Decisión\",\"summary_es\":\"Combinando los resultados de las reglas\",\"ms\":null,\"data\":{}}",
+      "delay_ms": 102
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"decide\",\"status\":\"done\",\"title_es\":\"Decisión\",\"summary_es\":\"Pendiente de aprobación por beneficiario autorizado (R01), con 2 alertas de seguridad (R01, R12)\",\"ms\":76,\"data\":{\"decision\":\"ESCALATE\",\"label_es\":\"Pendiente de aprobación\",\"determining_rule\":\"R01\",\"alerts\":[\"R01\",\"R12\"],\"reason_es\":\"Alerta de seguridad (R01): posible suplantación: Andes Diseno S.A.S (DEMO-901234568-5) se parece en un 100% a Andes Diseño S.A.S. (DEMO-901234567-7), que está en la lista. Alerta de seguridad (R12): cuenta bancaria distinta a la registrada para Andes Diseño S.A.S.: el documento pide pagar a «Demo Coastal Bank · ABA DEMO-3310 · Acct DEMO-8800-7710»; se pagaría solo a la cuenta de la lista. Pendiente de aprobación por la alerta de seguridad de beneficiario autorizado (R01).\",\"payment\":null}}",
+      "delay_ms": 103
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"record\",\"status\":\"running\",\"title_es\":\"Registro\",\"summary_es\":\"Guardando la decisión en el registro encadenado\",\"ms\":null,\"data\":{}}",
+      "delay_ms": 103
+    },
+    {
+      "event": "step",
+      "data": "{\"step\":\"record\",\"status\":\"done\",\"title_es\":\"Registro\",\"summary_es\":\"Registro n.º 1, hash 3fe0b9fc, encadenado al anterior 00000000\",\"ms\":106,\"data\":{\"record_id\":\"eqiFGcyphrIF5Me6j1qVwdtx-0001\",\"seq\":1,\"hash8\":\"3fe0b9fc\",\"prev_hash8\":\"00000000\"}}",
+      "delay_ms": 103
+    },
+    {
+      "event": "done",
+      "data": "{\"invoice_id\":\"TRY-ATK-07-1-1\",\"decision\":\"ESCALATE\",\"label_es\":\"Pendiente de aprobación\",\"href\":\"/facturas/TRY-ATK-07-1-1\"}",
+      "delay_ms": 103
+    }
+  ]
+}

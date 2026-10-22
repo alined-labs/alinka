@@ -10,7 +10,8 @@
     "test": "vitest run",
     "gen:api": "openapi-typescript ../openapi.json -o app/api/schema.d.ts",
     "e2e": "playwright test",
-    "og": "node scripts/og.ts"
+    "og": "node scripts/og.ts",
+    "snapshot": "node scripts/snapshot.ts"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
