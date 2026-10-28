@@ -6,9 +6,11 @@ An accounts-payable agent for the Blinka challenge (HackRadar 30X). It reads inv
 
 **Live demo: <https://alinka.alinedlabs.co>** (fictional data; the app is in Spanish, with an English summary at [/en](https://alinka.alinedlabs.co/en)). The demo replays recorded API responses: you can run the agent, open every invoice with its page and trace, and verify the chain, but it doesn't accept edits, approvals or uploads. To run the API yourself, with no keys, see [Reproduce in replay mode](#reproduce-in-replay-mode).
 
-## Participation certificate
+## 30X Hackathon
 
-Alinka was built for the Blinka challenge in the second edition of the 30X Hackathon, held from 16 to 19 October 2026. The certificate of participation is below; the image links to [the original PDF](docs/certificado-participacion-30x.pdf).
+Alinka was one of the ten finalists of the Blinka challenge at the second edition of the 30X Hackathon, held from 16 to 19 October 2026. Below are the organizers' list of finalists and the certificate of participation, which links to [the original PDF](docs/certificado-participacion-30x.pdf).
+
+<img src="docs/img/finalistas-reto-blinka-30x.jpg" width="360" alt="The 30X Hackathon's list of finalists of the Blinka challenge: ten teams, among them Alined Labs with Alinka">
 
 [![Certificate of participation in the second edition of the 30X Hackathon, 16 to 19 October 2026, for Daniel Andrés Moreno Cruz, signed by Andrés Bilbao, co-founder of 30X](docs/img/certificado-participacion-30x.jpg)](docs/certificado-participacion-30x.pdf)
 
